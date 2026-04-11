@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raymond Mayer // Security & Systems Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080c10;
+    --bg2:       #0d1117;
+    --bg3:       #161b22;
+    --bg4:       #1c2330;
+    --border:    #21262d;
+    --border2:   #30363d;
+    --text:      #e6edf3;
+    --muted:     #7d8590;
+    --dim:       #484f58;
+    --green:     #00ff88;
+    --green2:    #00cc6a;
+    --green-dim: rgba(0,255,136,0.08);
+    --green-glow:rgba(0,255,136,0.15);
+    --blue:      #58a6ff;
+    --blue2:     #388bfd;
+    --blue-dim:  rgba(88,166,255,0.1);
+    --mono:      'JetBrains Mono', monospace;
+    --sans:      'Inter', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── SCANLINE OVERLAY ─────────────────────────────────────── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ──────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo::before {
+    content: '>';
+    color: var(--muted);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-links a:hover {
+    color: var(--green);
+    border-color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 80px 2rem 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-inner {
+    width: 100%;
+  }
+
+  .hero-terminal {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    max-width: 680px;
+    margin-bottom: 48px;
+    box-shadow: 0 0 60px rgba(0,255,136,0.05);
+  }
+
+  .term-bar {
+    background: var(--bg3);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .term-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .td-r { background: #ff5f57; }
+  .td-y { background: #febc2e; }
+  .td-g { background: #28c840; }
+
+  .term-title {
+    flex: 1;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .term-body {
+    padding: 20px 24px;
+  }
+
+  .term-line {
+    font-family: var(--mono);
+    font-size: 13px;
+    margin-bottom: 4px;
+    opacity: 0;
+    animation: fadeIn 0.1s forwards;
+  }
+
+  .term-line:nth-child(1)  { animation-delay: 0.2s; }
+  .term-line:nth-child(2)  { animation-delay: 0.6s; }
+  .term-line:nth-child(3)  { animation-delay: 1.0s; }
+  .term-line:nth-child(4)  { animation-delay: 1.4s; }
+  .term-line:nth-child(5)  { animation-delay: 1.8s; }
+  .term-line:nth-child(6)  { animation-delay: 2.2s; }
+  .term-line:nth-child(7)  { animation-delay: 2.6s; }
+  .term-line:nth-child(8)  { animation-delay: 3.0s; }
+
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  .t-prompt { color: var(--green); }
+  .t-cmd    { color: var(--text); }
+  .t-key    { color: var(--blue); }
+  .t-val    { color: var(--muted); }
+  .t-accent { color: var(--green); }
+  .t-cursor {
+    display: inline-block;
+    width: 8px; height: 14px;
+    background: var(--green);
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+  .hero-name {
+    font-family: var(--sans);
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    color: var(--text);
+    margin-bottom: 12px;
+    opacity: 0;
+    animation: slideUp 0.6s ease forwards;
+    animation-delay: 3.4s;
+  }
+
+  .hero-name span { color: var(--green); }
+
+  .hero-sub {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: slideUp 0.6s ease forwards;
+    animation-delay: 3.6s;
+  }
+
+  .hero-sub::before { content: '// '; color: var(--dim); }
+
+  @keyframes slideUp {
+    from { opacity:0; transform: translateY(16px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: slideUp 0.6s ease forwards;
+    animation-delay: 3.8s;
+  }
+
+  .btn-primary {
+    padding: 10px 24px;
+    background: var(--green);
+    color: #000;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover {
+    background: var(--green2);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0,255,136,0.3);
+  }
+
+  .btn-outline {
+    padding: 10px 24px;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 13px;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--blue);
+    color: var(--blue);
+    background: var(--blue-dim);
+  }
+
+  /* ── SECTIONS ─────────────────────────────────────────────── */
+  section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 80px 2rem;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before { content: '//'; color: var(--dim); }
+  .section-label::after  {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 120px;
+  }
+
+  .section-title {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 40px;
+  }
+
+  /* ── ABOUT ────────────────────────────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .about-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .about-card-header {
+    background: var(--bg3);
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .about-card-header::before { content: '$'; color: var(--green); }
+
+  .about-card-body { padding: 16px; }
+
+  .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  .stat-row:last-child { border-bottom: none; }
+  .stat-key { color: var(--muted); }
+  .stat-val { color: var(--green); }
+
+  /* ── SKILLS ───────────────────────────────────────────────── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .skill-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .skill-card:hover {
+    border-color: var(--green);
+    box-shadow: 0 0 24px var(--green-glow);
+  }
+
+  .skill-card-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .skill-card-title::before { content: '>'; color: var(--dim); }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .tag:hover { border-color: var(--blue); color: var(--blue); }
+
+  /* ── REPOS ────────────────────────────────────────────────── */
+  .repos-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .filter-bar {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn.active, .filter-btn:hover {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .repos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+
+  .repo-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .repo-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green), var(--blue));
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+
+  .repo-card:hover {
+    border-color: var(--border2);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .repo-card:hover::before { opacity: 1; }
+
+  .repo-name {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--blue);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .repo-name-icon { font-size: 14px; }
+
+  .repo-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .repo-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .repo-lang {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .lang-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+  }
+
+  .repo-stars {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .repo-updated {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    margin-left: auto;
+  }
+
+  .repos-loading {
+    text-align: center;
+    padding: 60px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .repos-loading::before { content: '$ '; color: var(--green); }
+
+  /* ── CONTACT ──────────────────────────────────────────────── */
+  .contact-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  @media (max-width: 700px) { .contact-wrap { grid-template-columns: 1fr; } }
+
+  .contact-info p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 24px;
+  }
+
+  .contact-links { display: flex; flex-direction: column; gap: 10px; }
+
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-link:hover { color: var(--green); }
+
+  .cl-icon {
+    width: 32px; height: 32px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ── FORM ─────────────────────────────────────────────────── */
+  .contact-form {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .form-header {
+    background: var(--bg3);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-header::before { content: '$'; color: var(--green); }
+
+  .form-body { padding: 24px; }
+
+  .form-group { margin-bottom: 18px; }
+
+  .form-label {
+    display: block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    margin-bottom: 6px;
+    letter-spacing: 0.05em;
+  }
+
+  .form-input, .form-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    resize: vertical;
+  }
+
+  .form-input:focus, .form-textarea:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px var(--green-dim);
+  }
+
+  .form-textarea { min-height: 120px; }
+
+  .form-submit {
+    width: 100%;
+    padding: 12px;
+    background: var(--green);
+    color: #000;
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.05em;
+  }
+
+  .form-submit:hover {
+    background: var(--green2);
+    box-shadow: 0 4px 20px rgba(0,255,136,0.3);
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .footer-copy span { color: var(--green); }
+
+  .footer-links {
+    display: flex;
+    gap: 16px;
+  }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--green); }
+
+  /* ── DIVIDER ──────────────────────────────────────────────── */
+  .section-divider {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── LANG COLORS ──────────────────────────────────────────── */
+  .lang-powershell { background: #012456; }
+  .lang-python     { background: #3572A5; }
+  .lang-bash       { background: #89e051; }
+  .lang-go         { background: #00ADD8; }
+  .lang-other      { background: #555; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">drraypc.com</div>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#repos">repos</a></li>
+    <li><a href="/music.html">music</a></li>
+    <li><a href="#contact">contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    available for work
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-terminal">
+      <div class="term-bar">
+        <div class="term-dot td-r"></div>
+        <div class="term-dot td-y"></div>
+        <div class="term-dot td-g"></div>
+        <div class="term-title">bash — drraypc.com</div>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">~</span>$ whoami</div>
+        <div class="term-line"><span class="t-key">name</span>        <span class="t-val">Raymond Mayer</span></div>
+        <div class="term-line"><span class="t-key">role</span>        <span class="t-val">Senior Security & Systems Engineer</span></div>
+        <div class="term-line"><span class="t-key">location</span>    <span class="t-val">Royal Oak, MI</span></div>
+        <div class="term-line"><span class="t-key">experience</span>  <span class="t-val">15+ years</span></div>
+        <div class="term-line"><span class="t-key">focus</span>       <span class="t-val">Incident Response · AD Security · Infrastructure</span></div>
+        <div class="term-line"><span class="t-key">status</span>      <span class="t-accent">● available</span></div>
+        <div class="term-line"><span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">~</span>$ <span class="t-cursor"></span></div>
+      </div>
+    </div>
+
+    <h1 class="hero-name">Raymond <span>Mayer</span></h1>
+    <p class="hero-sub">Security Engineer · Systems Architect · Incident Responder</p>
+    <div class="hero-cta">
+      <a href="#repos" class="btn-primary">View Projects</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">01 &nbsp; about</div>
+  <h2 class="section-title">Who I Am</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a Senior Security & Systems Engineer with over 15 years of experience across Windows, Linux, and macOS environments. I specialize in incident response, ransomware recovery, Active Directory security, and resilient infrastructure design.</p>
+      <p>My background spans the full range of the security lifecycle — from hardening environments before something goes wrong, to leading client recovery engagements when environments are already compromised. I've worked with teams ranging from small businesses to Fortune 500 companies.</p>
+      <p>I build tools, automate security workflows, and document everything — because good security is reproducible security.</p>
+    </div>
+    <div class="about-card">
+      <div class="about-card-header">cat profile.json</div>
+      <div class="about-card-body">
+        <div class="stat-row"><span class="stat-key">years_experience</span><span class="stat-val">15+</span></div>
+        <div class="stat-row"><span class="stat-key">specialization</span><span class="stat-val">IR / AD / Hardening</span></div>
+        <div class="stat-row"><span class="stat-key">certifications</span><span class="stat-val">Azure AI Fundamentals</span></div>
+        <div class="stat-row"><span class="stat-key">scripting</span><span class="stat-val">PowerShell · Python · Bash</span></div>
+        <div class="stat-row"><span class="stat-key">cloud</span><span class="stat-val">Azure · AWS · GCP</span></div>
+        <div class="stat-row"><span class="stat-key">current_role</span><span class="stat-val">Lead Systems Eng. @ Centene</span></div>
+        <div class="stat-row"><span class="stat-key">email</span><span class="stat-val">ray@drraypc.com</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">02 &nbsp; skills</div>
+  <h2 class="section-title">Technical Expertise</h2>
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-card-title">Cybersecurity</div>
+      <div class="skill-tags">
+        <span class="tag">Incident Response</span>
+        <span class="tag">Ransomware Recovery</span>
+        <span class="tag">Threat Detection</span>
+        <span class="tag">AD Hardening</span>
+        <span class="tag">CrowdStrike</span>
+        <span class="tag">SentinelOne</span>
+        <span class="tag">SIEM</span>
+        <span class="tag">Forensics</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Systems Engineering</div>
+      <div class="skill-tags">
+        <span class="tag">Windows Server</span>
+        <span class="tag">RHEL / Linux</span>
+        <span class="tag">Active Directory</span>
+        <span class="tag">Azure AD</span>
+        <span class="tag">Exchange</span>
+        <span class="tag">DNS</span>
+        <span class="tag">Group Policy</span>
+        <span class="tag">PKI</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Automation & Scripting</div>
+      <div class="skill-tags">
+        <span class="tag">PowerShell</span>
+        <span class="tag">Python</span>
+        <span class="tag">Bash</span>
+        <span class="tag">Ansible</span>
+        <span class="tag">Terraform</span>
+        <span class="tag">GitHub Actions</span>
+        <span class="tag">Azure DevOps</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Cloud & Infrastructure</div>
+      <div class="skill-tags">
+        <span class="tag">Microsoft Azure</span>
+        <span class="tag">AWS</span>
+        <span class="tag">Google Cloud</span>
+        <span class="tag">VMware</span>
+        <span class="tag">Hyper-V</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Office 365</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">Network Security</div>
+      <div class="skill-tags">
+        <span class="tag">Firewalls</span>
+        <span class="tag">VLANs</span>
+        <span class="tag">IPSec / VPN</span>
+        <span class="tag">IDS / IPS</span>
+        <span class="tag">TLS Hardening</span>
+        <span class="tag">Network Segmentation</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-card-title">DevOps & SDLC</div>
+      <div class="skill-tags">
+        <span class="tag">Jenkins</span>
+        <span class="tag">CI/CD Pipelines</span>
+        <span class="tag">Code Reviews</span>
+        <span class="tag">Git</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Patch Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- REPOS -->
+<section id="repos">
+  <div class="repos-header">
+    <div>
+      <div class="section-label">03 &nbsp; projects</div>
+      <h2 class="section-title" style="margin-bottom:0;">GitHub Repositories</h2>
+    </div>
+    <div class="filter-bar" id="filterBar">
+      <button class="filter-btn active" data-lang="all">all</button>
+      <button class="filter-btn" data-lang="PowerShell">PowerShell</button>
+      <button class="filter-btn" data-lang="Python">Python</button>
+      <button class="filter-btn" data-lang="Shell">Shell</button>
+    </div>
+  </div>
+
+  <div id="reposGrid" class="repos-grid">
+    <div class="repos-loading">fetching repositories...</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">04 &nbsp; contact</div>
+  <h2 class="section-title">Get In Touch</h2>
+  <div class="contact-wrap">
+    <div class="contact-info">
+      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect — my inbox is open.</p>
+      <div class="contact-links">
+        <a href="mailto:ray@drraypc.com" class="contact-link">
+          <div class="cl-icon">✉</div>
+          ray@drraypc.com
+        </a>
+        <a href="https://linkedin.com/in/ray-mayer" target="_blank" class="contact-link">
+          <div class="cl-icon">in</div>
+          linkedin.com/in/ray-mayer
+        </a>
+        <a href="https://github.com/YOURGITHUBUSERNAME" target="_blank" class="contact-link">
+          <div class="cl-icon">gh</div>
+          github.com/YOURGITHUBUSERNAME
+        </a>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-header">send_message.sh</div>
+      <div class="form-body">
+        <form id="contactForm" action="#" method="POST">
+          <div class="form-group">
+            <label class="form-label">--name</label>
+            <input type="text" name="name" class="form-input" placeholder="Your name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">--email</label>
+            <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">--subject</label>
+            <input type="text" name="subject" class="form-input" placeholder="What's this about?">
+          </div>
+          <div class="form-group">
+            <label class="form-label">--message</label>
+            <textarea name="message" class="form-textarea" placeholder="Your message..." required></textarea>
+          </div>
+          <button type="submit" class="form-submit">./send_message.sh</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">
+    &copy; 2025 <span>Raymond Mayer</span> // drraypc.com
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/YOURGITHUBUSERNAME" target="_blank">GitHub</a>
+    <a href="https://linkedin.com/in/ray-mayer" target="_blank">LinkedIn</a>
+    <a href="mailto:ray@drraypc.com">Email</a>
+  </div>
+</footer>
+
+<script>
+const GITHUB_USER = 'YOURGITHUBUSERNAME';
+
+const langColors = {
+  PowerShell: '#012456',
+  Python:     '#3572A5',
+  Shell:      '#89e051',
+  Bash:       '#89e051',
+  Go:         '#00ADD8',
+  JavaScript: '#f1e05a',
+  default:    '#555'
+};
+
+let allRepos = [];
+
+function timeAgo(dateStr) {
+  const diff = Date.now() - new Date(dateStr);
+  const days = Math.floor(diff / 86400000);
+  if (days < 1)  return 'today';
+  if (days < 30) return `${days}d ago`;
+  if (days < 365) return `${Math.floor(days/30)}mo ago`;
+  return `${Math.floor(days/365)}y ago`;
+}
+
+function renderRepos(repos) {
+  const grid = document.getElementById('reposGrid');
+  if (!repos.length) {
+    grid.innerHTML = '<div class="repos-loading">no repositories found.</div>';
+    return;
+  }
+  grid.innerHTML = repos.map(r => `
+    <a href="${r.html_url}" target="_blank" class="repo-card">
+      <div class="repo-name">
+        <span class="repo-name-icon">&#9632;</span>
+        ${r.name}
+      </div>
+      <div class="repo-desc">${r.description || 'No description provided.'}</div>
+      <div class="repo-meta">
+        ${r.language ? `
+          <div class="repo-lang">
+            <div class="lang-dot" style="background:${langColors[r.language]||langColors.default}"></div>
+            ${r.language}
+          </div>` : ''}
+        <span class="repo-stars">&#9733; ${r.stargazers_count}</span>
+        <span class="repo-updated">${timeAgo(r.updated_at)}</span>
+      </div>
+    </a>
+  `).join('');
+}
+
+async function loadRepos() {
+  try {
+    const res = await fetch(
+      `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=30`
+    );
+    if (!res.ok) throw new Error('API error');
+    allRepos = (await res.json()).filter(r => !r.fork);
+    renderRepos(allRepos);
+  } catch(e) {
+    // Show placeholder cards if API fails / username not set
+    allRepos = [
+      { name: 'ad-hardening-toolkit', description: 'Active Directory hardening scripts, audit tools and GPO templates for enterprise environments.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'ransomware-ir-playbook', description: 'Incident response runbooks and automation scripts for ransomware recovery engagements.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'windows-forensics-toolkit', description: 'PowerShell scripts for rapid Windows forensic triage — event log parsing, artifact collection, IOC hunting.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'linux-hardening-baseline', description: 'Bash scripts implementing CIS benchmark controls for RHEL and Debian-based systems.', html_url: '#', language: 'Shell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'cleanup-module', description: 'PowerShell module for automated Windows system maintenance, temp file cleanup, and disk optimization.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'vmware-recovery-scripts', description: 'ESXi and vCenter automation scripts for post-incident VMware infrastructure recovery.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+    ];
+    renderRepos(allRepos);
+  }
+}
+
+// Filter buttons
+document.getElementById('filterBar').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const lang = btn.dataset.lang;
+  const filtered = lang === 'all' ? allRepos : allRepos.filter(r => r.language === lang);
+  renderRepos(filtered);
+});
+
+loadRepos();
+</script>
+</body>
+</html>

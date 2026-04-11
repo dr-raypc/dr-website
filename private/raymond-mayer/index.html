@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Resume // Raymond Mayer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080c10;
+    --bg2:       #0d1117;
+    --bg3:       #161b22;
+    --bg4:       #1c2330;
+    --border:    #21262d;
+    --border2:   #30363d;
+    --text:      #e6edf3;
+    --muted:     #7d8590;
+    --dim:       #484f58;
+    --green:     #00ff88;
+    --green2:    #00cc6a;
+    --green-dim: rgba(0,255,136,0.08);
+    --blue:      #58a6ff;
+    --blue-dim:  rgba(88,166,255,0.1);
+    --mono:      'JetBrains Mono', monospace;
+    --sans:      'Inter', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── TOP BAR ─────────────────────────────────────────────── */
+  .topbar {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .topbar-left {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .topbar-left span { color: var(--green); }
+
+  .topbar-right { display: flex; gap: 10px; }
+
+  .tb-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 5px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .tb-btn:hover, .tb-btn.primary {
+    border-color: var(--green);
+    color: var(--green);
+    background: var(--green-dim);
+  }
+
+  .tb-btn.primary { color: #000; background: var(--green); border-color: var(--green); }
+  .tb-btn.primary:hover { background: var(--green2); }
+
+  /* ── LAYOUT ──────────────────────────────────────────────── */
+  .resume-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 2rem 80px;
+  }
+
+  /* ── HEADER ──────────────────────────────────────────────── */
+  .r-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: start;
+    margin-bottom: 40px;
+    padding-bottom: 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) { .r-header { grid-template-columns: 1fr; } }
+
+  .r-name {
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .r-name span { color: var(--green); }
+
+  .r-title {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .r-title::before { content: '// '; color: var(--dim); }
+
+  .r-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  @media (max-width: 600px) { .r-contact { align-items: flex-start; } }
+
+  .r-contact a, .r-contact span {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .r-contact a:hover { color: var(--green); }
+
+  /* ── SECTION ─────────────────────────────────────────────── */
+  .r-section { margin-bottom: 40px; }
+
+  .r-section-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .r-section-head::before { content: '//'; color: var(--dim); }
+  .r-section-head::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .r-summary {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  /* ── SKILLS TABLE ────────────────────────────────────────── */
+  .skills-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 8px;
+  }
+
+  .skill-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+  }
+
+  .skill-cat {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    margin-bottom: 3px;
+  }
+
+  .skill-vals {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ── JOB ─────────────────────────────────────────────────── */
+  .r-job { margin-bottom: 28px; }
+
+  .r-job-header {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    margin-bottom: 4px;
+    align-items: baseline;
+  }
+
+  @media (max-width: 600px) { .r-job-header { grid-template-columns: 1fr; } }
+
+  .r-job-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--blue);
+  }
+
+  .r-job-dates {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    white-space: nowrap;
+  }
+
+  .r-job-company {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .r-bullets { list-style: none; }
+
+  .r-bullets li {
+    font-size: 13px;
+    color: var(--muted);
+    padding: 3px 0 3px 18px;
+    position: relative;
+    line-height: 1.7;
+  }
+
+  .r-bullets li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-size: 10px;
+    top: 6px;
+  }
+
+  /* ── EDU ─────────────────────────────────────────────────── */
+  .r-edu {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+
+  .r-edu-left {}
+  .r-edu-degree { font-size: 14px; font-weight: 500; color: var(--text); }
+  .r-edu-school { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .r-edu-year   { font-family: var(--mono); font-size: 12px; color: var(--dim); }
+
+  /* ── WATERMARK ───────────────────────────────────────────── */
+  .watermark {
+    text-align: center;
+    padding: 24px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+
+  .watermark span { color: var(--green); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span>private</span> // raymond-mayer // resume.pdf
+  </div>
+  <div class="topbar-right">
+    <a href="/" class="tb-btn">← back to site</a>
+    <button class="tb-btn primary" onclick="window.print()">print / save pdf</button>
+  </div>
+</div>
+
+<div class="resume-wrap">
+
+  <!-- HEADER -->
+  <div class="r-header">
+    <div>
+      <div class="r-name">Raymond <span>Mayer</span></div>
+      <div class="r-title">Senior Security & Systems Engineer · 15+ Years Experience</div>
+    </div>
+    <div class="r-contact">
+      <a href="tel:5864364646">586-436-4646</a>
+      <a href="mailto:ray@drraypc.com">ray@drraypc.com</a>
+      <span>Royal Oak, MI, USA</span>
+      <a href="https://linkedin.com/in/ray-mayer" target="_blank">linkedin.com/in/ray-mayer</a>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="r-section">
+    <div class="r-section-head">professional summary</div>
+    <p class="r-summary">Highly motivated Systems Engineer with over 15+ years of experience across diverse environments, including Linux, Windows, and macOS platforms. A seasoned troubleshooter and technical support specialist with a proven ability to identify and resolve complex issues. Expertise encompasses cybersecurity, infrastructure engineering, and cloud computing, with a strong emphasis on automation and adherence to robust security protocols.</p>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="r-section">
+    <div class="r-section-head">key skills & expertise</div>
+    <div class="skills-table">
+      <div class="skill-item">
+        <div class="skill-cat">IT Systems Management</div>
+        <div class="skill-vals">Windows, Mac, Linux</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">Cloud Platforms</div>
+        <div class="skill-vals">Azure, AWS, Google Cloud</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">Automation & Scripting</div>
+        <div class="skill-vals">PowerShell, Bash, Python</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">Cybersecurity</div>
+        <div class="skill-vals">Threat Detection, IR, Ransomware Recovery</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">DevOps</div>
+        <div class="skill-vals">Jenkins, Terraform, Ansible, GitHub Actions</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">Identity & Access</div>
+        <div class="skill-vals">Active Directory, Azure AD, Google Workspace</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">Virtualization</div>
+        <div class="skill-vals">VMware, Hyper-V, Docker</div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-cat">Network Security</div>
+        <div class="skill-vals">Firewalls, VLANs, IPSec, IDS/IPS, TLS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div class="r-section">
+    <div class="r-section-head">professional experience</div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-title">Lead Systems Engineer, DevSecOps</div>
+        <div class="r-job-dates">April 2025 – Present</div>
+      </div>
+      <div class="r-job-company">Centene Corporation · Clayton, MO</div>
+      <ul class="r-bullets">
+        <li>Oversee the planning, design and implementation of system automation engineering projects.</li>
+        <li>Lead the enhancement of processes, procedures, and policies relating to systems functioning, updating and performance.</li>
+        <li>Provide technical direction in-line with business goals.</li>
+        <li>Develop, modify, test, implement and document automation procedures for Windows and RHEL systems.</li>
+        <li>Perform troubleshooting and remediation, ensure successful project implementation, and perform post project end user support.</li>
+        <li>Meet with management team of multiple functional areas and vendors on the planning, upgrading, testing, securing and servicing of IT solutions.</li>
+        <li>Monitor systems and networks for security breaches.</li>
+        <li>Train engineering teams on new systems, protocols and best practices.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-title">Escalation Engineer II · Onboarding Lead · DevSecOps</div>
+        <div class="r-job-dates">May 2022 – Jan 2025</div>
+      </div>
+      <div class="r-job-company">Entara Corp · Chicago, IL</div>
+      <ul class="r-bullets">
+        <li>Managed end-to-end client engagements focused on ransomware recovery, security hardening, and resilient infrastructure design.</li>
+        <li>Served as a Senior Escalation Engineer, providing expert guidance to resolve complex systems & cybersecurity issues.</li>
+        <li>Led client technical onboarding, emphasizing seamless integration of cybersecurity best practices.</li>
+        <li>Served as a technical mentor, guiding IT teams on best security practices.</li>
+        <li>Automated system setups and security configurations using PowerShell & Python.</li>
+        <li>Functioned as Subject Matter Expert (SME) for system infrastructure, handling complex IT problems requiring advanced troubleshooting.</li>
+        <li>Maintained optimal and secure system environments by ensuring timely software installations, updates, and patch management.</li>
+        <li>Met SLAs consistently and ensured all commitments were fulfilled.</li>
+        <li>Deployed and supported CrowdStrike Falcon across client environments, including sensor deployment coordination, policy review, and incident triage support.</li>
+        <li>Gained exposure to firewall and IPSec VPN configurations, supporting rule review, segmentation policy discussions, and encrypted tunnel troubleshooting.</li>
+        <li>Participated in VLAN segmentation planning and implementation, supporting isolation of workstations, servers, and management interfaces.</li>
+        <li>Assisted with DNS infrastructure management including internal resolution support, zone review, and DNS anomaly identification.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-title">Systems Engineer</div>
+        <div class="r-job-dates">Jul 2021 – May 2022</div>
+      </div>
+      <div class="r-job-company">OneStream Software · Rochester, MI</div>
+      <ul class="r-bullets">
+        <li>Managed and secured Office 365 and Azure environments, implementing advanced security measures.</li>
+        <li>Served as Subject Matter Expert for Office 365 & Infrastructure management.</li>
+        <li>Assisted the DevOps team with OneStream code upgrades, security enhancements & CI/CD pipeline improvements.</li>
+        <li>Automated system monitoring to detect and prevent major issues.</li>
+        <li>Proactively addressed security vulnerabilities and improved operational workflows.</li>
+        <li>Diagnosed production issues, analyzed failures, and implemented solutions to minimize outages & interruptions.</li>
+        <li>Documented infrastructure configurations to facilitate effective troubleshooting, recovery, and installation.</li>
+        <li>Supported SentinelOne EDR platform, assisting with agent management, alert triage, and endpoint policy enforcement.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-title">End User Infrastructure Specialist</div>
+        <div class="r-job-dates">Jun 2019 – Jul 2021</div>
+      </div>
+      <div class="r-job-company">Mastronardi Produce · Livonia, MI</div>
+      <ul class="r-bullets">
+        <li>Developed and implemented robust security policies to mitigate active ransomware threats and enhance Active Directory configurations.</li>
+        <li>Automated software updates for 1,000+ computers and 700+ servers, reducing downtime.</li>
+        <li>Streamlined user experience by migrating users to OneDrive and enhanced system security through Multi-Factor Authentication.</li>
+        <li>Managed and maintained Active Directory, Exchange services, and all third-party solutions.</li>
+        <li>Enhanced end-user security by implementing robust measures against phishing, malware, and other cyber threats.</li>
+        <li>Automated Windows OS upgrades with backup and restore capabilities.</li>
+        <li>Deployed and supported CrowdStrike Falcon for endpoint detection and response across the organization's 1,000+ endpoint environment.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-title">Linux System Administrator</div>
+        <div class="r-job-dates">Apr 2013 – Jun 2019</div>
+      </div>
+      <div class="r-job-company">Logicalis US · Bloomfield Hills, MI</div>
+      <ul class="r-bullets">
+        <li>Delivered incident and change management for multi-platform environments.</li>
+        <li>Implemented system updates and improvements to support client operations.</li>
+        <li>Break/fix troubleshooting for servers, networking and general IT infrastructure.</li>
+        <li>Administered switching infrastructure including VLAN configuration, trunking, and port segmentation across multi-client environments.</li>
+        <li>Managed DNS services across Linux and Windows platforms, handling zone administration, record management, and resolution troubleshooting.</li>
+        <li>Supported IPSec VPN and firewall administration including rule management, tunnel configuration, and connectivity troubleshooting.</li>
+      </ul>
+    </div>
+
+    <div class="r-job">
+      <div class="r-job-header">
+        <div class="r-job-title">Senior Technician</div>
+        <div class="r-job-dates">Aug 2010 – Aug 2012</div>
+      </div>
+      <div class="r-job-company">Aardvark Computer Repair · Shelby Twp, MI</div>
+      <ul class="r-bullets">
+        <li>Led all networking, computer repair and server build projects for all clients.</li>
+        <li>Automated workflows using Visual Basic programming, improving productivity.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="r-section">
+    <div class="r-section-head">education & certifications</div>
+    <div class="r-edu">
+      <div class="r-edu-left">
+        <div class="r-edu-degree">Diploma in Computer Information Systems</div>
+        <div class="r-edu-school">Career Prep Center · Sterling Heights, MI</div>
+      </div>
+      <div class="r-edu-year">2010</div>
+    </div>
+    <div class="r-edu">
+      <div class="r-edu-left">
+        <div class="r-edu-degree">Microsoft Azure AI Fundamentals</div>
+        <div class="r-edu-school">Microsoft Certified</div>
+      </div>
+      <div class="r-edu-year">2024</div>
+    </div>
+  </div>
+
+  <div class="watermark">
+    This page is unlisted. URL: drraypc.com/private/raymond-mayer &nbsp;|&nbsp; <span>Raymond Mayer</span> &copy; 2025
+  </div>
+
+</div>
+
+</body>
+</html>

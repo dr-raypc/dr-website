@@ -1,0 +1,942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Music // theMAYR // Raymond Mayer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080c10;
+    --bg2:       #0d1117;
+    --bg3:       #161b22;
+    --bg4:       #1c2330;
+    --border:    #21262d;
+    --border2:   #30363d;
+    --text:      #e6edf3;
+    --muted:     #7d8590;
+    --dim:       #484f58;
+    --green:     #00ff88;
+    --green2:    #00cc6a;
+    --green-dim: rgba(0,255,136,0.08);
+    --green-glow:rgba(0,255,136,0.15);
+    --blue:      #58a6ff;
+    --blue2:     #388bfd;
+    --blue-dim:  rgba(88,166,255,0.1);
+    --purple:    #bc8cff;
+    --purple-dim:rgba(188,140,255,0.08);
+    --mono:      'JetBrains Mono', monospace;
+    --sans:      'Inter', sans-serif;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 2px,
+      rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ──────────────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+
+  .nav-logo::before { content: '>'; color: var(--muted); }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+
+  .nav-links a {
+    display: block;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-links a:hover, .nav-links a.active {
+    color: var(--green);
+    border-color: var(--green);
+    background: var(--green-dim);
+  }
+
+  /* ── HERO ─────────────────────────────────────────────────── */
+  .music-hero {
+    padding: 100px 2rem 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--purple);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::before { content: '//'; color: var(--dim); }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 120px;
+  }
+
+  .music-hero-title {
+    font-size: clamp(32px, 6vw, 56px);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .music-hero-title span { color: var(--purple); }
+
+  .music-hero-sub {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  .music-hero-sub::before { content: '// '; color: var(--dim); }
+
+  /* ── SHOUTOUT BANNER ──────────────────────────────────────── */
+  .shoutout {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--purple);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 48px;
+    max-width: 780px;
+  }
+
+  .shoutout p {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+
+  .shoutout .coming-soon {
+    display: inline-block;
+    margin-top: 10px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid var(--green);
+    padding: 3px 10px;
+    border-radius: 4px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── PHOTO GRID ───────────────────────────────────────────── */
+  .photo-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem 64px;
+  }
+
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+  }
+
+  .photo-item {
+    aspect-ratio: 1;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .photo-item:hover {
+    border-color: var(--purple);
+    transform: scale(1.02);
+  }
+
+  .photo-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(20%) brightness(0.9);
+    transition: filter 0.3s;
+  }
+
+  .photo-item:hover img {
+    filter: grayscale(0%) brightness(1);
+  }
+
+  /* ── DIVIDER ──────────────────────────────────────────────── */
+  .section-divider {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ── MIX SECTION ──────────────────────────────────────────── */
+  .mixes-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 2rem 80px;
+  }
+
+  .mixes-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* ── MIX CARD ─────────────────────────────────────────────── */
+  .mix-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .mix-card:hover { border-color: var(--border2); }
+
+  .mix-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .mix-card-header:hover { background: var(--bg3); }
+
+  .mix-number {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    min-width: 32px;
+  }
+
+  .mix-info { flex: 1; }
+
+  .mix-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .mix-meta {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .mix-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    background: var(--purple-dim);
+    border: 1px solid rgba(188,140,255,0.2);
+    color: var(--purple);
+  }
+
+  .mix-badge.has-audio {
+    background: var(--green-dim);
+    border-color: rgba(0,255,136,0.2);
+    color: var(--green);
+  }
+
+  .mix-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mix-download {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid var(--green);
+    border-radius: 4px;
+    color: var(--green);
+    background: var(--green-dim);
+    text-decoration: none;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+
+  .mix-download:hover {
+    background: var(--green);
+    color: #000;
+  }
+
+  .mix-toggle {
+    width: 28px; height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--muted);
+    transition: all 0.2s;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .mix-toggle:hover { border-color: var(--purple); color: var(--purple); }
+  .mix-card.open .mix-toggle { border-color: var(--purple); color: var(--purple); transform: rotate(180deg); }
+
+  /* ── MIX BODY ─────────────────────────────────────────────── */
+  .mix-body {
+    display: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .mix-card.open .mix-body { display: block; }
+
+  .mix-body-inner {
+    padding: 20px 22px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+  }
+
+  @media (max-width: 700px) {
+    .mix-body-inner { grid-template-columns: 1fr; }
+    .mix-flyer { display: none; }
+  }
+
+  .mix-flyer {
+    width: 160px;
+    flex-shrink: 0;
+  }
+
+  .mix-flyer img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    filter: grayscale(15%) brightness(0.85);
+    transition: filter 0.3s;
+  }
+
+  .mix-flyer img:hover { filter: grayscale(0%) brightness(1); }
+
+  .mix-tracklist {}
+
+  .tracklist-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .tracklist-label::before { content: '$ '; color: var(--dim); }
+
+  .track-item {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-family: var(--mono);
+  }
+
+  .track-item:last-child { border-bottom: none; }
+
+  .track-num {
+    color: var(--dim);
+    font-size: 11px;
+    margin-right: 8px;
+  }
+
+  .track-indent {
+    padding-left: 24px;
+    color: var(--dim);
+    font-size: 12px;
+  }
+
+  .track-indent-2 {
+    padding-left: 44px;
+    color: var(--dim);
+    font-size: 11px;
+  }
+
+  .track-indent-3 {
+    padding-left: 64px;
+    color: var(--dim);
+    font-size: 11px;
+  }
+
+  .track-indent-4 {
+    padding-left: 84px;
+    color: var(--dim);
+    font-size: 11px;
+  }
+
+  .no-tracklist {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    font-style: italic;
+    padding: 12px 0;
+  }
+
+  /* ── FOOTER ───────────────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .footer-copy {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+  }
+
+  .footer-copy span { color: var(--green); }
+
+  .footer-links { display: flex; gap: 16px; }
+
+  .footer-links a {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--green); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/index.html" class="nav-logo">drraypc.com</a>
+  <ul class="nav-links">
+    <li><a href="/index.html#about">about</a></li>
+    <li><a href="/index.html#skills">skills</a></li>
+    <li><a href="/index.html#repos">repos</a></li>
+    <li><a href="/music.html" class="active">music</a></li>
+    <li><a href="/index.html#contact">contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="music-hero">
+  <div class="section-label">05 &nbsp; music</div>
+  <h1 class="music-hero-title">theMAYR <span>//</span> Mixes</h1>
+  <p class="music-hero-sub">DJ sets, event mixes & live recordings — Detroit & beyond</p>
+
+  <div class="shoutout">
+    <p>Thank you to everyone that has supported me over the years! Making these mixes has been one of the best times of my life, and I couldn't have done it without you all! Stay tuned for some fresh new music — coming soon! Look alive, fellas!</p>
+    <span class="coming-soon">// new music incoming</span>
+  </div>
+</div>
+
+<!-- PHOTOS -->
+<div class="photo-section">
+  <div class="section-label" style="margin-bottom:20px;">shots from the sets</div>
+  <div class="photo-grid">
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546786646-ZEUATT4UGQ52OO0BRCX3/ef+themayr+2017.jpg" alt="Electric Forest 2017" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546972142-GB3VDZ3G57S5EEIHYKOO/ef17-2.png" alt="Electric Forest 2017" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546765386-HVH8N8GY7J468XE9M5FT/damayr-AFK+17.jpg" alt="AFK Show 2017" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546777599-1I9SOVVUS5BFD87A42B8/dranksgiving+flyer.jpg" alt="Dranksgiving" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546749645-D15VZOG0D9CIKFZDK216/beary+scary.jpg" alt="Beary Scary" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1765133207754-9XLD14X57GQ9BG0D8GN0/clubkitchen-cincodesixo.jpg" alt="Club Kitchen" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546816606-AJJLX5CBDB9TESRPH8IQ/themayr.png" alt="theMAYR" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546864392-2JTV19ZPVE2C9XV013Q6/RaymondMayerDetroit2.jpg" alt="Raymond Mayer Detroit" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546817643-ROEX8PX71VKNMJPTCKAC/ugly+sweater.jpg" alt="Ugly Sweater Party" loading="lazy"></div>
+    <div class="photo-item"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1765133252041-71Y2TEEB7ENNQ97TJ9UB/ugly+sweater2.jpg" alt="Ugly Sweater Party 2" loading="lazy"></div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- MIXES -->
+<div class="mixes-section">
+  <div class="section-label" style="margin-bottom:32px;">set archive</div>
+
+  <div class="mixes-grid">
+
+    <!-- June 2021 -->
+    <div class="mix-card" id="mix-jun2021">
+      <div class="mix-card-header" onclick="toggleMix('mix-jun2021')">
+        <div class="mix-number">01</div>
+        <div class="mix-info">
+          <div class="mix-title">June 2021</div>
+          <div class="mix-meta">
+            <span>June 2021</span>
+            <span class="mix-badge">5 tracks</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer"></div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="track-item"><span class="track-num">1.</span> Several Definitions - Helios &gt;&gt; Roberto Surface - Joys (Jonas Blue Remix)</div>
+            <div class="track-item"><span class="track-num">2.</span> Malaa - Diamonds</div>
+            <div class="track-item"><span class="track-num">3.</span> Valentino Khan - Pump</div>
+            <div class="track-item"><span class="track-num">4.</span> Valentino Khan &amp; Ship Wrek - Obsession</div>
+            <div class="track-item"><span class="track-num">5.</span> Fisher - Losing It &gt;&gt; Platinum Doug - Do It Like This</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- December 2020 -->
+    <div class="mix-card" id="mix-dec2020">
+      <div class="mix-card-header" onclick="toggleMix('mix-dec2020')">
+        <div class="mix-number">02</div>
+        <div class="mix-info">
+          <div class="mix-title">December 2020</div>
+          <div class="mix-meta">
+            <span>December 2020</span>
+            <span class="mix-badge">5 tracks</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer"></div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="track-item"><span class="track-num">1.</span> io - In My Head (Part I)</div>
+            <div class="track-item"><span class="track-num">2.</span> io - In My Head (Part II)</div>
+            <div class="track-item"><span class="track-num">3.</span> Hidden Empire - Sierra &gt;&gt; Rafael Cerato - Further (Hidden Empire Remix) &gt;&gt; Matador - Stanleys (ANNA Remix)</div>
+            <div class="track-item"><span class="track-num">4.</span> Lunar Plane - Jackal &gt;&gt; Made By Pete - Aikido &gt;&gt; Black Peters - Renaissance Diner (Oostil Remix)</div>
+            <div class="track-item"><span class="track-num">5.</span> Victor Ruiz - Interstellar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Electric Forest — June 1st 2017 -->
+    <div class="mix-card" id="mix-ef2017">
+      <div class="mix-card-header" onclick="toggleMix('mix-ef2017')">
+        <div class="mix-number">03</div>
+        <div class="mix-info">
+          <div class="mix-title">Electric Forest 2017</div>
+          <div class="mix-meta">
+            <span>June 1st, 2017</span>
+            <span class="mix-badge has-audio">⬇ download</span>
+            <span class="mix-badge">3 tracks</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <a href="https://music.drraypc.com/Electric Forest 2.wav" class="mix-download" target="_blank">⬇ WAV</a>
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer">
+            <img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585695761813-T2QY01UULBKJ985COOTG/Electric-Forest.PNG" alt="Electric Forest 2017">
+          </div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="track-item"><span class="track-num">1.</span> DEADLINK - NIGHTMARE [TRIBE]</div>
+            <div class="track-item"><span class="track-num">2.</span> Stabby - Act Two
+              <div class="track-indent">&gt;&gt; Torro Torro - Make A Move (Skrillex Remix)</div>
+              <div class="track-indent-2">&gt;&gt;&gt; Zomboy - Get With The Program Ft OV (Eptic &amp; Trampa Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">3.</span> RL Grime - Reims (Kompany &amp; B-sides Remix)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dropshot AFK Show — May 13th 2017 -->
+    <div class="mix-card" id="mix-dropshot">
+      <div class="mix-card-header" onclick="toggleMix('mix-dropshot')">
+        <div class="mix-number">04</div>
+        <div class="mix-info">
+          <div class="mix-title">Dropshot — AFK Show</div>
+          <div class="mix-meta">
+            <span>May 13th, 2017</span>
+            <span class="mix-badge has-audio">⬇ download</span>
+            <span class="mix-badge">21 tracks</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <a href="https://music.drraypc.com/Dropshot - AFK Show[final-MP3].mp3" class="mix-download" target="_blank">⬇ MP3</a>
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer">
+            <img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585695439168-80CU3M8FEA5QN161QJ9I/Dropshot.PNG" alt="Dropshot AFK Show">
+          </div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="track-item"><span class="track-num">1.</span> iNexus - The Business</div>
+            <div class="track-item"><span class="track-num">2.</span> Mark The Beat - In Love With The Devil ft Seids (Mantis Remix)
+              <div class="track-indent">&gt;&gt;&gt; EPTIC - The End (Carnage &amp; Breaux Festival Trap Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">3.</span> WAVEDASH - Always
+              <div class="track-indent">&gt;&gt;&gt; Zomboy - Like A Bitch (KTN Remix)</div>
+              <div class="track-indent-2">&gt;&gt;&gt; Boombox Cartel - Jefe</div>
+              <div class="track-indent-3">&gt;&gt;&gt; SKisM &amp; LAXX - Hostile (EPTIC Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">4.</span> Datsik &amp; Zack the Lad - Feel Good
+              <div class="track-indent">&gt;&gt;&gt; DJ Snake - Propaganda</div>
+            </div>
+            <div class="track-item"><span class="track-num">5.</span> Spag Heddy - F3tch - Spooks (VIP)</div>
+            <div class="track-item"><span class="track-num">6.</span> Just A Gent x smle - Leave It All ft. Calica
+              <div class="track-indent">&gt;&gt;&gt; AVANCE - Yacht Yacht (snare)</div>
+              <div class="track-indent-2">&gt;&gt;&gt; Wooli &amp; Kompany - The Cave</div>
+            </div>
+            <div class="track-item"><span class="track-num">7.</span> Party Favor ft. Gucci - Scrape (not sorry &amp; Wild Boyz! Remix)
+              <div class="track-indent">&gt;&gt;&gt; Detrace &amp; DRON - Enmity</div>
+            </div>
+            <div class="track-item"><span class="track-num">8.</span> Yo Gotti - Castro (ft. Kanye West, Big Sean, Quavo &amp; 2Chainz) (Akela &amp; Mr. Fitz Remix)</div>
+            <div class="track-item"><span class="track-num">9.</span> Pegboard Nerds - Superstar ft. Krewella (Spag Heddy Remix)
+              <div class="track-indent">&gt;&gt;&gt; Excision &amp; Space Laces - Bounce (Antiserum &amp; Mayhem Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">10.</span> Leat'eq - Break Up
+              <div class="track-indent">&gt;&gt;&gt; Spag Heddy - Samir</div>
+              <div class="track-indent-2">&gt;&gt;&gt; Hyper Crush - Illegalities (MUST DIE! Remix)</div>
+              <div class="track-indent-3">&gt;&gt;&gt; EPTIC - The End (Carnage &amp; Breaux Festival Trap Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">11.</span> PhaseOne - Welcome To Mayhem (theMAYR)
+              <div class="track-indent">&gt;&gt;&gt; PhaseOne - Nangs</div>
+              <div class="track-indent-2">&gt;&gt;&gt; ID - ID (unreleased)</div>
+            </div>
+            <div class="track-item"><span class="track-num">12.</span> Excision &amp; Downlink - Rock You</div>
+            <div class="track-item"><span class="track-num">13.</span> KI-Theory - Open Wound (ODESZA Remix)
+              <div class="track-indent">&gt;&gt;&gt; MUST DIE! - Gem Shards</div>
+            </div>
+            <div class="track-item"><span class="track-num">14.</span> EPTIC - Underworld</div>
+            <div class="track-item"><span class="track-num">15.</span> Spag Heddy &amp; Midnight Tyrannosaurus - Operation Z <strong>**SPAG HEDDY RUSH**</strong>
+              <div class="track-indent">&gt;&gt;&gt; Spag Heddy - Black Symphony</div>
+              <div class="track-indent-2">&gt;&gt;&gt; Spag Heddy - Bounce Syndrum</div>
+              <div class="track-indent-3">&gt;&gt;&gt; Spag Heddy - Loca</div>
+              <div class="track-indent-4">&gt;&gt;&gt; RL Grime - Core</div>
+            </div>
+            <div class="track-item"><span class="track-num">16.</span> Dr. Ozi - Blue Print
+              <div class="track-indent">&gt;&gt;&gt; Dr. Ozi &amp; Adair - D.O.G. (De Original Gangsta)</div>
+            </div>
+            <div class="track-item"><span class="track-num">17.</span> Bear Grillz - Long Run ft. Selah Ford
+              <div class="track-indent">&gt;&gt;&gt; LAXX - Noise</div>
+            </div>
+            <div class="track-item"><span class="track-num">18.</span> Phantom Sage &amp; Detrace - PANIC (Kill The Copyright Release)
+              <div class="track-indent">&gt;&gt;&gt; JuJu - Ju Gold</div>
+            </div>
+            <div class="track-item"><span class="track-num">19.</span> Vindilax - Get Down</div>
+            <div class="track-item"><span class="track-num">20.</span> Marshmello - Ritual ft. Wrabel (Ray Volpe Remix)</div>
+            <div class="track-item"><span class="track-num">21.</span> RL Grime - Reims
+              <div class="track-indent">&gt;&gt;&gt; Drippy Dolphin - Oooops</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Double Kill — Jan 31st 2017 -->
+    <div class="mix-card" id="mix-doublekill">
+      <div class="mix-card-header" onclick="toggleMix('mix-doublekill')">
+        <div class="mix-number">05</div>
+        <div class="mix-info">
+          <div class="mix-title">Double Kill</div>
+          <div class="mix-meta">
+            <span>January 31st, 2017</span>
+            <span class="mix-badge">16 tracks</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer">
+            <img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585859299794-JQUZTEC6CXPWPZI9D8JN/Double-Kill.PNG" alt="Double Kill">
+          </div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="track-item"><span class="track-num">01</span> Zomboy - Like A Bitch (Kill The Noise Remix)</div>
+            <div class="track-item"><span class="track-num">02</span> Habstrakt - Heyo
+              <div class="track-indent">&gt;&gt; Habstrakt &amp; Basstrick - Bounce With Me</div>
+              <div class="track-indent">&gt;&gt; Zomboy - Invaders</div>
+            </div>
+            <div class="track-item"><span class="track-num">03</span> Rickyxsan - Nu Dub
+              <div class="track-indent">&gt;&gt; Dack Janiels - Killa Whale</div>
+              <div class="track-indent-2">&gt;&gt;&gt; JuJu - G Boogie</div>
+              <div class="track-indent-3">&gt;&gt;&gt; JuJu - Ju Gold</div>
+              <div class="track-indent-2">&gt;&gt;&gt; CYBRPNK - Deadsec</div>
+            </div>
+            <div class="track-item"><span class="track-num">04</span> Detrace - Facecrack
+              <div class="track-indent">&gt;&gt; Tascione &amp; TYNVN - Time</div>
+            </div>
+            <div class="track-item"><span class="track-num">05</span> Zomboy - Miles Away (Soltan Remix)</div>
+            <div class="track-item"><span class="track-num">06</span> The Frim - Swipe My Swords
+              <div class="track-indent">&gt;&gt; Dr. Ozi - Youth In Asia</div>
+            </div>
+            <div class="track-item"><span class="track-num">07</span> Stabby &amp; Subkill - Jeans Criterion (Detrace x Charlie Z Remix)
+              <div class="track-indent">&gt;&gt; Zomboy - Game Time (Barely Alive Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">08</span> The Chainsmokers - All We Know (Dodge &amp; Fuski Remix)
+              <div class="track-indent">&gt;&gt; EPTIC - The End (Carnage &amp; Breaux Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">09</span> Franky Nuts &amp; NCT - Nebula
+              <div class="track-indent">&gt;&gt; Habstrakt &amp; Basstrick - Bounce With Me</div>
+              <div class="track-indent">&gt;&gt; Bro Safari - Reality (Crystalize Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">10</span> Bear Grillz - Every Day
+              <div class="track-indent">&gt;&gt; Virtual Riot &amp; Funkcase - Borg</div>
+              <div class="track-indent-2">&gt;&gt;&gt; WB X MB - The Void</div>
+              <div class="track-indent-3">&gt;&gt;&gt; Eptic - What Have You Done</div>
+            </div>
+            <div class="track-item"><span class="track-num">11</span> SubKill - RAD (MONXX SPECIAL VIP)</div>
+            <div class="track-item"><span class="track-num">12</span> ANIKDOTE - Moments</div>
+            <div class="track-item"><span class="track-num">13</span> 501 - Vulture (Protohype remix)
+              <div class="track-indent">&gt;&gt; Doctor P - Watch Out</div>
+              <div class="track-indent">&gt;&gt; MUST DIE! - Animal Parade</div>
+            </div>
+            <div class="track-item"><span class="track-num">14</span> 12th Planet - Hide It All ft. Crichy Crich</div>
+            <div class="track-item"><span class="track-num">15</span> Aryay - The Lawnmower (not sorry &amp; Wild Boyz! Remix)
+              <div class="track-indent">&gt;&gt; BAR9 - Kolkata</div>
+              <div class="track-indent">&gt;&gt; Trampa - Runners</div>
+            </div>
+            <div class="track-item"><span class="track-num">16</span> Zomboy - Raptor (SKisM &amp; LAXX Remix)
+              <div class="track-indent">&gt;&gt; xKore - Thugs On Dubs</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dean Gregory — Dec 15 2016 -->
+    <div class="mix-card" id="mix-deangregory">
+      <div class="mix-card-header" onclick="toggleMix('mix-deangregory')">
+        <div class="mix-number">06</div>
+        <div class="mix-info">
+          <div class="mix-title">Dean Gregory</div>
+          <div class="mix-meta">
+            <span>December 15th, 2016</span>
+            <span class="mix-badge">18 tracks</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer">
+            <img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585695275624-KU7FP44BFUI1PKHI4KHF/Dean-Gregory.PNG" alt="Dean Gregory">
+          </div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="track-item"><span class="track-num">01</span> NGHTMRE - Street (BUSTED by HeroBust)</div>
+            <div class="track-item"><span class="track-num">02</span> Flux Pavilion - I Can't Stop (Ekali Tribute)</div>
+            <div class="track-item"><span class="track-num">03</span> Wild Boyz! &amp; Eliminate - SKURT
+              <div class="track-indent">&gt;&gt; Flux Pavilion - I Can't Stop (Acapella edit)</div>
+            </div>
+            <div class="track-item"><span class="track-num">04</span> Bevild - Wanna (Tisoki Flip)
+              <div class="track-indent">&gt;&gt; Antiserum &amp; Mayhem - Brick Squad Anthem VIP</div>
+            </div>
+            <div class="track-item"><span class="track-num">05</span> Stabby &amp; Adair - City of Gods
+              <div class="track-indent">&gt;&gt; NGHTMRE - Burn Out</div>
+            </div>
+            <div class="track-item"><span class="track-num">06</span> LAXX - Twitch
+              <div class="track-indent">&gt;&gt; Snails &amp; HeroBust - Pump This (Getter Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">07</span> Tisoki &amp; Topi - Undisclosed
+              <div class="track-indent">&gt;&gt; Eptic - Space Cats (Trampa Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">08</span> Yellow Claw &amp; Dirtcaps - Ride or Die (Modestep Remix)</div>
+            <div class="track-item"><span class="track-num">09</span> Dusty Duck - Winter is coming Bruh</div>
+            <div class="track-item"><span class="track-num">10</span> Treyis - Get That
+              <div class="track-indent">&gt;&gt; MUST DIE! - Project Ghost</div>
+            </div>
+            <div class="track-item"><span class="track-num">11</span> Spag Heddy - Oh My!
+              <div class="track-indent">&gt;&gt; Eptic &amp; Funtcase - Oh Shit!</div>
+            </div>
+            <div class="track-item"><span class="track-num">12</span> Zomboy - Invaders</div>
+            <div class="track-item"><span class="track-num">13</span> Dr. Ozi - Loose Cannon (ft. DDARK)</div>
+            <div class="track-item"><span class="track-num">14</span> LAXX - Invisible Invaders (VIP)
+              <div class="track-indent">&gt;&gt; Habstrakt - Habby9000 (MUST DIE! Remix)</div>
+              <div class="track-indent-2">&gt;&gt;&gt; Barely Alive - Zombie Hunter</div>
+            </div>
+            <div class="track-item"><span class="track-num">15</span> Trampa - Gas Tank
+              <div class="track-indent">&gt;&gt; Eptic - The End (Carnage &amp; Breaux Festival Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">16</span> Bad Catholics &amp; Apollo - Rollin</div>
+            <div class="track-item"><span class="track-num">17</span> Hyper Crush - Illegalities (MUST DIE! Remix)
+              <div class="track-indent">&gt;&gt; Valentino Khan - Deep Down Low (ORBZ &amp; IVSIO Remix)</div>
+            </div>
+            <div class="track-item"><span class="track-num">18</span> Tha Trickaz &amp; Creaky Jackals - OG Purp (Bass VIP)
+              <div class="track-indent">&gt;&gt; Zomboy - Back Once Again</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Beary Scary Halloween — Oct 28 2016 -->
+    <div class="mix-card" id="mix-bearyscary">
+      <div class="mix-card-header" onclick="toggleMix('mix-bearyscary')">
+        <div class="mix-number">07</div>
+        <div class="mix-info">
+          <div class="mix-title">Beary Scary Halloween Party</div>
+          <div class="mix-meta">
+            <span>October 28th, 2016</span>
+            <span class="mix-badge">no tracklist</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer">
+            <img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585859476915-I2I8V11C9Z3703VJWPDA/Beary-Scary.PNG" alt="Beary Scary Halloween">
+          </div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat tracklist.txt</div>
+            <div class="no-tracklist">// no tracklist available :[</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extras circa 2015-2016 -->
+    <div class="mix-card" id="mix-extras">
+      <div class="mix-card-header" onclick="toggleMix('mix-extras')">
+        <div class="mix-number">08</div>
+        <div class="mix-info">
+          <div class="mix-title">Extras circa 2015–2016</div>
+          <div class="mix-meta">
+            <span>2015 – 2016</span>
+            <span class="mix-badge">hardware test recordings</span>
+          </div>
+        </div>
+        <div class="mix-actions">
+          <button class="mix-toggle">▾</button>
+        </div>
+      </div>
+      <div class="mix-body">
+        <div class="mix-body-inner">
+          <div class="mix-flyer"></div>
+          <div class="mix-tracklist">
+            <div class="tracklist-label">cat notes.txt</div>
+            <div class="no-tracklist">// testing hardware on a 2nd hand ebay'd 4TRAK, plz ignore :)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">
+    &copy; 2025 <span>Raymond Mayer</span> // drraypc.com
+  </div>
+  <div class="footer-links">
+    <a href="/index.html">Portfolio</a>
+    <a href="https://github.com/YOURGITHUBUSERNAME" target="_blank">GitHub</a>
+    <a href="mailto:ray@drraypc.com">Email</a>
+  </div>
+</footer>
+
+<script>
+function toggleMix(id) {
+  const card = document.getElementById(id);
+  card.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
