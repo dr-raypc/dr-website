@@ -917,6 +917,8 @@
       <button class="filter-btn" data-lang="PowerShell">PowerShell</button>
       <button class="filter-btn" data-lang="Python">Python</button>
       <button class="filter-btn" data-lang="Shell">Shell</button>
+      <button class="filter-btn" data-type="fork">forks only</button>
+      <button class="filter-btn" data-type="original">original only</button>
     </div>
   </div>
 
@@ -1023,6 +1025,7 @@ function renderRepos(repos) {
       <div class="repo-name">
         <span class="repo-name-icon">&#9632;</span>
         ${r.name}
+        ${r.fork ? '<span style="font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--border2);border-radius:3px;padding:1px 6px;margin-left:6px;">fork</span>' : ''}
       </div>
       <div class="repo-desc">${r.description || 'No description provided.'}</div>
       <div class="repo-meta">
@@ -1045,7 +1048,7 @@ async function loadRepos() {
     let fetched = [];
     while (true) {
       const res = await fetch(
-        `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100&page=${page}&type=owner`
+        `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100&page=${page}`
       );
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const batch = await res.json();
@@ -1054,8 +1057,8 @@ async function loadRepos() {
       if (batch.length < 100) break;
       page++;
     }
-    // Show all owned repos (not forks), no description filter so nothing is silently dropped
-    allRepos = fetched.filter(r => !r.fork);
+    // Show all repos including forks
+    allRepos = fetched;
     if (allRepos.length === 0) throw new Error('No repos found');
     renderRepos(allRepos);
   } catch(e) {
@@ -1078,7 +1081,12 @@ document.getElementById('filterBar').addEventListener('click', e => {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const lang = btn.dataset.lang;
-  const filtered = lang === 'all' ? allRepos : allRepos.filter(r => r.language === lang);
+  const type = btn.dataset.type;
+  let filtered;
+  if (lang === 'all')           filtered = allRepos;
+  else if (type === 'fork')     filtered = allRepos.filter(r => r.fork);
+  else if (type === 'original') filtered = allRepos.filter(r => !r.fork);
+  else                          filtered = allRepos.filter(r => r.language === lang);
   renderRepos(filtered);
 });
 
