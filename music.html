@@ -29,7 +29,7 @@ h1.ht span{color:var(--pu);}
 .cs{display:inline-block;margin-top:10px;font-family:var(--mo);font-size:11px;color:var(--gr);background:var(--gd);border:1px solid var(--gr);padding:3px 10px;border-radius:4px;letter-spacing:.08em;}
 .ps{max-width:1100px;margin:0 auto;padding:0 2rem 56px;}
 .pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;}
-.pi{aspect-ratio:1;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;overflow:hidden;transition:border-color .2s,transform .2s;}
+.pi{aspect-ratio:1;background:var(--bg3);border:1px solid var(--bd);border-radius:8px;overflow:hidden;transition:border-color .2s,transform .2s;cursor:zoom-in;}
 .pi:hover{border-color:var(--pu);transform:scale(1.02);}
 .pi img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(20%) brightness(.88);transition:filter .3s;}
 .pi:hover img{filter:none;}
@@ -134,19 +134,24 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
     <span class="cs">// new music incoming</span>
   </div>
 </div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem 32px;">
+  <img src="https://i.redd.it/cf36n4w3ri4f1.gif" alt="TV static" style="width:100%;border-radius:10px;border:1px solid var(--bd);display:block;opacity:0.7;">
+</div>
+
 <div class="ps">
   <div class="sl" style="margin-bottom:20px;">shots from the sets</div>
   <div class="pg">
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546786646-ZEUATT4UGQ52OO0BRCX3/ef+themayr+2017.jpg" alt="Electric Forest 2017" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546972142-GB3VDZ3G57S5EEIHYKOO/ef17-2.png" alt="Electric Forest 2017" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546765386-HVH8N8GY7J468XE9M5FT/damayr-AFK+17.jpg" alt="AFK Show 2017" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546777599-1I9SOVVUS5BFD87A42B8/dranksgiving+flyer.jpg" alt="Dranksgiving" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546749645-D15VZOG0D9CIKFZDK216/beary+scary.jpg" alt="Beary Scary" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1765133207754-9XLD14X57GQ9BG0D8GN0/clubkitchen-cincodesixo.jpg" alt="Club Kitchen" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546816606-AJJLX5CBDB9TESRPH8IQ/themayr.png" alt="theMAYR" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546864392-2JTV19ZPVE2C9XV013Q6/RaymondMayerDetroit2.jpg" alt="Raymond Mayer Detroit" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546817643-ROEX8PX71VKNMJPTCKAC/ugly+sweater.jpg" alt="Ugly Sweater" loading="lazy"></div>
-    <div class="pi"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1765133252041-71Y2TEEB7ENNQ97TJ9UB/ugly+sweater2.jpg" alt="Ugly Sweater 2" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546786646-ZEUATT4UGQ52OO0BRCX3/ef+themayr+2017.jpg" alt="Electric Forest 2017" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546972142-GB3VDZ3G57S5EEIHYKOO/ef17-2.png" alt="Electric Forest 2017" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546765386-HVH8N8GY7J468XE9M5FT/damayr-AFK+17.jpg" alt="AFK Show 2017" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546777599-1I9SOVVUS5BFD87A42B8/dranksgiving+flyer.jpg" alt="Dranksgiving" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546749645-D15VZOG0D9CIKFZDK216/beary+scary.jpg" alt="Beary Scary" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1765133207754-9XLD14X57GQ9BG0D8GN0/clubkitchen-cincodesixo.jpg" alt="Club Kitchen" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546816606-AJJLX5CBDB9TESRPH8IQ/themayr.png" alt="theMAYR" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546864392-2JTV19ZPVE2C9XV013Q6/RaymondMayerDetroit2.jpg" alt="Raymond Mayer Detroit" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1762546817643-ROEX8PX71VKNMJPTCKAC/ugly+sweater.jpg" alt="Ugly Sweater" loading="lazy"></div>
+    <div class="pi" onclick="openLb(this.querySelector('img').src)"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1765133252041-71Y2TEEB7ENNQ97TJ9UB/ugly+sweater2.jpg" alt="Ugly Sweater 2" loading="lazy"></div>
   </div>
 </div>
 <div class="dv"></div>
@@ -617,7 +622,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
         <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:10px;">
           <div style="font-family:var(--mo);font-size:10px;color:var(--pu);padding:7px 14px;border-bottom:1px solid var(--bd);letter-spacing:.1em;">// video clip</div>
           <video controls preload="none" style="width:100%;display:block;max-height:280px;background:#000;">
-            <source src="https://video.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/e7621e7c-3900-4ecb-a750-baac84b7c4c2/360" type="video/mp4">
+            <source src="https://music.drraypc.com/ext/IMG_3076.MP4" type="video/mp4">
           </video>
         </div>
         <div class="notl">// no tracklist available for this set</div>
@@ -640,7 +645,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
         <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:10px;">
           <div style="font-family:var(--mo);font-size:10px;color:var(--pu);padding:7px 14px;border-bottom:1px solid var(--bd);letter-spacing:.1em;">// video clip</div>
           <video controls preload="none" style="width:100%;display:block;max-height:280px;background:#000;">
-            <source src="https://video.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/be9a1345-ba01-4ecb-b036-03a8fb046a91/360" type="video/mp4">
+            <source src="https://music.drraypc.com/ext/IMG_3079.MP4" type="video/mp4">
           </video>
         </div>
         <div class="ip" id="ip-ext1" onclick="play('ext1','Live Mix - March 30th, 2016','WAV','https://music.drraypc.com/ext/Live%20Mix%203.30.16.wav')">
@@ -676,9 +681,8 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
         <div class="tll">cat notes.txt</div>
           <div style="background:var(--bg3);border:1px solid var(--bd);border-radius:8px;overflow:hidden;margin-bottom:14px;">
             <div style="font-family:var(--mo);font-size:10px;color:var(--pu);padding:8px 14px;border-bottom:1px solid var(--bd);letter-spacing:.1em;">// video clip</div>
-            <video controls preload="none" style="width:100%;display:block;max-height:300px;background:#000;"
-              poster="https://video.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/be9a1345-ba01-4ecb-b036-03a8fb046a91/thumbnail">
-              <source src="https://video.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/be9a1345-ba01-4ecb-b036-03a8fb046a91/360" type="video/mp4">
+            <video controls preload="none" style="width:100%;display:block;max-height:300px;background:#000;">
+              <source src="https://music.drraypc.com/ext/IMG_3079.MP4" type="video/mp4">
               Your browser does not support the video tag.
             </video>
           </div>
@@ -686,6 +690,10 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
         </div>
       </div></div>
     </div>
+
+        <div style="margin-top:16px;">
+          <img src="https://i.redd.it/dxeim0z5ri4f1.gif" alt="TV static" style="width:100%;border-radius:8px;border:1px solid var(--bd);display:block;opacity:0.7;">
+        </div>
   </div>
 </div>
 <div class="pb" id="pb">
@@ -733,6 +741,64 @@ aud.addEventListener('ended',()=>{bpp.innerHTML='&#9654;';pf.style.width='0%';tc
 aud.addEventListener('timeupdate',()=>{if(!aud.duration)return;pf.style.width=(aud.currentTime/aud.duration*100)+'%';tc.textContent=fmt(aud.currentTime);td.textContent=fmt(aud.duration);});
 aud.addEventListener('loadedmetadata',()=>{td.textContent=fmt(aud.duration);});
 function tog(id){document.getElementById(id).classList.toggle('open');}
+</script>
+
+<style>
+.lb-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+}
+.lb-overlay.open { display: flex; }
+.lb-overlay img {
+  max-width: 92vw;
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid #333;
+  box-shadow: 0 0 60px rgba(0,0,0,0.8);
+  cursor: default;
+}
+.lb-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: #7d8590;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  z-index: 10001;
+}
+.lb-close:hover { color: #00ff88; border-color: #00ff88; }
+</style>
+
+<div class="lb-overlay" id="lbOverlay" onclick="closeLb()">
+  <button class="lb-close" onclick="closeLb()">&#x2715; close</button>
+  <img id="lbImg" src="" alt="" onclick="event.stopPropagation()">
+</div>
+
+<script>
+function openLb(src) {
+  document.getElementById('lbImg').src = src;
+  document.getElementById('lbOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLb() {
+  document.getElementById('lbOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+  document.getElementById('lbImg').src = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
 </script>
 </body>
 </html>

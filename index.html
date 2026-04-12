@@ -916,9 +916,7 @@
       <button class="filter-btn active" data-lang="all">all</button>
       <button class="filter-btn" data-lang="PowerShell">PowerShell</button>
       <button class="filter-btn" data-lang="Python">Python</button>
-      <button class="filter-btn" data-lang="Shell">Shell</button>
-      <button class="filter-btn" data-type="fork">forks only</button>
-      <button class="filter-btn" data-type="original">original only</button>
+      <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
     </div>
   </div>
 
@@ -1081,12 +1079,7 @@ document.getElementById('filterBar').addEventListener('click', e => {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const lang = btn.dataset.lang;
-  const type = btn.dataset.type;
-  let filtered;
-  if (lang === 'all')           filtered = allRepos;
-  else if (type === 'fork')     filtered = allRepos.filter(r => r.fork);
-  else if (type === 'original') filtered = allRepos.filter(r => !r.fork);
-  else                          filtered = allRepos.filter(r => r.language === lang);
+  const filtered = lang === 'all' ? allRepos : allRepos.filter(r => r.language === lang);
   renderRepos(filtered);
 });
 
