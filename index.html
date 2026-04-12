@@ -1040,21 +1040,32 @@ function renderRepos(repos) {
 
 async function loadRepos() {
   try {
-    const res = await fetch(
-      `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=30`
-    );
-    if (!res.ok) throw new Error('API error');
-    allRepos = (await res.json()).filter(r => !r.fork);
+    // Fetch up to 100 repos across multiple pages if needed
+    let page = 1;
+    let fetched = [];
+    while (true) {
+      const res = await fetch(
+        `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100&page=${page}&type=owner`
+      );
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      const batch = await res.json();
+      if (!Array.isArray(batch) || batch.length === 0) break;
+      fetched = fetched.concat(batch);
+      if (batch.length < 100) break;
+      page++;
+    }
+    // Show all owned repos (not forks), no description filter so nothing is silently dropped
+    allRepos = fetched.filter(r => !r.fork);
+    if (allRepos.length === 0) throw new Error('No repos found');
     renderRepos(allRepos);
   } catch(e) {
-    // Show placeholder cards if API fails / username not set
+    console.warn('GitHub API:', e.message);
+    // Fallback placeholders — only shown if API completely fails
     allRepos = [
-      { name: 'ad-hardening-toolkit', description: 'Active Directory hardening scripts, audit tools and GPO templates for enterprise environments.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'ransomware-ir-playbook', description: 'Incident response runbooks and automation scripts for ransomware recovery engagements.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'windows-forensics-toolkit', description: 'PowerShell scripts for rapid Windows forensic triage — event log parsing, artifact collection, IOC hunting.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'linux-hardening-baseline', description: 'Bash scripts implementing CIS benchmark controls for RHEL and Debian-based systems.', html_url: '#', language: 'Shell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'cleanup-module', description: 'PowerShell module for automated Windows system maintenance, temp file cleanup, and disk optimization.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'vmware-recovery-scripts', description: 'ESXi and vCenter automation scripts for post-incident VMware infrastructure recovery.', html_url: '#', language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'ad-hardening-toolkit', description: 'Active Directory hardening scripts, audit tools and GPO templates for enterprise environments.', html_url: `https://github.com/${GITHUB_USER}`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'ransomware-ir-playbook', description: 'Incident response runbooks and automation scripts for ransomware recovery engagements.', html_url: `https://github.com/${GITHUB_USER}`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'windows-forensics-toolkit', description: 'PowerShell scripts for rapid Windows forensic triage — event log parsing, artifact collection, IOC hunting.', html_url: `https://github.com/${GITHUB_USER}`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name: 'cleanup-module', description: 'PowerShell module for automated Windows system maintenance — the one from our session.', html_url: `https://github.com/${GITHUB_USER}/cleanup`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
     ];
     renderRepos(allRepos);
   }
