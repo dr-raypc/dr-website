@@ -299,6 +299,11 @@
 
   .watermark span { color: var(--green); }
 
+  /* ── PAGE MARGINS (top level — works for print/PDF) ────────── */
+  @page {
+    margin: 18mm 16mm 18mm 16mm;
+  }
+
   /* ── PRINT / PDF STYLES ──────────────────────────────────── */
   @media print {
     /* Force white background and black text throughout */
@@ -343,6 +348,7 @@
     .resume-wrap {
       padding: 0 !important;
       max-width: 100% !important;
+      margin: 0 !important;
     }
 
     /* Page breaks — keep job blocks together */
