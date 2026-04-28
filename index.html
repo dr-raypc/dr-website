@@ -737,6 +737,51 @@
     border-top: 1px solid var(--border);
   }
 
+
+  /* ── BUY ME A PIZZA ──────────────────────────────────────── */
+  .bmc-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--green);
+    background: transparent;
+    border: 1px solid var(--green);
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+  .bmc-btn:hover {
+    background: var(--green);
+    color: #000;
+    box-shadow: 0 0 20px var(--green-glow);
+    transform: translateY(-1px);
+  }
+  .bmc-btn .bmc-icon { font-size: 15px; }
+  .bmc-btn-lg {
+    padding: 11px 24px;
+    font-size: 13px;
+  }
+  .bmc-section {
+    text-align: center;
+    padding: 56px 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .bmc-section p {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+  .bmc-section p::before { content: '// '; color: var(--dim); }
+
   /* ── LANG COLORS ──────────────────────────────────────────── */
   .lang-powershell { background: #012456; }
   .lang-python     { background: #3572A5; }
@@ -766,7 +811,7 @@
     <li><a href="#contact">contact</a></li>
   </ul>
   <div class="nav-status">
-    <div class="status-dot"></div>
+    <div class="status-dot" style="margin-left:8px;"></div>
     available for work
   </div>
 </nav>
@@ -798,6 +843,7 @@
     <div class="hero-cta">
       <a href="#repos" class="btn-primary">View Projects</a>
       <a href="#contact" class="btn-outline">Get in Touch</a>
+      <a href="https://www.buymeacoffee.com/drraypc" target="_blank" class="bmc-btn bmc-btn-lg">&#127829; Buy me a pizza</a>
     </div>
   </div>
 </div>
@@ -984,6 +1030,12 @@
   </div>
 </section>
 
+<div class="section-divider"></div>
+<div class="bmc-section">
+  <p>if this work has been useful to you</p>
+  <a href="https://www.buymeacoffee.com/drraypc" target="_blank" class="bmc-btn bmc-btn-lg">&#127829; Buy me a pizza</a>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-copy">
@@ -993,6 +1045,7 @@
     <a href="https://github.com/dr-raypc" target="_blank">GitHub</a>
     <a href="https://linkedin.com/in/ray-mayer" target="_blank">LinkedIn</a>
     <a href="mailto:ray@drraypc.com">Email</a>
+    
   </div>
 </footer>
 
