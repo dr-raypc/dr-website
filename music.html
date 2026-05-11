@@ -750,6 +750,14 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
         </div>
   </div>
 </div>
+
+<!-- AUDIO VISUALIZER -->
+<div class="viz-container" id="vizContainer">
+  <span class="viz-label">// waveform</span>
+  <canvas class="viz-canvas-wave" id="vizWave"></canvas>
+  <span class="viz-label-bars">// frequency</span>
+  <canvas class="viz-canvas-bars" id="vizBars"></canvas>
+</div>
 <div class="pb" id="pb">
   <div class="pin"><div class="ptl" id="ptl">&#8212;</div><div class="psu" id="psu">theMAYR</div></div>
   <div class="pc">
@@ -863,6 +871,188 @@ function closeLb() {
   document.getElementById('lbImg').src = '';
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
+
+// ══════════════════════════════════════════════════════════════════════════════
+// AUDIO VISUALIZER
+// ══════════════════════════════════════════════════════════════════════════════
+(function() {
+  const vizContainer = document.getElementById('vizContainer');
+  const waveCanvas   = document.getElementById('vizWave');
+  const barsCanvas   = document.getElementById('vizBars');
+  const waveCtx      = waveCanvas.getContext('2d');
+  const barsCtx      = barsCanvas.getContext('2d');
+
+  let audioCtx, analyser, source, rafId;
+  let connected = false;
+  let running   = false;
+
+  // Colors matching site theme
+  const GREEN      = '#00ff88';
+  const GREEN_DIM  = 'rgba(0,255,136,0.15)';
+  const PURPLE     = '#bc8cff';
+  const BG         = '#080c10';
+  const BORDER     = '#21262d';
+
+  function setupAudio() {
+    if (connected) return;
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      analyser = audioCtx.createAnalyser();
+      analyser.fftSize = 2048;
+      analyser.smoothingTimeConstant = 0.82;
+      source = audioCtx.createMediaElementSource(aud);
+      source.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      connected = true;
+    } catch(e) {
+      console.warn('Visualizer:', e.message);
+    }
+  }
+
+  function resizeCanvases() {
+    const W = vizContainer.offsetWidth;
+    waveCanvas.width  = W;  waveCanvas.height  = 55;
+    barsCanvas.width  = W;  barsCanvas.height  = 55;
+  }
+
+  function drawWave() {
+    const W = waveCanvas.width;
+    const H = waveCanvas.height;
+    const bufLen = analyser.fftSize;
+    const data   = new Uint8Array(bufLen);
+    analyser.getByteTimeDomainData(data);
+
+    waveCtx.clearRect(0, 0, W, H);
+    // subtle bg
+    waveCtx.fillStyle = BG;
+    waveCtx.fillRect(0, 0, W, H);
+
+    // glow effect
+    waveCtx.shadowBlur  = 8;
+    waveCtx.shadowColor = GREEN;
+    waveCtx.strokeStyle = GREEN;
+    waveCtx.lineWidth   = 1.5;
+    waveCtx.beginPath();
+
+    const slice = W / bufLen;
+    let x = 0;
+    for (let i = 0; i < bufLen; i++) {
+      const v = data[i] / 128.0;
+      const y = (v * H) / 2;
+      if (i === 0) waveCtx.moveTo(x, y);
+      else         waveCtx.lineTo(x, y);
+      x += slice;
+    }
+    waveCtx.lineTo(W, H / 2);
+    waveCtx.stroke();
+
+    // fill below the wave
+    waveCtx.shadowBlur = 0;
+    waveCtx.fillStyle = GREEN_DIM;
+    waveCtx.lineTo(W, H);
+    waveCtx.lineTo(0, H);
+    waveCtx.closePath();
+    waveCtx.fill();
+  }
+
+  function drawBars() {
+    const W = barsCanvas.width;
+    const H = barsCanvas.height;
+    const bufLen = analyser.frequencyBinCount;
+    const data   = new Uint8Array(bufLen);
+    analyser.getByteFrequencyData(data);
+
+    barsCtx.clearRect(0, 0, W, H);
+    barsCtx.fillStyle = BG;
+    barsCtx.fillRect(0, 0, W, H);
+
+    // Only use first ~60% of freq bins (highs are usually silent)
+    const useBins = Math.floor(bufLen * 0.6);
+    const barW    = Math.max(2, (W / useBins) - 1);
+    const gap     = 1;
+
+    for (let i = 0; i < useBins; i++) {
+      const val  = data[i];
+      const barH = (val / 255) * H;
+      const x    = i * (barW + gap);
+
+      // Gradient: green at bottom, purple at top
+      const grad = barsCtx.createLinearGradient(0, H, 0, H - barH);
+      grad.addColorStop(0, GREEN);
+      grad.addColorStop(1, PURPLE);
+
+      barsCtx.shadowBlur  = barH > H * 0.6 ? 8 : 0;
+      barsCtx.shadowColor = GREEN;
+      barsCtx.fillStyle   = grad;
+      barsCtx.fillRect(x, H - barH, barW, barH);
+    }
+    barsCtx.shadowBlur = 0;
+  }
+
+  function drawIdle() {
+    // Flat line when paused
+    [waveCtx, barsCtx].forEach((ctx, i) => {
+      const W = i === 0 ? waveCanvas.width : barsCanvas.width;
+      const H = 55;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = BG;
+      ctx.fillRect(0, 0, W, H);
+      if (i === 0) {
+        ctx.strokeStyle = BORDER;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(0, H/2);
+        ctx.lineTo(W, H/2);
+        ctx.stroke();
+      }
+    });
+  }
+
+  function loop() {
+    if (!running) return;
+    drawWave();
+    drawBars();
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function startViz() {
+    if (!connected) setupAudio();
+    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    vizContainer.classList.add('active');
+    resizeCanvases();
+    running = true;
+    loop();
+  }
+
+  function stopViz() {
+    running = false;
+    cancelAnimationFrame(rafId);
+    drawIdle();
+  }
+
+  // Hook into existing audio element events
+  aud.addEventListener('play', startViz);
+  aud.addEventListener('pause', stopViz);
+  aud.addEventListener('ended', () => {
+    stopViz();
+    vizContainer.classList.remove('active');
+  });
+
+  // Resize handler
+  window.addEventListener('resize', () => {
+    if (vizContainer.classList.contains('active')) {
+      resizeCanvases();
+    }
+  });
+
+  // Also hook into existing close button to hide visualizer
+  document.getElementById('bx').addEventListener('click', () => {
+    stopViz();
+    vizContainer.classList.remove('active');
+  });
+
+})();
+
 </script>
 </body>
 </html>
