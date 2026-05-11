@@ -147,6 +147,7 @@
     width: 100%;
   }
 
+  /* ── INTERACTIVE TERMINAL ───────────────────────────────── */
   .hero-terminal {
     background: var(--bg2);
     border: 1px solid var(--border);
@@ -154,7 +155,7 @@
     overflow: hidden;
     max-width: 680px;
     margin-bottom: 48px;
-    box-shadow: 0 0 60px rgba(0,255,136,0.05);
+    box-shadow: 0 0 60px rgba(0,255,136,0.07);
   }
 
   .term-bar {
@@ -164,9 +165,10 @@
     align-items: center;
     gap: 8px;
     border-bottom: 1px solid var(--border);
+    user-select: none;
   }
 
-  .term-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .term-dot { width: 12px; height: 12px; border-radius: 50%; cursor: default; }
   .td-r { background: #ff5f57; }
   .td-y { background: #febc2e; }
   .td-g { background: #28c840; }
@@ -180,43 +182,64 @@
   }
 
   .term-body {
-    padding: 20px 24px;
+    padding: 16px 20px;
+    height: 320px;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    cursor: text;
   }
 
-  .term-line {
+  .term-body::-webkit-scrollbar { width: 4px; }
+  .term-body::-webkit-scrollbar-track { background: var(--bg2); }
+  .term-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+  .term-output-line {
     font-family: var(--mono);
     font-size: 13px;
-    margin-bottom: 4px;
-    opacity: 0;
-    animation: fadeIn 0.1s forwards;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
   }
 
-  .term-line:nth-child(1)  { animation-delay: 0.2s; }
-  .term-line:nth-child(2)  { animation-delay: 0.6s; }
-  .term-line:nth-child(3)  { animation-delay: 1.0s; }
-  .term-line:nth-child(4)  { animation-delay: 1.4s; }
-  .term-line:nth-child(5)  { animation-delay: 1.8s; }
-  .term-line:nth-child(6)  { animation-delay: 2.2s; }
-  .term-line:nth-child(7)  { animation-delay: 2.6s; }
-  .term-line:nth-child(8)  { animation-delay: 3.0s; }
+  .term-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: 4px;
+  }
 
-  @keyframes fadeIn { to { opacity: 1; } }
+  .term-prompt-label {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .term-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--text);
+    caret-color: var(--green);
+    padding: 0 4px;
+  }
 
   .t-prompt { color: var(--green); }
-  .t-cmd    { color: var(--text); }
   .t-key    { color: var(--blue); }
   .t-val    { color: var(--muted); }
   .t-accent { color: var(--green); }
-  .t-cursor {
-    display: inline-block;
-    width: 8px; height: 14px;
-    background: var(--green);
-    margin-left: 2px;
-    vertical-align: middle;
-    animation: blink 1s step-end infinite;
-  }
+  .t-err    { color: #ff7b7b; }
+  .t-warn   { color: #febc2e; }
+  .t-dim    { color: var(--dim); }
+  .t-purple { color: #bc8cff; }
+  .t-white  { color: var(--text); }
 
   @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+  @keyframes fadeIn { to { opacity: 1; } }
 
   .hero-name {
     font-family: var(--sans);
@@ -819,22 +842,15 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-terminal">
+    <div class="hero-terminal" id="heroTerminal" onclick="focusTermInput()">
       <div class="term-bar">
         <div class="term-dot td-r"></div>
         <div class="term-dot td-y"></div>
         <div class="term-dot td-g"></div>
-        <div class="term-title">bash — drraypc.com</div>
+        <div class="term-title">bash — drraypc.com &nbsp;|&nbsp; type 'help' to begin</div>
       </div>
-      <div class="term-body">
-        <div class="term-line"><span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">~</span>$ whoami</div>
-        <div class="term-line"><span class="t-key">name</span>        <span class="t-val">Raymond Mayer</span></div>
-        <div class="term-line"><span class="t-key">role</span>        <span class="t-val">Senior Security & Systems Engineer</span></div>
-        <div class="term-line"><span class="t-key">location</span>    <span class="t-val">Royal Oak, MI</span></div>
-        <div class="term-line"><span class="t-key">experience</span>  <span class="t-val">15+ years</span></div>
-        <div class="term-line"><span class="t-key">focus</span>       <span class="t-val">Incident Response · AD Security · Infrastructure</span></div>
-        <div class="term-line"><span class="t-key">status</span>      <span class="t-accent">● available</span></div>
-        <div class="term-line"><span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">~</span>$ <span class="t-cursor"></span></div>
+      <div class="term-body" id="termBody">
+        <!-- output injected by JS -->
       </div>
     </div>
 
@@ -856,9 +872,9 @@
   <h2 class="section-title">Who I Am</h2>
   <div class="about-grid">
     <div class="about-text">
-      <p>I'm a Senior Security & Systems Engineer with over 15 years of experience across Windows, Linux, and macOS environments. I specialize in Incident Response, Ransomware Recovery, Infrastructure Security, and resilient Infrastructure design.</p>
-      <p>My background spans the full range of the security lifecycle - from hardening environments before something goes wrong, to leading client recovery engagements when environments are already compromised. I've worked with teams ranging from small businesses to Fortune 500 companies.</p>
-      <p>I build tools, automate security workflows, and document everything - because good security is reproducible security.</p>
+      <p>I'm a Senior Security & Systems Engineer with over 15 years of experience across Windows, Linux, and macOS environments. I specialize in incident response, ransomware recovery, Active Directory security, and resilient infrastructure design.</p>
+      <p>My background spans the full range of the security lifecycle — from hardening environments before something goes wrong, to leading client recovery engagements when environments are already compromised. I've worked with teams ranging from small businesses to Fortune 500 companies.</p>
+      <p>I build tools, automate security workflows, and document everything — because good security is reproducible security.</p>
     </div>
     <div class="about-card">
       <div class="about-card-header">cat profile.json</div>
@@ -903,7 +919,6 @@
         <span class="tag">Active Directory</span>
         <span class="tag">Azure AD</span>
         <span class="tag">Exchange</span>
-		<span class="tag">SCCM</span>
         <span class="tag">DNS</span>
         <span class="tag">Group Policy</span>
         <span class="tag">PKI</span>
@@ -1033,7 +1048,7 @@
 
 <div class="section-divider"></div>
 <div class="bmc-section">
-  <p>if my work has been useful to you</p>
+  <p>if this work has been useful to you</p>
   <a href="https://www.buymeacoffee.com/drraypc" target="_blank" class="bmc-btn bmc-btn-lg">&#127829; Buy me a pizza</a>
 </div>
 
@@ -1146,6 +1161,464 @@ document.getElementById('filterBar').addEventListener('click', e => {
 });
 
 loadRepos();
+
+</script>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- INTERACTIVE TERMINAL                                    -->
+<!-- ═══════════════════════════════════════════════════════ -->
+<script>
+(function() {
+  var termBody = document.getElementById('termBody');
+  if (!termBody) return;
+
+  var inputEl  = null;
+  var histList = [];
+  var histIdx  = -1;
+  var tempCmd  = '';
+  var cwd      = '~';
+
+  var P = function(d) {
+    return '<span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">' + (d||cwd) + '</span>$ ';
+  };
+
+  // ── FILESYSTEM ──────────────────────────────────────────
+  var FS = {
+    '~':                    ['about.txt','skills.txt','experience/','projects/','contact.txt','.secret/'],
+    '~/experience':         ['centene.txt','entara.txt','mastronardi.txt','logicalis.txt'],
+    '~/projects':           ['powershell/','python/','security/'],
+    '~/projects/powershell':['cleanup-module.ps1','ad-hardening-toolkit.ps1','windows-forensics.ps1'],
+    '~/projects/python':    ['ir-scripts.py','automation.py'],
+    '~/projects/security':  ['ransomware-ir-playbook.md','vmware-recovery.md'],
+    '~/.secret':            ['...']
+  };
+
+  var FILES = {
+    'about.txt':
+      '<span class="t-key">name       </span>  <span class="t-val">Raymond Mayer</span>\n' +
+      '<span class="t-key">role       </span>  <span class="t-val">Senior Security &amp; Systems Engineer</span>\n' +
+      '<span class="t-key">location   </span>  <span class="t-val">Royal Oak, MI</span>\n' +
+      '<span class="t-key">experience </span>  <span class="t-val">15+ years</span>\n' +
+      '<span class="t-key">focus      </span>  <span class="t-val">Incident Response &middot; AD Security &middot; Infrastructure</span>\n' +
+      '<span class="t-key">status     </span>  <span class="t-accent">&bull; available for work</span>',
+
+    'skills.txt':
+      '<span class="t-key">cybersecurity  </span>  <span class="t-val">Incident Response, Ransomware Recovery, Threat Detection</span>\n' +
+      '<span class="t-key">identity       </span>  <span class="t-val">Active Directory, Azure AD, Group Policy, PKI</span>\n' +
+      '<span class="t-key">scripting      </span>  <span class="t-val">PowerShell, Python, Bash</span>\n' +
+      '<span class="t-key">cloud          </span>  <span class="t-val">Azure, AWS, Google Cloud</span>\n' +
+      '<span class="t-key">virtualization </span>  <span class="t-val">VMware, Hyper-V, Docker</span>\n' +
+      '<span class="t-key">edr            </span>  <span class="t-val">CrowdStrike, SentinelOne</span>\n' +
+      '<span class="t-key">devops         </span>  <span class="t-val">Terraform, Ansible, Jenkins, GitHub Actions</span>',
+
+    'contact.txt':
+      '<span class="t-key">email    </span>  <span class="t-val">ray@drraypc.com</span>\n' +
+      '<span class="t-key">linkedin </span>  <span class="t-val">linkedin.com/in/ray-mayer</span>\n' +
+      '<span class="t-key">github   </span>  <span class="t-val">github.com/dr-raypc</span>',
+
+    'centene.txt':
+      '<span class="t-key">company  </span>  <span class="t-val">Centene Corporation</span>\n' +
+      '<span class="t-key">title    </span>  <span class="t-val">Lead Systems Engineer, DevSecOps</span>\n' +
+      '<span class="t-key">period   </span>  <span class="t-val">April 2025 &ndash; Present</span>',
+
+    'entara.txt':
+      '<span class="t-key">company  </span>  <span class="t-val">Entara Corp</span>\n' +
+      '<span class="t-key">title    </span>  <span class="t-val">Escalation Engineer II &middot; Onboarding Lead</span>\n' +
+      '<span class="t-key">period   </span>  <span class="t-val">May 2022 &ndash; Jan 2025</span>\n' +
+      '<span class="t-key">focus    </span>  <span class="t-val">Ransomware recovery &middot; IR &middot; security hardening</span>',
+
+    'mastronardi.txt':
+      '<span class="t-key">company  </span>  <span class="t-val">Mastronardi Produce</span>\n' +
+      '<span class="t-key">title    </span>  <span class="t-val">End User Infrastructure Specialist</span>\n' +
+      '<span class="t-key">period   </span>  <span class="t-val">Jun 2019 &ndash; Jul 2021</span>\n' +
+      '<span class="t-key">scale    </span>  <span class="t-val">1,000+ computers &middot; 700+ servers</span>',
+
+    'logicalis.txt':
+      '<span class="t-key">company  </span>  <span class="t-val">Logicalis US</span>\n' +
+      '<span class="t-key">title    </span>  <span class="t-val">Linux System Administrator</span>\n' +
+      '<span class="t-key">period   </span>  <span class="t-val">Apr 2013 &ndash; Jun 2019</span>',
+
+    'ransomware-ir-playbook.md':
+      '<span class="t-key">Ransomware IR Playbook</span>\n' +
+      '<span class="t-dim">DC recovery &middot; FSMO seizure &middot; NTDS.dit extraction</span>\n' +
+      '<span class="t-accent">github.com/dr-raypc</span>',
+
+    'cleanup-module.ps1':
+      '<span class="t-dim"># Invoke-SystemCleanup</span>\n' +
+      '<span class="t-val">Removes WU cache, temp files, dump files</span>\n' +
+      '<span class="t-val">Optimizes SSD &middot; disables hibernate &middot; runs DISM</span>'
+  };
+
+  var LOGO =
+    '<span class="t-accent">  &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;  drraypc.com  &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span>\n' +
+    '<span class="t-dim">  Senior Security &amp; Systems Engineer &middot; Royal Oak, MI</span>';
+
+  // ── CORE ────────────────────────────────────────────────
+  function scrollBottom() {
+    setTimeout(function() { termBody.scrollTop = termBody.scrollHeight; }, 10);
+  }
+
+  function addLine(html) {
+    // Split multi-line output into separate divs so each line renders correctly
+    var lines = html.split('\n');
+    for (var li = 0; li < lines.length; li++) {
+      var el = document.createElement('div');
+      el.className = 'term-output-line';
+      el.innerHTML = lines[li];
+      var row = termBody.querySelector('.term-input-row');
+      if (row) termBody.insertBefore(el, row);
+      else termBody.appendChild(el);
+    }
+    scrollBottom();
+  }
+
+  function addPrompt() {
+    var old = termBody.querySelector('.term-input-row');
+    if (old) old.remove();
+
+    var row = document.createElement('div');
+    row.className = 'term-input-row';
+
+    var label = document.createElement('span');
+    label.className = 'term-prompt-label';
+    label.innerHTML = P(cwd);
+    row.appendChild(label);
+
+    var inp = document.createElement('input');
+    inp.type = 'text';
+    inp.className = 'term-input';
+    inp.autocomplete = 'off';
+    inp.spellcheck = false;
+    inp.setAttribute('autocapitalize', 'off');
+    row.appendChild(inp);     // inp goes INTO row
+
+    termBody.appendChild(row); // row (containing inp) goes into termBody
+    inputEl = inp;
+    inp.focus();
+    scrollBottom();
+    inp.addEventListener('keydown', onKey);
+  }
+
+  // ── COMMANDS ────────────────────────────────────────────
+  function cmdHelp() {
+    return '<span class="t-key">COMMANDS</span>\n' +
+      '<span class="t-dim">────────────────────────────────────────</span>\n' +
+      '<span class="t-accent">whoami</span>        <span class="t-val">display profile</span>\n' +
+      '<span class="t-accent">ls</span>            <span class="t-val">list directory</span>\n' +
+      '<span class="t-accent">cat</span> <span class="t-dim">[file]</span>  <span class="t-val">read a file</span>\n' +
+      '<span class="t-accent">cd</span> <span class="t-dim">[dir]</span>   <span class="t-val">change directory</span>\n' +
+      '<span class="t-accent">pwd</span>           <span class="t-val">print working directory</span>\n' +
+      '<span class="t-accent">history</span>       <span class="t-val">command history</span>\n' +
+      '<span class="t-accent">clear</span>         <span class="t-val">clear terminal</span>\n' +
+      '<span class="t-accent">ping</span> <span class="t-dim">[host]</span>  <span class="t-val">ping a host</span>\n' +
+      '<span class="t-accent">nmap</span> <span class="t-dim">[host]</span>  <span class="t-val">port scan</span>\n' +
+      '<span class="t-accent">ssh</span> <span class="t-dim">[host]</span>   <span class="t-val">connect remote</span>\n' +
+      '<span class="t-accent">github</span>        <span class="t-val">open GitHub</span>\n' +
+      '<span class="t-accent">music</span>         <span class="t-val">go to music page</span>\n' +
+      '<span class="t-accent">resume</span>        <span class="t-val">open resume</span>\n' +
+      '<span class="t-accent">projects</span>      <span class="t-val">jump to projects</span>\n' +
+      '<span class="t-accent">contact</span>       <span class="t-val">jump to contact</span>\n' +
+      '<span class="t-dim">────────────────────────────────────────</span>\n' +
+      '<span class="t-purple">// there are hidden commands... explore</span>';
+  }
+
+  function cmdLs() {
+    var entries = FS[cwd] || FS['~'];
+    return entries.map(function(e) {
+      if (e.endsWith('/')) return '<span class="t-accent">' + e + '</span>';
+      if (e.startsWith('.')) return '<span class="t-dim">' + e + '</span>';
+      return '<span class="t-val">' + e + '</span>';
+    }).join('  ');
+  }
+
+  function cmdCd(args) {
+    var t = args[0];
+    if (!t || t === '~') { cwd = '~'; return ''; }
+    if (t === '..') {
+      if (cwd === '~') return '';
+      var parts = cwd.split('/');
+      parts.pop();
+      cwd = parts.join('/') || '~';
+      return '';
+    }
+    var full = cwd === '~' ? '~/' + t : cwd + '/' + t;
+    if (FS[full]) { cwd = full; return ''; }
+    if (FS[t])    { cwd = t;    return ''; }
+    return '<span class="t-err">bash: cd: ' + t + ': No such file or directory</span>';
+  }
+
+  function cmdCat(args) {
+    if (!args[0]) return '<span class="t-err">cat: missing operand</span>';
+    var f = args[0];
+    var entries = FS[cwd] || [];
+    if (entries.indexOf(f + '/') > -1) return '<span class="t-err">cat: ' + f + ': Is a directory</span>';
+    if (FILES[f]) return FILES[f];
+    return '<span class="t-err">cat: ' + f + ': No such file or directory</span>';
+  }
+
+  function cmdPing(args) {
+    var host = args[0] || 'localhost';
+    var ip = host === 'drraypc.com' ? '185.199.108.153' : host === 'localhost' ? '127.0.0.1' :
+      (Math.floor(Math.random()*200)+10) + '.' + Math.floor(Math.random()*255) + '.' +
+      Math.floor(Math.random()*255) + '.' + Math.floor(Math.random()*255);
+    var ms = [Math.floor(Math.random()*8)+1,Math.floor(Math.random()*8)+1,Math.floor(Math.random()*8)+1,Math.floor(Math.random()*8)+1];
+    return 'PING ' + host + ' (' + ip + ')\n' +
+      '<span class="t-accent">64 bytes from ' + ip + ': ttl=64 time=' + ms[0] + '.' + Math.floor(Math.random()*9) + ' ms</span>\n' +
+      '<span class="t-accent">64 bytes from ' + ip + ': ttl=64 time=' + ms[1] + '.' + Math.floor(Math.random()*9) + ' ms</span>\n' +
+      '<span class="t-accent">64 bytes from ' + ip + ': ttl=64 time=' + ms[2] + '.' + Math.floor(Math.random()*9) + ' ms</span>\n' +
+      '<span class="t-accent">64 bytes from ' + ip + ': ttl=64 time=' + ms[3] + '.' + Math.floor(Math.random()*9) + ' ms</span>\n' +
+      '<span class="t-dim">4 packets transmitted, 4 received, 0% packet loss</span>';
+  }
+
+  function cmdNmap(args) {
+    var target = args[0] || 'target';
+    var ports = [
+      {p:22,  s:'open',     n:'ssh'},
+      {p:80,  s:'open',     n:'http'},
+      {p:443, s:'open',     n:'https'},
+      {p:3389,s:'filtered', n:'ms-wbt-server'},
+      {p:8080,s:'closed',   n:'http-proxy'}
+    ];
+    var rows = ports.map(function(x) {
+      var col = x.s === 'open' ? 't-accent' : x.s === 'filtered' ? 't-warn' : 't-err';
+      return x.p + '/tcp'.padEnd(10) + '<span class="' + col + '">' + x.s.padEnd(10) + '</span>' + x.n;
+    });
+    return '<span class="t-key">Nmap scan report for ' + target + '</span>\n' +
+      '<span class="t-dim">PORT          STATE     SERVICE</span>\n' +
+      rows.join('\n') + '\n' +
+      '<span class="t-dim">Done in ' + (Math.random()*2+0.5).toFixed(2) + 's</span>';
+  }
+
+  function cmdHistory() {
+    if (!histList.length) return '<span class="t-dim">no history</span>';
+    return histList.map(function(c, i) {
+      return '  <span class="t-dim">' + (i+1) + '</span>  <span class="t-val">' + c + '</span>';
+    }).join('\n');
+  }
+
+  var CMDS = {
+    help:      cmdHelp,
+    '?':       cmdHelp,
+    whoami:    function() { return FILES['about.txt']; },
+    pwd:       function() { return '<span class="t-val">' + cwd.replace('~','/home/visitor') + '</span>'; },
+    ls:        cmdLs,
+    cd:        cmdCd,
+    cat:       cmdCat,
+    ping:      cmdPing,
+    nmap:      cmdNmap,
+    history:   cmdHistory,
+    clear:     function() { return '__CLEAR__'; },
+    date:      function() { return '<span class="t-val">' + new Date().toString() + '</span>'; },
+    uptime:    function() { var s=Math.floor(performance.now()/1000); return '<span class="t-val">up ' + Math.floor(s/3600) + 'h ' + Math.floor((s%3600)/60) + 'm &mdash; 1 user</span>'; },
+    uname:     function(a) { return a[0]==='-a' ? '<span class="t-val">DrRayPC 5.15.0 #1 SMP x86_64 GNU/Linux</span>' : '<span class="t-val">DrRayPC</span>'; },
+    github:    function() { window.open('https://github.com/dr-raypc','_blank'); return '<span class="t-accent">&rarr; github.com/dr-raypc</span>'; },
+    music:     function() { setTimeout(function(){window.location.href='/music.html';},500); return '<span class="t-accent">&rarr; redirecting to music page...</span>'; },
+    resume:    function() { window.open('/private/raymond-mayer','_blank'); return '<span class="t-accent">&rarr; opening resume</span>'; },
+    projects:  function() { document.getElementById('repos').scrollIntoView({behavior:'smooth'}); return '<span class="t-accent">&rarr; jumping to projects</span>'; },
+    contact:   function() { document.getElementById('contact').scrollIntoView({behavior:'smooth'}); return '<span class="t-accent">&rarr; jumping to contact</span>'; },
+    exit:      function() { setTimeout(boot, 400); return '<span class="t-dim">logout</span>'; },
+    reboot:    function() { setTimeout(function(){location.reload();},1000); return '<span class="t-warn">rebooting...</span>'; },
+    banner:    function() { return LOGO; },
+    logo:      function() { return LOGO; },
+    neofetch:  function() {
+      return LOGO + '\n' +
+        '<span class="t-dim">  ─────────────────────────</span>\n' +
+        '<span class="t-key">  OS      </span><span class="t-val">DrRayPC Linux x86_64</span>\n' +
+        '<span class="t-key">  Shell   </span><span class="t-val">bash 5.2.0 (browser edition)</span>\n' +
+        '<span class="t-key">  Skills  </span><span class="t-val">IR &middot; AD &middot; PowerShell &middot; Python</span>\n' +
+        '<span class="t-key">  Status  </span><span class="t-accent">&bull; available for work</span>';
+    },
+    ps:        function() {
+      return '<span class="t-dim">  PID CMD</span>\n' +
+        '<span class="t-val">    1 bash</span>\n' +
+        '<span class="t-val">   42 curiosity</span>\n' +
+        '<span class="t-accent">  666 hackerman</span>\n' +
+        '<span class="t-val">   99 drraypc.com</span>';
+    },
+    hack:      function() {
+      return '<span class="t-err">INITIALIZING HACK SEQUENCE...</span>\n' +
+        '<span class="t-warn">bypassing firewall...</span>\n' +
+        '<span class="t-accent">root access granted</span>\n' +
+        '<span class="t-dim">just kidding &mdash; but I do this for real. type whoami.</span>';
+    },
+    matrix:    function() { return '__MATRIX__'; },
+    sudo:      function(a) {
+      if (a[0]==='su') return '<span class="t-err">visitor is not in sudoers. This incident will be reported.</span>';
+      return '<span class="t-err">permission denied</span>';
+    },
+    ssh:       function(a) { return '<span class="t-val">ssh: connect to host ' + (a[0]||'?') + ' port 22: Connection refused</span>\n<span class="t-dim">// nice try</span>'; },
+    curl:      function(a) {
+      if (!a[0]) return '<span class="t-err">curl: no URL specified</span>';
+      if (a[0].indexOf('drraypc')>-1) return '<span class="t-accent">HTTP/2 200 OK</span>\n<span class="t-dim">you\'re already here</span>';
+      return '<span class="t-err">curl: (6) Could not resolve host: ' + a[0] + '</span>';
+    },
+    rm:        function(a) {
+      if (a.indexOf('-rf')>-1) return '<span class="t-err">rm: dangerous operation blocked</span>\n<span class="t-dim">// nice try, hackerman</span>';
+      return '<span class="t-err">rm: permission denied</span>';
+    },
+    cowsay:    function(a) {
+      var msg = a.join(' ') || 'moo';
+      return '<span class="t-val"> ' + '_'.repeat(msg.length+2) + '\n' +
+        '&lt; ' + msg + ' &gt;\n' +
+        ' ' + '-'.repeat(msg.length+2) + '\n' +
+        '        \\   ^__^\n' +
+        '         \\  (oo)\\_______\n' +
+        '            (__)\\       )\\/\\\n' +
+        '                ||----w |\n' +
+        '                ||     ||</span>';
+    },
+    sl:        function() { return '<span class="t-dim">// you typed sl instead of ls. classic.</span>'; },
+    '42':      function() { return '<span class="t-accent">The answer to life, the universe, and everything.</span>'; },
+    hello:     function() { return '<span class="t-accent">Hello, visitor. Type help to see what you can do.</span>'; },
+    hi:        function() { return '<span class="t-accent">Hello, visitor. Type help to see what you can do.</span>'; },
+    hire:      function() { return '<span class="t-accent">great idea.</span>\n<span class="t-val">ray@drraypc.com</span>\n<span class="t-val">linkedin.com/in/ray-mayer</span>'; },
+    whoishiring: function() { return '<span class="t-accent">good question. hope it\'s you.</span>'; },
+    themayr:   function() { return '<span class="t-purple">theMAYR in the building</span>\n<span class="t-accent">&rarr; drraypc.com/music.html</span>'; },
+    konami:    function() { return '<span class="t-purple">&#9733; KONAMI CODE UNLOCKED &#9733;</span>\n<span class="t-accent">you found the easter egg. respect.</span>'; },
+    ifconfig:  function() {
+      return '<span class="t-key">eth0</span>: inet <span class="t-accent">192.168.1.' + (Math.floor(Math.random()*200)+10) + '</span>  netmask 255.255.255.0\n' +
+        '<span class="t-key">lo</span>:   inet <span class="t-val">127.0.0.1</span>  netmask 255.0.0.0';
+    },
+    lol:       function() { return '<span class="t-accent">haha</span>'; },
+    yolo:      function() { return '<span class="t-dim">// please don\'t</span>'; },
+    fuck:      function() { return '<span class="t-err">language.</span>'; }
+  };
+
+  // ── MATRIX ──────────────────────────────────────────────
+  function runMatrix() {
+    var chars = '01アイウエオカキクケコサシスセソタチツテト';
+    var el = document.createElement('div');
+    el.className = 'term-output-line';
+    el.style.color = '#00ff88';
+    var old = termBody.querySelector('.term-input-row');
+    if (old) termBody.insertBefore(el, old); else termBody.appendChild(el);
+    var count = 0;
+    var iv = setInterval(function() {
+      var row = '';
+      for (var i=0; i<52; i++) row += chars[Math.floor(Math.random()*chars.length)];
+      el.textContent = row;
+      count++;
+      if (count >= 20) {
+        clearInterval(iv);
+        el.innerHTML = '<span style="color:#00ff88">// exiting matrix</span>';
+        addPrompt();
+      }
+    }, 80);
+  }
+
+  // ── EXECUTE ─────────────────────────────────────────────
+  function execCmd(raw) {
+    var parts = raw.trim().split(/\s+/);
+    var cmd   = parts[0].toLowerCase();
+    var args  = parts.slice(1);
+    var old = termBody.querySelector('.term-input-row');
+    if (old) old.remove();
+
+    var fn = CMDS[cmd];
+    if (!fn) fn = CMDS[raw.toLowerCase()]; // multi-word check
+    if (fn) {
+      var r = fn(args);
+      if (r === '__CLEAR__') { boot(); return; }
+      if (r === '__MATRIX__') { runMatrix(); return; }
+      if (r !== undefined && r !== '') addLine(r);
+    } else if (cmd !== '') {
+      addLine('<span class="t-err">bash: ' + cmd + ': command not found</span> <span class="t-dim">(try \'help\')</span>');
+    }
+    addPrompt();
+  }
+
+  // ── KEY HANDLER ─────────────────────────────────────────
+  function onKey(e) {
+    if (e.key === 'Enter') {
+      var cmd = inputEl.value.trim();
+      addLine(P(cwd) + '<span class="t-white">' + (cmd||'') + '</span>');
+      if (cmd) { histList.push(cmd); histIdx = histList.length; tempCmd = ''; }
+      inputEl.value = '';
+      if (cmd) execCmd(cmd); else addPrompt();
+
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (histIdx === histList.length) tempCmd = inputEl.value;
+      if (histIdx > 0) { histIdx--; inputEl.value = histList[histIdx]; }
+
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (histIdx < histList.length-1) { histIdx++; inputEl.value = histList[histIdx]; }
+      else { histIdx = histList.length; inputEl.value = tempCmd; }
+
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      var val = inputEl.value;
+      var pts = val.split(' ');
+      var partial = pts[pts.length-1];
+      if (pts.length === 1) {
+        var m = Object.keys(CMDS).filter(function(c){ return c.indexOf(' ')<0 && c.indexOf(partial)===0; });
+        if (m.length === 1) inputEl.value = m[0];
+        else if (m.length > 1) addLine('<span class="t-dim">' + m.join('  ') + '</span>');
+      } else {
+        var ents = FS[cwd] || [];
+        var fm = ents.filter(function(e){ return e.indexOf(partial)===0; });
+        if (fm.length === 1) { pts[pts.length-1] = fm[0].replace('/',''); inputEl.value = pts.join(' '); }
+      }
+
+    } else if (e.ctrlKey && (e.key==='l'||e.key==='L')) {
+      e.preventDefault(); boot();
+    } else if (e.ctrlKey && (e.key==='c'||e.key==='C')) {
+      e.preventDefault();
+      addLine(P(cwd) + '<span class="t-white">' + inputEl.value + '</span>^C');
+      inputEl.value = '';
+      addPrompt();
+    }
+  }
+
+  // ── BOOT WITH TYPED INTRO ───────────────────────────────
+  function boot() {
+    termBody.innerHTML = '';
+    cwd = '~';
+    var PROMPT_HTML = '<span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">~</span>$ ';
+
+    var introLines = [
+      { typed: true,   prefix: PROMPT_HTML, text: 'whoami', speed: 80, pause: 350 },
+      { instant: true, html: '<span class="t-key">name       </span>  <span class="t-val">Raymond Mayer</span>',                                            pause: 65 },
+      { instant: true, html: '<span class="t-key">role       </span>  <span class="t-val">Senior Security &amp; Systems Engineer</span>',                   pause: 65 },
+      { instant: true, html: '<span class="t-key">location   </span>  <span class="t-val">Royal Oak, MI</span>',                                            pause: 65 },
+      { instant: true, html: '<span class="t-key">experience </span>  <span class="t-val">15+ years</span>',                                                pause: 65 },
+      { instant: true, html: '<span class="t-key">focus      </span>  <span class="t-val">Incident Response &middot; AD Security &middot; Infrastructure</span>', pause: 65 },
+      { instant: true, html: '<span class="t-key">status     </span>  <span class="t-accent">&bull; available</span>',                                       pause: 300 },
+      { instant: true, html: '',                                                                                                                              pause: 40  },
+      { instant: true, html: '<span class="t-dim">// terminal ready &mdash; type <span class="t-accent">help</span> to explore</span>',                     pause: 0   }
+    ];
+
+    var idx = 0;
+    function next() {
+      if (idx >= introLines.length) { addPrompt(); return; }
+      var line = introLines[idx++];
+      if (line.instant) {
+        addLine(line.html);
+        setTimeout(next, line.pause || 65);
+      } else {
+        var el = document.createElement('div');
+        el.className = 'term-output-line';
+        el.innerHTML = line.prefix || '';
+        termBody.appendChild(el);
+        var span = document.createElement('span');
+        el.appendChild(span);
+        var i = 0, txt = line.text || '';
+        var iv = setInterval(function() {
+          if (i >= txt.length) { clearInterval(iv); scrollBottom(); setTimeout(next, line.pause||200); return; }
+          span.textContent += txt[i++];
+          scrollBottom();
+        }, line.speed || 45);
+      }
+    }
+    next();
+  }
+
+  window.focusTermInput = function() { if (inputEl) inputEl.focus(); };
+
+  // Start
+  boot();
+})();
 </script>
 </body>
 </html>
