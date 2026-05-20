@@ -161,7 +161,7 @@
   .r-contact a:hover { color: var(--green); }
 
   /* ── SECTION ─────────────────────────────────────────────── */
-  .r-section { margin-bottom: 40px; }
+  .r-section { margin-bottom: 24px; }
 
   .r-section-head {
     font-family: var(--mono);
@@ -192,7 +192,7 @@
   /* ── SKILLS TABLE ────────────────────────────────────────── */
   .skills-table {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
   }
 
@@ -216,7 +216,7 @@
   }
 
   /* ── JOB ─────────────────────────────────────────────────── */
-  .r-job { margin-bottom: 28px; }
+  .r-job { margin-bottom: 18px; }
 
   .r-job-header {
     display: grid;
@@ -299,35 +299,20 @@
 
   .watermark span { color: var(--green); }
 
-  /* ── PAGE MARGINS (top level — works for print/PDF) ────────── */
+  /* ── PRINT / PDF STYLES ──────────────────────────────────── */
   @page {
-    margin: 18mm 16mm 18mm 16mm;
+    margin: 12mm 14mm 12mm 14mm;
+    size: letter;
   }
 
-  /* ── PRINT / PDF STYLES ──────────────────────────────────── */
   @media print {
-    /* Force white background and black text throughout */
-    :root {
-      --bg:      #ffffff;
-      --bg2:     #ffffff;
-      --bg3:     #f5f5f5;
-      --bg4:     #eeeeee;
-      --border:  #cccccc;
-      --border2: #aaaaaa;
-      --text:    #000000;
-      --muted:   #333333;
-      --dim:     #555555;
-      --green:   #000000;
-      --green2:  #000000;
-      --green-dim: rgba(0,0,0,0.05);
-      --blue:    #000000;
-      --blue-dim: rgba(0,0,0,0.05);
-      --mono: 'Courier New', monospace;
-      --sans: 'Arial', sans-serif;
-    }
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-    /* Reset body */
-    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body::before { display: none !important; }
+    .topbar      { display: none !important; }
+    .watermark   { display: none !important; }
+    .bmc-btn     { display: none !important; }
+
     html, body {
       background: #fff !important;
       color: #000 !important;
@@ -335,70 +320,97 @@
       line-height: 1.5 !important;
     }
 
-    /* Kill scanline overlay */
-    body::before { display: none !important; }
-
-    /* Hide topbar — not needed in PDF */
-    .topbar { display: none !important; }
-
-    /* Remove watermark */
-    .watermark { display: none !important; }
-
-    /* Reset resume wrap */
     .resume-wrap {
       padding: 0 !important;
       max-width: 100% !important;
       margin: 0 !important;
     }
 
-    /* Page breaks — keep job blocks together */
-    .r-job { page-break-inside: avoid; }
-    .r-section { page-break-inside: avoid; }
-    .r-header { page-break-inside: avoid; }
-    .r-edu { page-break-inside: avoid; }
-
-    /* Force section headings to not break after */
-    .r-section-head { page-break-after: avoid; }
-    .r-job-title    { page-break-after: avoid; }
-
-    /* Name */
-    .r-name { color: #000 !important; font-size: 28px !important; }
-    .r-name span { color: #000 !important; }
-
-    /* Section heads */
-    .r-section-head {
-      color: #000 !important;
-      border-bottom: 1px solid #000 !important;
+    /* Header */
+    .r-header {
+      margin-bottom: 14px !important;
+      padding-bottom: 14px !important;
     }
-    .r-section-head::before { color: #888 !important; }
+    .r-name  { font-size: 26px !important; color: #000 !important; }
+    .r-name span { color: #000 !important; }
+    .r-title { font-size: 11px !important; color: #333 !important; }
+    .r-contact a, .r-contact span { font-size: 10px !important; color: #333 !important; }
+
+    /* Sections — generous spacing between each */
+    .r-section { margin-bottom: 18px !important; }
+    .r-section-head {
+      font-size: 10px !important;
+      font-weight: 700 !important;
+      color: #000 !important;
+      margin-bottom: 8px !important;
+      border-bottom: 1px solid #999 !important;
+      padding-bottom: 2px !important;
+      letter-spacing: 0.08em !important;
+    }
+    .r-section-head::before { color: #666 !important; }
     .r-section-head::after  { background: #ccc !important; }
 
-    /* Job titles */
-    .r-job-title    { color: #000 !important; font-weight: 700 !important; }
-    .r-job-company  { color: #444 !important; }
-    .r-job-dates    { color: #666 !important; }
-    .r-title        { color: #444 !important; }
-    .r-summary      { color: #222 !important; }
+    /* Summary */
+    .r-summary {
+      font-size: 10px !important;
+      color: #222 !important;
+      line-height: 1.55 !important;
+      margin-bottom: 4px !important;
+    }
+
+    /* Skills — two column compact grid */
+    .skills-table {
+      display: grid !important;
+      grid-template-columns: 1fr 1fr !important;
+      gap: 4px !important;
+    }
+    .skill-item {
+      background: #f5f5f5 !important;
+      border: 1px solid #ddd !important;
+      border-radius: 3px !important;
+      padding: 4px 8px !important;
+    }
+    .skill-cat  { font-size: 9px !important; color: #000 !important; font-weight: 700 !important; margin-bottom: 1px !important; }
+    .skill-vals { font-size: 9px !important; color: #333 !important; }
+
+    /* Jobs */
+    .r-job { margin-bottom: 12px !important; page-break-inside: avoid; }
+    .r-job-header {
+      margin-bottom: 2px !important;
+      display: grid !important;
+      grid-template-columns: 1fr auto !important;
+      gap: 8px !important;
+    }
+    .r-job-title   { font-size: 11px !important; color: #000 !important; font-weight: 700 !important; }
+    .r-job-dates   { font-size: 10px !important; color: #555 !important; }
+    .r-job-company { font-size: 10px !important; color: #444 !important; margin-bottom: 4px !important; }
 
     /* Bullets */
-    .r-bullets li         { color: #222 !important; }
-    .r-bullets li::before { color: #000 !important; }
+    .r-bullets li {
+      font-size: 10px !important;
+      color: #222 !important;
+      padding: 2px 0 2px 14px !important;
+      line-height: 1.45 !important;
+    }
+    .r-bullets li::before { color: #000 !important; top: 5px !important; }
 
-    /* Contact */
-    .r-contact a, .r-contact span { color: #222 !important; }
+    /* Education */
+    .r-edu {
+      background: #f5f5f5 !important;
+      border: 1px solid #ddd !important;
+      padding: 5px 12px !important;
+      margin-bottom: 5px !important;
+    }
+    .r-edu-degree { font-size: 10.5px !important; color: #000 !important; }
+    .r-edu-school { font-size: 9.5px !important; color: #444 !important; }
+    .r-edu-year   { font-size: 9.5px !important; color: #666 !important; }
 
-    /* Skills table */
-    .skill-item        { background: #f5f5f5 !important; border: 1px solid #ccc !important; }
-    .skill-cat         { color: #000 !important; }
-    .skill-vals        { color: #333 !important; }
+    /* Page breaks — experience CAN split, Entara always starts page 2 */
+    .r-section { page-break-inside: auto; }
+    .r-section-head { page-break-after: avoid; }
+    .r-job-title { page-break-after: avoid; }
+    .r-job-entara { page-break-before: always !important; }
 
-    /* Edu blocks */
-    .r-edu             { background: #f5f5f5 !important; border: 1px solid #ccc !important; }
-    .r-edu-degree      { color: #000 !important; }
-    .r-edu-school      { color: #444 !important; }
-    .r-edu-year        { color: #666 !important; }
-
-    /* Links */
     a { color: #000 !important; text-decoration: none !important; }
   }
 </style>
@@ -419,6 +431,7 @@
   </div>
   <div class="topbar-right">
     <a href="/" class="tb-btn">← back to site</a>
+    
     <button class="tb-btn primary" onclick="window.print()">print / save pdf</button>
   </div>
 </div>
@@ -447,42 +460,19 @@
 
   <!-- SKILLS -->
   <div class="r-section">
-    <div class="r-section-head">key skills & expertise</div>
+    <div class="r-section-head">key skills &amp; expertise</div>
     <div class="skills-table">
-      <div class="skill-item">
-        <div class="skill-cat">IT Systems Management</div>
-        <div class="skill-vals">Windows, Mac, Linux</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">Cloud Platforms</div>
-        <div class="skill-vals">Azure, AWS, Google Cloud</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">Automation & Scripting</div>
-        <div class="skill-vals">PowerShell, Bash, Python</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">Cybersecurity</div>
-        <div class="skill-vals">Threat Detection, IR, Ransomware Recovery</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">DevOps</div>
-        <div class="skill-vals">Jenkins, Terraform, Ansible, GitHub Actions</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">Identity & Access</div>
-        <div class="skill-vals">Active Directory, Azure AD, Google Workspace</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">Virtualization</div>
-        <div class="skill-vals">VMware, Hyper-V, Docker</div>
-      </div>
-      <div class="skill-item">
-        <div class="skill-cat">Network Security</div>
-        <div class="skill-vals">Firewalls, VLANs, IPSec, IDS/IPS, TLS</div>
-      </div>
+      <div class="skill-item"><div class="skill-cat">IT Systems Management</div><div class="skill-vals">Windows, Mac, Linux</div></div>
+      <div class="skill-item"><div class="skill-cat">Cloud Platforms</div><div class="skill-vals">Azure, AWS, Google Cloud</div></div>
+      <div class="skill-item"><div class="skill-cat">Automation &amp; Scripting</div><div class="skill-vals">PowerShell, Bash, Python</div></div>
+      <div class="skill-item"><div class="skill-cat">Cybersecurity</div><div class="skill-vals">Threat Detection, IR, Ransomware Recovery</div></div>
+      <div class="skill-item"><div class="skill-cat">DevOps</div><div class="skill-vals">Jenkins, Terraform, Ansible, GitHub Actions</div></div>
+      <div class="skill-item"><div class="skill-cat">Identity &amp; Access</div><div class="skill-vals">Active Directory, Azure AD, Google Workspace</div></div>
+      <div class="skill-item"><div class="skill-cat">Virtualization</div><div class="skill-vals">VMware, Hyper-V, Docker</div></div>
+      <div class="skill-item"><div class="skill-cat">Network Security</div><div class="skill-vals">Firewalls, VLANs, IPSec, IDS/IPS, TLS</div></div>
     </div>
   </div>
+
 
   <!-- EXPERIENCE -->
   <div class="r-section">
@@ -506,7 +496,7 @@
       </ul>
     </div>
 
-    <div class="r-job">
+    <div class="r-job r-job-entara">
       <div class="r-job-header">
         <div class="r-job-title">Escalation Engineer II · Onboarding Lead · DevSecOps</div>
         <div class="r-job-dates">May 2022 – Jan 2025</div>
