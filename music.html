@@ -151,12 +151,21 @@ input[type=range].vs::-webkit-slider-thumb{-webkit-appearance:none;width:12px;he
 .pclose:hover{border-color:var(--mu);color:var(--mu);}
 @media(max-width:600px){.pin,.pv{display:none;}}
 body.po footer{padding-bottom:86px;}
+body.po .bmc-section{padding-bottom:160px;}
 footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
 .fc{font-family:var(--mo);font-size:11px;color:var(--dm);}
 .fc span{color:var(--gr);}
 .fl{display:flex;gap:16px;}
 .fl a{font-family:var(--mo);font-size:11px;color:var(--dm);text-decoration:none;transition:color .2s;}
 .fl a:hover{color:var(--gr);}
+/* ── AUDIO VISUALIZER ──────────────────────────────────── */
+#vizWrap{position:fixed;bottom:70px;left:0;right:0;background:#080c10;border-top:1px solid #21262d;z-index:199;transform:translateY(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);}
+#vizWrap.on{transform:translateY(0);}
+#vizWrap.on{display:flex;}
+#vizWave{width:100%;height:60px;display:block;border-bottom:1px solid #21262d;}
+#vizBars{width:100%;height:60px;display:block;}
+.vzlb{font-family:var(--mo);font-size:9px;color:#484f58;padding:3px 10px;letter-spacing:.08em;background:#080c10;}
+
 </style>
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XT9HFM47YW"></script>
@@ -224,7 +233,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"></div>
-        <div><div class="ip" id="ip-jun2021a" onclick="play('jun2021a','Deep House Temp 2','June 2021 · WAV','https://music.drraypc.com/June10-2021.wav')">
+        <div><div class="ip" id="ip-jun2021a" onclick="play('jun2021a','Deep House Temp 2','June 2021 - WAV','https://music.drraypc.com/June10-2021.wav')">
   <button class="ipb" id="ipb-jun2021a">&#9654;</button>
   <div class="ipi"><div class="ipl">Deep House Temp 2</div><div class="ips">June 2021 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -255,7 +264,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"></div>
-        <div><div class="ip" id="ip-may2021a" onclick="play('may2021a','Deep House Temp','May 2021 · WAV','https://music.drraypc.com/May182021-DeepHouseTemp.wav')">
+        <div><div class="ip" id="ip-may2021a" onclick="play('may2021a','Deep House Temp','May 2021 - WAV','https://music.drraypc.com/May182021-DeepHouseTemp.wav')">
   <button class="ipb" id="ipb-may2021a">&#9654;</button>
   <div class="ipi"><div class="ipl">Deep House Temp</div><div class="ips">May 2021 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -286,7 +295,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"></div>
-        <div><div class="ip" id="ip-dec2020a" onclick="play('dec2020a','2020 Deep House Mix | WIP','December 2020 · WAV','https://music.drraypc.com/2020_Deep%20house%20Teaser.wav')">
+        <div><div class="ip" id="ip-dec2020a" onclick="play('dec2020a','2020 Deep House Mix | WIP','December 2020 - WAV','https://music.drraypc.com/2020_Deep%20house%20Teaser.wav')">
   <button class="ipb" id="ipb-dec2020a">&#9654;</button>
   <div class="ipi"><div class="ipl">2020 Deep House Mix | WIP</div><div class="ips">December 2020 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -321,7 +330,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1586547174926-QPI3TY5N6TDRRME8L67K/outer-limits2.PNG" alt="Outer Limits — Deep House Mix" loading="lazy"></div>
-        <div><div class="ip" id="ip-nov2017a" onclick="play('nov2017a','Outer Limits | Deep House Mix','November 2017 · WAV','https://music.drraypc.com/deep%20house%20draft4.wav')">
+        <div><div class="ip" id="ip-nov2017a" onclick="play('nov2017a','Outer Limits | Deep House Mix','November 2017 - WAV','https://music.drraypc.com/deep%20house%20draft4.wav')">
   <button class="ipb" id="ipb-nov2017a">&#9654;</button>
   <div class="ipi"><div class="ipl">Outer Limits | Deep House Mix</div><div class="ips">November 2017 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -342,12 +351,12 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585695761813-T2QY01UULBKJ985COOTG/Electric-Forest.PNG" alt="Electric Forest 2017" loading="lazy"></div>
-        <div><div class="ip" id="ip-ef2017a" onclick="play('ef2017a','Who\'s ready for Electric Forest?!','June 2017 · WAV','https://music.drraypc.com/Electric%20Forest%202.wav')">
+        <div><div class="ip" id="ip-ef2017a" onclick="play('ef2017a','Who\'s ready for Electric Forest?!','June 2017 - WAV','https://music.drraypc.com/Electric%20Forest%202.wav')">
   <button class="ipb" id="ipb-ef2017a">&#9654;</button>
   <div class="ipi"><div class="ipl">Who's ready for Electric Forest?!</div><div class="ips">June 2017 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
 </div>
-<div class="ip" id="ip-ef2017b" onclick="play('ef2017b','Electric Forest [Longer Teaser]','June 2017 · WAV · extended','https://music.drraypc.com/Electric%20Forest%203.wav')">
+<div class="ip" id="ip-ef2017b" onclick="play('ef2017b','Electric Forest [Longer Teaser]','June 2017 - WAV - extended','https://music.drraypc.com/Electric%20Forest%203.wav')">
   <button class="ipb" id="ipb-ef2017b">&#9654;</button>
   <div class="ipi"><div class="ipl">Electric Forest [Longer Teaser]</div><div class="ips">June 2017 · WAV · extended</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -376,7 +385,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585695439168-80CU3M8FEA5QN161QJ9I/Dropshot.PNG" alt="Dropshot — AFK Show" loading="lazy"></div>
-        <div><div class="ip" id="ip-dropshota" onclick="play('dropshota','Dropshot [Raindrop Droptop] AFK Show','May 2017 · MP3','https://music.drraypc.com/Dropshot%20-%20AFK%20Show[final-MP3].mp3')">
+        <div><div class="ip" id="ip-dropshota" onclick="play('dropshota','Dropshot [Raindrop Droptop] AFK Show','May 2017 - MP3','https://music.drraypc.com/Dropshot%20-%20AFK%20Show[final-MP3].mp3')">
   <button class="ipb" id="ipb-dropshota">&#9654;</button>
   <div class="ipi"><div class="ipl">Dropshot [Raindrop Droptop] AFK Show</div><div class="ips">May 2017 · MP3</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -462,7 +471,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585859299794-JQUZTEC6CXPWPZI9D8JN/Double-Kill.PNG" alt="Double Kill" loading="lazy"></div>
-        <div><div class="ip" id="ip-doublekilla" onclick="play('doublekilla','Double Kill','January 2017 · MP3','https://music.drraypc.com/Double%20Kill%20[studio%20final%20more%20luffs].mp3')">
+        <div><div class="ip" id="ip-doublekilla" onclick="play('doublekilla','Double Kill','January 2017 - MP3','https://music.drraypc.com/Double%20Kill%20[studio%20final%20more%20luffs].mp3')">
   <button class="ipb" id="ipb-doublekilla">&#9654;</button>
   <div class="ipi"><div class="ipl">Double Kill</div><div class="ips">January 2017 · MP3</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -535,7 +544,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585859476915-I2I8V11C9Z3703VJWPDA/Beary-Scary.PNG" alt="Beary Scary Halloween Party" loading="lazy"></div>
-        <div><div class="ip" id="ip-bearyscarya" onclick="play('bearyscarya','Shitty Beary Scary Teaser','October 2016 · WAV','https://music.drraypc.com/Shitty%20Beary%20Scary%20Teaser%20Mix.wav')">
+        <div><div class="ip" id="ip-bearyscarya" onclick="play('bearyscarya','Shitty Beary Scary Teaser','October 2016 - WAV','https://music.drraypc.com/Shitty%20Beary%20Scary%20Teaser%20Mix.wav')">
   <button class="ipb" id="ipb-bearyscarya">&#9654;</button>
   <div class="ipi"><div class="ipl">Shitty Beary Scary Teaser</div><div class="ips">October 2016 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -556,7 +565,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"></div>
-        <div><div class="ip" id="ip-uglysweatea" onclick="play('uglysweatea','Ugly Sweater Party Mix','December 2016 · MP3','https://music.drraypc.com/daMAYr%20(ugly%20sweater%20party).mp3')">
+        <div><div class="ip" id="ip-uglysweatea" onclick="play('uglysweatea','Ugly Sweater Party Mix','December 2016 - MP3','https://music.drraypc.com/daMAYr%20(ugly%20sweater%20party).mp3')">
   <button class="ipb" id="ipb-uglysweatea">&#9654;</button>
   <div class="ipi"><div class="ipl">Ugly Sweater Party Mix</div><div class="ips">December 2016 · MP3</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -577,7 +586,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585695275624-KU7FP44BFUI1PKHI4KHF/Dean-Gregory.PNG" alt="Dean Gregory" loading="lazy"></div>
-        <div><div class="ip" id="ip-deangregorya" onclick="play('deangregorya','Dean Gregory','December 2016 · WAV','https://music.drraypc.com/Dean%20Gregory%20Final.wav')">
+        <div><div class="ip" id="ip-deangregorya" onclick="play('deangregorya','Dean Gregory','December 2016 - WAV','https://music.drraypc.com/Dean%20Gregory%20Final.wav')">
   <button class="ipb" id="ipb-deangregorya">&#9654;</button>
   <div class="ipi"><div class="ipl">Dean Gregory</div><div class="ips">December 2016 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -646,7 +655,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"><img src="https://images.squarespace-cdn.com/content/v1/5be4513fe17ba30b52e4c81f/1585859709106-XQDFP0EPH2H3TT5HC4SS/image-asset.png" alt="Friday Mix w/ Miss Kitt" loading="lazy"></div>
-        <div><div class="ip" id="ip-misskita" onclick="play('misskita','Friday Mix w/ Miss Kitt','October 2016 · WAV · Intermission @ 27:25','https://music.drraypc.com/Friday%20mixes%20with%20Ms%20Kit.wav')">
+        <div><div class="ip" id="ip-misskita" onclick="play('misskita','Friday Mix w/ Miss Kitt','October 2016 - WAV - Intermission @ 27:25','https://music.drraypc.com/Friday%20mixes%20with%20Ms%20Kit.wav')">
   <button class="ipb" id="ipb-misskita">&#9654;</button>
   <div class="ipi"><div class="ipl">Friday Mix w/ Miss Kitt</div><div class="ips">October 2016 · WAV · Intermission @ 27:25</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -667,7 +676,7 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"></div>
-        <div><div class="ip" id="ip-robbiesa" onclick="play('robbiesa','Live Mix @ Robbies - May 19th, 2016','May 2016 · WAV','https://music.drraypc.com/Live%20Mix%205-19-16%20@%20Robbies.wav')">
+        <div><div class="ip" id="ip-robbiesa" onclick="play('robbiesa','Live Mix @ Robbies - May 19th, 2016','May 2016 - WAV','https://music.drraypc.com/Live%20Mix%205-19-16%20@%20Robbies.wav')">
   <button class="ipb" id="ipb-robbiesa">&#9654;</button>
   <div class="ipi"><div class="ipl">Live Mix @ Robbies - May 19th, 2016</div><div class="ips">May 2016 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -751,12 +760,8 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
   </div>
 </div>
 
-<!-- AUDIO VISUALIZER -->
-<div class="viz-container" id="vizContainer">
-  <span class="viz-label">// waveform</span>
-  <canvas class="viz-canvas-wave" id="vizWave"></canvas>
-  <span class="viz-label-bars">// frequency</span>
-  <canvas class="viz-canvas-bars" id="vizBars"></canvas>
+<div id="vizWrap">
+  <canvas id="vizBars"></canvas>
 </div>
 <div class="pb" id="pb">
   <div class="pin"><div class="ptl" id="ptl">&#8212;</div><div class="psu" id="psu">theMAYR</div></div>
@@ -788,18 +793,35 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
   <div class="fc">&copy; 2025 <span>Raymond Mayer</span> // drraypc.com</div>
   <div class="fl">
     <a href="/index.html">Portfolio</a>
-    <a href="https://github.com/dr-raypc" target="_blank">GitHub</a>
+    <a href="https://github.com/YOURGITHUBUSERNAME" target="_blank">GitHub</a>
     <a href="mailto:ray@drraypc.com">Email</a>
     
   </div>
 </footer>
 <script>
-const aud=new Audio();aud.preload='none';aud.crossOrigin='anonymous';
+const aud=new Audio();aud.preload='none';
+// Mirror audio element for visualizer (needs crossOrigin for Web Audio API)
+const vizAud=new Audio();vizAud.preload='none';vizAud.crossOrigin='anonymous';
 let cid=null;
 const pb=document.getElementById('pb'),bpp=document.getElementById('bpp'),br=document.getElementById('br'),bf=document.getElementById('bf'),bx=document.getElementById('bx'),pf=document.getElementById('pf'),pt=document.getElementById('pt'),tc=document.getElementById('tc'),td=document.getElementById('td'),vs=document.getElementById('vs'),vi=document.getElementById('vi'),ptl=document.getElementById('ptl'),psu=document.getElementById('psu');
 function fmt(s){if(isNaN(s))return'0:00';const m=Math.floor(s/60),sec=Math.floor(s%60);return m+':'+(sec<10?'0':'')+sec;}
 function sip(id,on){const ip=document.getElementById('ip-'+id),b=document.getElementById('ipb-'+id);if(!ip||!b)return;if(on){ip.classList.add('playing');b.classList.add('act');b.innerHTML='&#9646;&#9646;';}else{ip.classList.remove('playing');b.classList.remove('act');b.innerHTML='&#9654;';}}
-function play(id,title,sub,src){if(cid===id){aud.paused?aud.play():aud.pause();return;}if(cid)sip(cid,false);cid=id;ptl.textContent=title;psu.textContent=sub;aud.src=src;aud.play().catch(()=>{});pb.classList.add('vis');document.body.classList.add('po');}
+function play(id,title,sub,src){
+  if(cid===id){aud.paused?aud.play():aud.pause();return;}
+  if(cid)sip(cid,false);
+  cid=id;
+  ptl.textContent=title;
+  psu.textContent=sub;
+  aud.src=src;
+  vizAud.src=src;
+  aud.play().catch(function(e){
+    var ipb=document.getElementById('ipb-'+id);
+    if(ipb){ipb.innerHTML='&#9888;';ipb.style.background='#ff7b7b';}
+    console.error('Play failed for',id,':',e.message);
+  });
+  pb.classList.add('vis');
+  document.body.classList.add('po');
+}
 bpp.addEventListener('click',()=>{aud.paused?aud.play():aud.pause();});
 br.addEventListener('click',()=>{aud.currentTime=Math.max(0,aud.currentTime-15);});
 bf.addEventListener('click',()=>{aud.currentTime=Math.min(aud.duration||0,aud.currentTime+30);});
@@ -813,6 +835,122 @@ aud.addEventListener('ended',()=>{bpp.innerHTML='&#9654;';pf.style.width='0%';tc
 aud.addEventListener('timeupdate',()=>{if(!aud.duration)return;pf.style.width=(aud.currentTime/aud.duration*100)+'%';tc.textContent=fmt(aud.currentTime);td.textContent=fmt(aud.duration);});
 aud.addEventListener('loadedmetadata',()=>{td.textContent=fmt(aud.duration);});
 function tog(id){document.getElementById(id).classList.toggle('open');}
+
+// ── VISUALIZER ────────────────────────────────────────────
+(function(){
+  var vw=document.getElementById('vizWrap');
+  var bc=document.getElementById('vizBars');
+  if(!vw||!bc){console.warn('vizWrap not found');return;}
+  var bx=bc.getContext('2d');
+  var GR='#00ff88',PU='#bc8cff',BL='#58a6ff',BG='#080c10';
+  var audioCtx,analyser,rafId;
+  var running=false,connected=false,fallback=false;
+  var ph=0,fb=[],ft=[];
+  for(var i=0;i<100;i++){fb.push(0.1+Math.random()*0.4);ft.push(0.05+Math.random()*0.85);}
+
+  function sz(){
+    var W=window.innerWidth||document.documentElement.clientWidth||800;
+    bc.width=W;bc.height=80;
+  }
+
+  function tryAudio(){
+    if(connected)return;
+    try{
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+      analyser=audioCtx.createAnalyser();
+      analyser.fftSize=2048;
+      analyser.smoothingTimeConstant=0.82;
+      var src=audioCtx.createMediaElementSource(vizAud);
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      connected=true;fallback=false;
+    }catch(e){
+      connected=true;fallback=true;
+    }
+  }
+
+  function drawReal(){
+    // bars
+    var W=bc.width,H2=bc.height;
+    var fd=new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(fd);
+    bx.fillStyle=BG;bx.fillRect(0,0,W,H2);
+    var use=Math.floor(fd.length*0.55);
+    var bw=Math.max(2,(W/use)-1);
+    for(var i=0;i<use;i++){
+      var bh=(fd[i]/255)*H2;
+      if(bh<1)continue;
+      var g=bx.createLinearGradient(0,H2,0,H2-bh);
+      g.addColorStop(0,GR);g.addColorStop(0.5,BL);g.addColorStop(1,PU);
+      bx.fillStyle=g;
+      bx.shadowBlur=bh>H2*0.6?8:0;bx.shadowColor=GR;
+      bx.fillRect(i*(bw+1),H2-bh,bw,bh);
+    }
+    bx.shadowBlur=0;
+  }
+
+  function drawFallback(){
+    var W=bc.width,H2=bc.height;
+    ph+=0.025;
+    bx.fillStyle=BG;bx.fillRect(0,0,W,H2);
+    var cnt=Math.min(fb.length,Math.floor(W/5));
+    var bw=Math.max(2,(W/cnt)-1);
+    for(var i=0;i<cnt;i++){
+      ft[i]+=(Math.random()-0.5)*0.07;
+      var bass=Math.max(0,1.1-(i/cnt)*1.4);
+      ft[i]=Math.max(0.04,Math.min(0.06+bass*0.9,ft[i]));
+      fb[i]+=(ft[i]-fb[i])*0.14;
+      var bh=fb[i]*H2;
+      var g=bx.createLinearGradient(0,H2,0,H2-bh);
+      g.addColorStop(0,GR);g.addColorStop(0.5,BL);g.addColorStop(1,PU);
+      bx.fillStyle=g;
+      bx.shadowBlur=bh>H2*0.65?8:0;bx.shadowColor=GR;
+      bx.fillRect(i*(bw+1),H2-bh,bw,bh);
+    }
+    bx.shadowBlur=0;
+  }
+
+  function loop(){
+    if(!running)return;
+    if(fallback)drawFallback();else drawReal();
+    rafId=requestAnimationFrame(loop);
+  }
+
+  function vizStart(){
+    tryAudio();
+    if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+    sz();
+    running=true;
+    loop();
+    setTimeout(function(){vw.classList.add('on');},10);
+  }
+
+  function vizStop(){
+    running=false;
+    cancelAnimationFrame(rafId);
+    vw.classList.remove('on');
+    bx.fillStyle=BG;bx.fillRect(0,0,bc.width||800,bc.height||80);
+  }
+
+  // Hook into aud — same scope, guaranteed access
+  aud.addEventListener('play',function(){vizAud.play().catch(function(){});vizStart();});
+  aud.addEventListener('pause',function(){vizAud.pause();vizStop();});
+  aud.addEventListener('ended',function(){vizAud.pause();vizStop();});
+  aud.addEventListener('seeked',function(){vizAud.currentTime=aud.currentTime;});
+  // If vizAud loads fine, use real audio data
+  vizAud.addEventListener('canplay',function(){ fallback=false; });
+  // If vizAud can't load (CORS blocks file with spaces in URL), use animated fallback
+  vizAud.addEventListener('error',function(){ fallback=true; });
+  window.addEventListener('resize',function(){if(running)sz();});
+
+  // Also hook the close button to hide viz
+  var bxBtn=document.getElementById('bx');
+  if(bxBtn){
+    bxBtn.addEventListener('click',function(){
+      vizStop();vw.classList.remove('on');
+    });
+  }
+})();
 </script>
 
 <style>
@@ -871,187 +1009,6 @@ function closeLb() {
   document.getElementById('lbImg').src = '';
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLb(); });
-
-// ══════════════════════════════════════════════════════════════════════════════
-// AUDIO VISUALIZER
-// ══════════════════════════════════════════════════════════════════════════════
-(function() {
-  const vizContainer = document.getElementById('vizContainer');
-  const waveCanvas   = document.getElementById('vizWave');
-  const barsCanvas   = document.getElementById('vizBars');
-  const waveCtx      = waveCanvas.getContext('2d');
-  const barsCtx      = barsCanvas.getContext('2d');
-
-  let audioCtx, analyser, source, rafId;
-  let connected = false;
-  let running   = false;
-
-  // Colors matching site theme
-  const GREEN      = '#00ff88';
-  const GREEN_DIM  = 'rgba(0,255,136,0.15)';
-  const PURPLE     = '#bc8cff';
-  const BG         = '#080c10';
-  const BORDER     = '#21262d';
-
-  function setupAudio() {
-    if (connected) return;
-    try {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      analyser = audioCtx.createAnalyser();
-      analyser.fftSize = 2048;
-      analyser.smoothingTimeConstant = 0.82;
-      source = audioCtx.createMediaElementSource(aud);
-      source.connect(analyser);
-      analyser.connect(audioCtx.destination);
-      connected = true;
-    } catch(e) {
-      console.warn('Visualizer:', e.message);
-    }
-  }
-
-  function resizeCanvases() {
-    const W = vizContainer.offsetWidth;
-    waveCanvas.width  = W;  waveCanvas.height  = 55;
-    barsCanvas.width  = W;  barsCanvas.height  = 55;
-  }
-
-  function drawWave() {
-    const W = waveCanvas.width;
-    const H = waveCanvas.height;
-    const bufLen = analyser.fftSize;
-    const data   = new Uint8Array(bufLen);
-    analyser.getByteTimeDomainData(data);
-
-    waveCtx.clearRect(0, 0, W, H);
-    // subtle bg
-    waveCtx.fillStyle = BG;
-    waveCtx.fillRect(0, 0, W, H);
-
-    // glow effect
-    waveCtx.shadowBlur  = 8;
-    waveCtx.shadowColor = GREEN;
-    waveCtx.strokeStyle = GREEN;
-    waveCtx.lineWidth   = 1.5;
-    waveCtx.beginPath();
-
-    const slice = W / bufLen;
-    let x = 0;
-    for (let i = 0; i < bufLen; i++) {
-      const v = data[i] / 128.0;
-      const y = (v * H) / 2;
-      if (i === 0) waveCtx.moveTo(x, y);
-      else         waveCtx.lineTo(x, y);
-      x += slice;
-    }
-    waveCtx.lineTo(W, H / 2);
-    waveCtx.stroke();
-
-    // fill below the wave
-    waveCtx.shadowBlur = 0;
-    waveCtx.fillStyle = GREEN_DIM;
-    waveCtx.lineTo(W, H);
-    waveCtx.lineTo(0, H);
-    waveCtx.closePath();
-    waveCtx.fill();
-  }
-
-  function drawBars() {
-    const W = barsCanvas.width;
-    const H = barsCanvas.height;
-    const bufLen = analyser.frequencyBinCount;
-    const data   = new Uint8Array(bufLen);
-    analyser.getByteFrequencyData(data);
-
-    barsCtx.clearRect(0, 0, W, H);
-    barsCtx.fillStyle = BG;
-    barsCtx.fillRect(0, 0, W, H);
-
-    // Only use first ~60% of freq bins (highs are usually silent)
-    const useBins = Math.floor(bufLen * 0.6);
-    const barW    = Math.max(2, (W / useBins) - 1);
-    const gap     = 1;
-
-    for (let i = 0; i < useBins; i++) {
-      const val  = data[i];
-      const barH = (val / 255) * H;
-      const x    = i * (barW + gap);
-
-      // Gradient: green at bottom, purple at top
-      const grad = barsCtx.createLinearGradient(0, H, 0, H - barH);
-      grad.addColorStop(0, GREEN);
-      grad.addColorStop(1, PURPLE);
-
-      barsCtx.shadowBlur  = barH > H * 0.6 ? 8 : 0;
-      barsCtx.shadowColor = GREEN;
-      barsCtx.fillStyle   = grad;
-      barsCtx.fillRect(x, H - barH, barW, barH);
-    }
-    barsCtx.shadowBlur = 0;
-  }
-
-  function drawIdle() {
-    // Flat line when paused
-    [waveCtx, barsCtx].forEach((ctx, i) => {
-      const W = i === 0 ? waveCanvas.width : barsCanvas.width;
-      const H = 55;
-      ctx.clearRect(0, 0, W, H);
-      ctx.fillStyle = BG;
-      ctx.fillRect(0, 0, W, H);
-      if (i === 0) {
-        ctx.strokeStyle = BORDER;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(0, H/2);
-        ctx.lineTo(W, H/2);
-        ctx.stroke();
-      }
-    });
-  }
-
-  function loop() {
-    if (!running) return;
-    drawWave();
-    drawBars();
-    rafId = requestAnimationFrame(loop);
-  }
-
-  function startViz() {
-    if (!connected) setupAudio();
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-    vizContainer.classList.add('active');
-    resizeCanvases();
-    running = true;
-    loop();
-  }
-
-  function stopViz() {
-    running = false;
-    cancelAnimationFrame(rafId);
-    drawIdle();
-  }
-
-  // Hook into existing audio element events
-  aud.addEventListener('play', startViz);
-  aud.addEventListener('pause', stopViz);
-  aud.addEventListener('ended', () => {
-    stopViz();
-    vizContainer.classList.remove('active');
-  });
-
-  // Resize handler
-  window.addEventListener('resize', () => {
-    if (vizContainer.classList.contains('active')) {
-      resizeCanvases();
-    }
-  });
-
-  // Also hook into existing close button to hide visualizer
-  document.getElementById('bx').addEventListener('click', () => {
-    stopViz();
-    vizContainer.classList.remove('active');
-  });
-
-})();
 
 </script>
 </body>
