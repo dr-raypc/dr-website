@@ -301,7 +301,7 @@
 
   /* ── PRINT / PDF STYLES ──────────────────────────────────── */
   @page {
-    margin: 12mm 14mm 12mm 14mm;
+    margin: 14mm 16mm 14mm 16mm;
     size: letter;
   }
 
@@ -316,8 +316,8 @@
     html, body {
       background: #fff !important;
       color: #000 !important;
-      font-size: 11px !important;
-      line-height: 1.5 !important;
+      font-size: 11.5px !important;
+      line-height: 1.6 !important;
     }
 
     .resume-wrap {
@@ -328,37 +328,36 @@
 
     /* Header */
     .r-header {
-      margin-bottom: 14px !important;
-      padding-bottom: 14px !important;
+      margin-bottom: 16px !important;
+      padding-bottom: 12px !important;
     }
     .r-name  { font-size: 26px !important; color: #000 !important; }
     .r-name span { color: #000 !important; }
     .r-title { font-size: 11px !important; color: #333 !important; }
     .r-contact a, .r-contact span { font-size: 10px !important; color: #333 !important; }
 
-    /* Sections — generous spacing between each */
-    .r-section { margin-bottom: 18px !important; }
+    /* Sections — clear breathing room between each */
+    .r-section { margin-bottom: 16px !important; }
     .r-section-head {
-      font-size: 10px !important;
+      font-size: 10.5px !important;
       font-weight: 700 !important;
       color: #000 !important;
       margin-bottom: 8px !important;
-      border-bottom: 1px solid #999 !important;
-      padding-bottom: 2px !important;
-      letter-spacing: 0.08em !important;
+      border-bottom: 1.5px solid #888 !important;
+      padding-bottom: 3px !important;
+      letter-spacing: 0.07em !important;
     }
     .r-section-head::before { color: #666 !important; }
-    .r-section-head::after  { background: #ccc !important; }
+    .r-section-head::after  { background: #bbb !important; }
 
     /* Summary */
     .r-summary {
-      font-size: 10px !important;
+      font-size: 10.5px !important;
       color: #222 !important;
-      line-height: 1.55 !important;
-      margin-bottom: 4px !important;
+      line-height: 1.6 !important;
     }
 
-    /* Skills — two column compact grid */
+    /* Skills — compact 2-col grid */
     .skills-table {
       display: grid !important;
       grid-template-columns: 1fr 1fr !important;
@@ -370,27 +369,27 @@
       border-radius: 3px !important;
       padding: 4px 8px !important;
     }
-    .skill-cat  { font-size: 9px !important; color: #000 !important; font-weight: 700 !important; margin-bottom: 1px !important; }
-    .skill-vals { font-size: 9px !important; color: #333 !important; }
+    .skill-cat  { font-size: 9.5px !important; color: #000 !important; font-weight: 700 !important; margin-bottom: 1px !important; }
+    .skill-vals { font-size: 9.5px !important; color: #333 !important; }
 
-    /* Jobs */
-    .r-job { margin-bottom: 12px !important; page-break-inside: avoid; }
+    /* Jobs — tighter spacing to fit all content on 2 pages */
+    .r-job { margin-bottom: 8px !important; page-break-inside: auto; }
     .r-job-header {
-      margin-bottom: 2px !important;
+      margin-bottom: 3px !important;
       display: grid !important;
       grid-template-columns: 1fr auto !important;
       gap: 8px !important;
     }
-    .r-job-title   { font-size: 11px !important; color: #000 !important; font-weight: 700 !important; }
+    .r-job-title   { font-size: 11.5px !important; color: #000 !important; font-weight: 700 !important; page-break-after: avoid; }
     .r-job-dates   { font-size: 10px !important; color: #555 !important; }
     .r-job-company { font-size: 10px !important; color: #444 !important; margin-bottom: 4px !important; }
 
     /* Bullets */
     .r-bullets li {
-      font-size: 10px !important;
+      font-size: 10.5px !important;
       color: #222 !important;
       padding: 2px 0 2px 14px !important;
-      line-height: 1.45 !important;
+      line-height: 1.55 !important;
     }
     .r-bullets li::before { color: #000 !important; top: 5px !important; }
 
@@ -398,18 +397,16 @@
     .r-edu {
       background: #f5f5f5 !important;
       border: 1px solid #ddd !important;
-      padding: 5px 12px !important;
-      margin-bottom: 5px !important;
+      padding: 6px 12px !important;
+      margin-bottom: 6px !important;
     }
-    .r-edu-degree { font-size: 10.5px !important; color: #000 !important; }
-    .r-edu-school { font-size: 9.5px !important; color: #444 !important; }
-    .r-edu-year   { font-size: 9.5px !important; color: #666 !important; }
+    .r-edu-degree { font-size: 11px !important; color: #000 !important; }
+    .r-edu-school { font-size: 10px !important; color: #444 !important; }
+    .r-edu-year   { font-size: 10px !important; color: #666 !important; }
 
-    /* Page breaks — experience CAN split, Entara always starts page 2 */
+    /* Natural page flow - no forced breaks */
     .r-section { page-break-inside: auto; }
     .r-section-head { page-break-after: avoid; }
-    .r-job-title { page-break-after: avoid; }
-    .r-job-entara { page-break-before: always !important; }
 
     a { color: #000 !important; text-decoration: none !important; }
   }
@@ -496,7 +493,7 @@
       </ul>
     </div>
 
-    <div class="r-job r-job-entara">
+    <div class="r-job">
       <div class="r-job-header">
         <div class="r-job-title">Escalation Engineer II · Onboarding Lead · DevSecOps</div>
         <div class="r-job-dates">May 2022 – Jan 2025</div>
