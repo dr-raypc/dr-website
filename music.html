@@ -291,11 +291,11 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
           <div class="mt">December 2020 — Deep House WIP</div>
           <div class="mm"><span>December 2020</span><span class="bdg au">&#9654; playable</span></div>
         </div>
-        <div class="ma"><a href="https://music.drraypc.com/2020_Deep%20house%20Teaser.wav?download=true" class="dlb" target="_blank">&#8595; WAV</a><button class="tgb">&#9660;</button></div>
+        <div class="ma"><a href="https://music.drraypc.com/2020_DeepHouseTeaser.wav?download=true" class="dlb" target="_blank">&#8595; WAV</a><button class="tgb">&#9660;</button></div>
       </div>
       <div class="mb"><div class="mbi">
         <div class="mf"></div>
-        <div><div class="ip" id="ip-dec2020a" onclick="play('dec2020a','2020 Deep House Mix | WIP','December 2020 - WAV','https://music.drraypc.com/2020_Deep%20house%20Teaser.wav')">
+        <div><div class="ip" id="ip-dec2020a" onclick="play('dec2020a','2020 Deep House Mix | WIP','December 2020 - WAV','https://music.drraypc.com/2020_DeepHouseTeaser.wav')">
   <button class="ipb" id="ipb-dec2020a">&#9654;</button>
   <div class="ipi"><div class="ipl">2020 Deep House Mix | WIP</div><div class="ips">December 2020 · WAV</div></div>
   <div class="viz"><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div><div class="vb"></div></div>
@@ -800,7 +800,6 @@ footer{border-top:1px solid var(--bd);padding:24px 2rem;max-width:1100px;margin:
 </footer>
 <script>
 const aud=new Audio();aud.preload='none';
-// Mirror audio element for visualizer (needs crossOrigin for Web Audio API)
 const vizAud=new Audio();vizAud.preload='none';vizAud.crossOrigin='anonymous';
 let cid=null;
 const pb=document.getElementById('pb'),bpp=document.getElementById('bpp'),br=document.getElementById('br'),bf=document.getElementById('bf'),bx=document.getElementById('bx'),pf=document.getElementById('pf'),pt=document.getElementById('pt'),tc=document.getElementById('tc'),td=document.getElementById('td'),vs=document.getElementById('vs'),vi=document.getElementById('vi'),ptl=document.getElementById('ptl'),psu=document.getElementById('psu');
@@ -813,7 +812,7 @@ function play(id,title,sub,src){
   ptl.textContent=title;
   psu.textContent=sub;
   aud.src=src;
-  vizAud.src=src;
+  vizAud.src=src+(src.indexOf('?')>-1?'&':'?')+'viz=1';
   aud.play().catch(function(e){
     var ipb=document.getElementById('ipb-'+id);
     if(ipb){ipb.innerHTML='&#9888;';ipb.style.background='#ff7b7b';}
@@ -853,42 +852,6 @@ function tog(id){document.getElementById(id).classList.toggle('open');}
     bc.width=W;bc.height=80;
   }
 
-  function tryAudio(){
-    if(connected)return;
-    try{
-      audioCtx=new(window.AudioContext||window.webkitAudioContext)();
-      analyser=audioCtx.createAnalyser();
-      analyser.fftSize=2048;
-      analyser.smoothingTimeConstant=0.82;
-      var src=audioCtx.createMediaElementSource(vizAud);
-      src.connect(analyser);
-      analyser.connect(audioCtx.destination);
-      connected=true;fallback=false;
-    }catch(e){
-      connected=true;fallback=true;
-    }
-  }
-
-  function drawReal(){
-    // bars
-    var W=bc.width,H2=bc.height;
-    var fd=new Uint8Array(analyser.frequencyBinCount);
-    analyser.getByteFrequencyData(fd);
-    bx.fillStyle=BG;bx.fillRect(0,0,W,H2);
-    var use=Math.floor(fd.length*0.55);
-    var bw=Math.max(2,(W/use)-1);
-    for(var i=0;i<use;i++){
-      var bh=(fd[i]/255)*H2;
-      if(bh<1)continue;
-      var g=bx.createLinearGradient(0,H2,0,H2-bh);
-      g.addColorStop(0,GR);g.addColorStop(0.5,BL);g.addColorStop(1,PU);
-      bx.fillStyle=g;
-      bx.shadowBlur=bh>H2*0.6?8:0;bx.shadowColor=GR;
-      bx.fillRect(i*(bw+1),H2-bh,bw,bh);
-    }
-    bx.shadowBlur=0;
-  }
-
   function drawFallback(){
     var W=bc.width,H2=bc.height;
     ph+=0.025;
@@ -916,9 +879,45 @@ function tog(id){document.getElementById(id).classList.toggle('open');}
     rafId=requestAnimationFrame(loop);
   }
 
+  function tryAudio(){
+    if(connected)return;
+    try{
+      audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+      analyser=audioCtx.createAnalyser();
+      analyser.fftSize=2048;
+      analyser.smoothingTimeConstant=0.82;
+      var src=audioCtx.createMediaElementSource(vizAud);
+      src.connect(analyser);
+      analyser.connect(audioCtx.destination);
+      connected=true;fallback=false;
+    }catch(e){
+      connected=true;fallback=true;
+    }
+  }
+
+  function drawReal(){
+    var W=bc.width,H2=bc.height;
+    var fd=new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(fd);
+    bx.fillStyle=BG;bx.fillRect(0,0,W,H2);
+    var use=Math.floor(fd.length*0.55);
+    var bw=Math.max(2,(W/use)-1);
+    for(var i=0;i<use;i++){
+      var bh=(fd[i]/255)*H2;
+      if(bh<1)continue;
+      var g=bx.createLinearGradient(0,H2,0,H2-bh);
+      g.addColorStop(0,GR);g.addColorStop(0.5,BL);g.addColorStop(1,PU);
+      bx.fillStyle=g;
+      bx.shadowBlur=bh>H2*0.6?8:0;bx.shadowColor=GR;
+      bx.fillRect(i*(bw+1),H2-bh,bw,bh);
+    }
+    bx.shadowBlur=0;
+  }
+
   function vizStart(){
     tryAudio();
     if(audioCtx&&audioCtx.state==='suspended')audioCtx.resume();
+    vizAud.play().catch(function(){});
     sz();
     running=true;
     loop();
@@ -933,14 +932,12 @@ function tog(id){document.getElementById(id).classList.toggle('open');}
   }
 
   // Hook into aud — same scope, guaranteed access
-  aud.addEventListener('play',function(){vizAud.play().catch(function(){});vizStart();});
-  aud.addEventListener('pause',function(){vizAud.pause();vizStop();});
-  aud.addEventListener('ended',function(){vizAud.pause();vizStop();});
-  aud.addEventListener('seeked',function(){vizAud.currentTime=aud.currentTime;});
-  // If vizAud loads fine, use real audio data
-  vizAud.addEventListener('canplay',function(){ fallback=false; });
-  // If vizAud can't load (CORS blocks file with spaces in URL), use animated fallback
-  vizAud.addEventListener('error',function(){ fallback=true; });
+  aud.addEventListener('play', vizStart);
+  aud.addEventListener('pause', function(){vizAud.pause();vizStop();});
+  aud.addEventListener('ended', function(){vizAud.pause();vizStop();});
+  aud.addEventListener('seeked', function(){vizAud.currentTime=aud.currentTime;});
+  vizAud.addEventListener('canplay', function(){fallback=false;});
+  vizAud.addEventListener('error',   function(){fallback=true;});
   window.addEventListener('resize',function(){if(running)sz();});
 
   // Also hook the close button to hide viz
