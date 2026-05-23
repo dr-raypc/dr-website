@@ -422,6 +422,42 @@
 </head>
 <body>
 
+<!-- Geo-restriction: US only -->
+<script>
+(function(){
+  fetch('https://ipapi.co/json/')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d && d.country_code && d.country_code !== 'US'){
+        document.body.innerHTML = [
+          '<style>',
+          '*{margin:0;padding:0;box-sizing:border-box;}',
+          'body{background:#080c10;color:#e6edf3;font-family:"JetBrains Mono",monospace;',
+          'display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem;}',
+          '.box{max-width:480px;text-align:center;}',
+          '.code{font-size:72px;font-weight:700;color:#ff7b7b;margin-bottom:12px;}',
+          '.title{font-size:18px;margin-bottom:10px;}',
+          '.msg{font-size:13px;color:#7d8590;line-height:1.8;margin-bottom:24px;}',
+          '.loc{color:#58a6ff;}',
+          '.lnk{display:inline-block;padding:10px 24px;border:1px solid #00ff88;',
+          'color:#00ff88;text-decoration:none;border-radius:6px;font-size:13px;}',
+          '.dim{color:#484f58;font-size:11px;margin-top:16px;}',
+          '</style>',
+          '<div class="box">',
+          '<div class="code">403</div>',
+          '<div class="title">Access Restricted</div>',
+          '<div class="msg">This content is only accessible from the United States.<br>',
+          'Your location: <span class="loc">' + (d.country_name||d.country_code) + '</span></div>',
+          '<a href="/music.html" class="lnk">&#9654; Music is still available</a>',
+          '<div class="dim">// drraypc.com</div>',
+          '</div>'
+        ].join('');
+      }
+    })
+    .catch(function(){});
+})();
+</script>
+
 <div class="topbar">
   <div class="topbar-left">
     <span>private</span> // raymond-mayer // resume.pdf
