@@ -562,7 +562,7 @@ loadRepos();
     flags:     {},      // { id: true } captured flags
     score:     0,
     count:     0,
-    total:     7        // 5 challenges + 2 bonus flags
+    total:     12       // 10 challenges + 2 bonus flags
   };
 
   var CTF_RANKS = [
@@ -680,6 +680,103 @@ loadRepos();
       check: function(a) { return a.trim() === 'password123'; },
       hint:  '"password123" — the most cracked password of all time. Stop using it.',
       flag:  'FLAG{never_use_password123}'
+    },
+
+    6: {
+      name: 'URL Decoded',
+      pts:  350,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-6: URL Decoded  [350 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  A threat actor exfiltrated data using percent-encoded URLs.</span>',
+        '<span class="t-white">  Decode the payload to reveal the flag.</span>',
+        '',
+        '<span class="t-key">  Encoded: </span><span class="t-accent">%46%4C%41%47%7B%75%72%6C%5F%65%6E%63%6F%64%65%64%7D</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{url_encoded}'; },
+      hint:  'Try: python3 -c "from urllib.parse import unquote; print(unquote(\'%46%4C%41%47...\'))"  or paste into CyberChef > URL Decode',
+      flag:  'FLAG{url_encoded}'
+    },
+
+    7: {
+      name: 'Morse Transmission',
+      pts:  400,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-7: Morse Transmission  [400 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  You intercept a shortwave radio transmission. It\'s in morse code.</span>',
+        '<span class="t-white">  The decoded message IS the flag (wrap it in FLAG{...}).</span>',
+        '',
+        '<span class="t-accent">  -.. / .-. / .-. / .- / -.-- / .--. / -.-.</span>',
+        '',
+        '<span class="t-dim">  Hint: D=-..</span>  <span class="t-dim">R=.-.</span>  <span class="t-dim">A=.-</span>  <span class="t-dim">Y=-.--</span>  <span class="t-dim">P=.--.  C=-.-.</span>',
+        '<span class="t-dim">  > Type FLAG{decoded_word} (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{drraypc}'; },
+      hint:  'D=-..  R=.-.  R=.-.  A=.-  Y=-.--  P=.--.  C=-.-.   Read each group, wrap in FLAG{...}',
+      flag:  'FLAG{drraypc}'
+    },
+
+    8: {
+      name: 'Caesar v2',
+      pts:  450,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-8: Caesar v2  [450 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  ROT13 is for amateurs. This one uses a different shift.</span>',
+        '<span class="t-white">  Each letter has been shifted forward by 7 positions.</span>',
+        '',
+        '<span class="t-key">  Ciphertext: </span><span class="t-accent">MSHN{jhlzhy_zopma_zlclu}</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{caesar_shift_seven}'; },
+      hint:  'Shift each letter back 7 (or forward 19). Try: echo "MSHN{jhlzhy_zopma_zlclu}" | tr \'A-Za-z\' \'T-ZA-St-za-s\'',
+      flag:  'FLAG{caesar_shift_seven}'
+    },
+
+    9: {
+      name: 'Topsy Turvy',
+      pts:  500,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-9: Topsy Turvy  [500 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Someone base64-encoded their flag, then reversed the string.</span>',
+        '<span class="t-white">  Undo both steps to recover the flag.</span>',
+        '',
+        '<span class="t-key">  Payload: </span><span class="t-accent">=0HZlR2bj5WZfRmbh9FZzMnczY3Myt3RBxkR</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{r3v3rs3d_and_encoded}'; },
+      hint:  'Step 1: reverse the string. Step 2: base64 -d the result. Try: echo "=0HZlR2bj5WZfRmbh9FZzMnczY3Myt3RBxkR" | rev | base64 -d',
+      flag:  'FLAG{r3v3rs3d_and_encoded}'
+    },
+
+    10: {
+      name: 'XOR Encryption',
+      pts:  600,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-10: XOR Encryption  [600 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Malware used single-byte XOR to obfuscate its config string.</span>',
+        '<span class="t-white">  The key is 0x5A. XOR each byte to recover the flag.</span>',
+        '',
+        '<span class="t-key">  Hex: </span><span class="t-accent">1c161b1d21223528053329052335</span>',
+        '       <span class="t-accent">2f28053c28333f343e27</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{xor_is_your_friend}'; },
+      hint:  'XOR every hex byte with 0x5A. In Python: bytes(b^0x5A for b in bytes.fromhex("1c161b1d...")).decode()',
+      flag:  'FLAG{xor_is_your_friend}'
     }
   };
 
@@ -845,9 +942,9 @@ loadRepos();
       '<span class="t-accent">contact</span>       <span class="t-val">jump to contact</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
       '<span class="t-warn">&#127988; CTF CHALLENGES</span>\n' +
-      '<span class="t-accent">ctf</span>           <span class="t-val">view all challenges &amp; score</span>\n' +
-      '<span class="t-accent">ctf-1</span> <span class="t-dim">thru</span> <span class="t-accent">ctf-5</span>  <span class="t-val">start a specific challenge</span>\n' +
-      '<span class="t-accent">scoreboard</span>    <span class="t-val">view leaderboard</span>\n' +
+      '<span class="t-accent">ctf</span>              <span class="t-val">view all 10 challenges &amp; score</span>\n' +
+      '<span class="t-accent">ctf-1</span> <span class="t-dim">thru</span> <span class="t-accent">ctf-10</span>  <span class="t-val">start a specific challenge</span>\n' +
+      '<span class="t-accent">scoreboard</span>       <span class="t-val">view leaderboard</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
       '<span class="t-purple">// there are hidden commands &amp; bonus flags... explore</span>';
   }
@@ -944,21 +1041,20 @@ loadRepos();
     var lines = [
       '',
       '<span class="t-warn">  &#127988; CTF CHALLENGES &mdash; CAPTURE THE FLAG</span>',
-      '<span class="t-dim">  ─────────────────────────────────────────────────────</span>',
-      '<span class="t-white">  Test your security skills. Find all 5 flags (+2 bonus).</span>',
-      '<span class="t-dim">  Current score: <span class="t-accent">' + ctf.score + ' pts</span>  Rank: <span class="t-key">' + ctfRank(ctf.score) + '</span></span>',
+      '<span class="t-dim">  ─────────────────────────────────────────────────────────────</span>',
+      '<span class="t-white">  Test your security skills. 10 challenges. Can you find them all?</span>',
+      '<span class="t-dim">  Score: <span class="t-accent">' + ctf.score + ' pts</span>  Rank: <span class="t-key">' + ctfRank(ctf.score) + '</span>  Flags: <span class="t-accent">' + ctf.count + '/10</span></span>',
       ''
     ];
-    var nums = [1,2,3,4,5];
-    for (var i=0; i<nums.length; i++) {
-      var n  = nums[i];
+    for (var n = 1; n <= 10; n++) {
       var ch = CTF_CHALLENGES[n];
-      var done = ctf.flags['ctf'+n] ? '<span class="t-accent">&#10003;</span>' : '<span class="t-dim">&#128274;</span>';
-      lines.push('  <span class="t-accent">ctf-' + n + '</span>  <span class="t-val">' + (ch.name + '                        ').slice(0,24) + '</span>  [' + ch.pts + ' pts]  ' + done);
+      var done = ctf.flags['ctf'+n] ? '<span class="t-accent">&#10003; solved</span>' : '<span class="t-dim">&#128274; locked</span>';
+      var namepad = (ch.name + '                        ').slice(0, 24);
+      lines.push('  <span class="t-accent">ctf-' + (n < 10 ? ' ' : '') + n + '</span>  <span class="t-val">' + namepad + '</span>  [' + ch.pts + ' pts]  ' + done);
     }
     lines.push('');
-    lines.push('<span class="t-dim">  Bonus flags hidden around the terminal — explore!</span>');
-    lines.push('<span class="t-dim">  Type ctf-1 through ctf-5 to begin a challenge.</span>');
+    lines.push('<span class="t-dim">  + bonus flags hidden around the terminal &mdash; explore!</span>');
+    lines.push('<span class="t-dim">  Type ctf-1 through ctf-10 to begin a challenge.</span>');
     lines.push('');
     return lines.join('\n');
   }
@@ -1214,43 +1310,73 @@ loadRepos();
 
       var pipeIdx = ri.indexOf(' | ');
       if (pipeIdx > -1) {
-        var pipeCmd = ri.slice(pipeIdx + 3).trim();
+        // Split all pipe stages: echo "x" | stage1 | stage2 | ...
+        var allPipes = ri.split(' | ');
+        var val = allPipes[0].replace(/^echo\s+/i,'').trim().replace(/^["']|["']$/g,'');
 
-        // base64 -d / base64 --decode
-        if (/^base64\s+(-d|--decode)/.test(pipeCmd) || pipeCmd === 'base64 -d' || pipeCmd === 'base64 -D') {
-          try {
-            var decoded = atob(plainArg.replace(/\s/g, ''));
-            return '<span class="t-val">' + decoded + '</span>';
-          } catch(e) {
-            return '<span class="t-err">base64: invalid input — check you copied the full string</span>';
+        for (var pi = 1; pi < allPipes.length; pi++) {
+          var stage = allPipes[pi].trim();
+
+          if (stage === 'rev') {
+            val = val.split('').reverse().join('');
+            continue;
           }
-        }
 
-        // tr a-zA-Z n-za-mN-ZA-M  →  ROT13
-        if (/^tr\s+a-zA-Z\s+n-za-mN-ZA-M/.test(pipeCmd)) {
-          var rot = plainArg.replace(/[a-zA-Z]/g, function(c) {
-            var base = c >= 'a' ? 97 : 65;
-            return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
-          });
-          return '<span class="t-val">' + rot + '</span>';
-        }
+          if (stage === 'base64 -d' || stage === 'base64 -D' || /^base64\s+(-d|--decode)/.test(stage)) {
+            try { val = atob(val.replace(/\s/g,'')); }
+            catch(e) { return '<span class="t-err">base64: invalid input — check you copied the full string</span>'; }
+            continue;
+          }
 
-        // xxd -r -p  →  hex to ASCII
-        if (/^xxd\s+(-r|-r\s+-p|-p\s+-r)/.test(pipeCmd) || pipeCmd === 'xxd -r -p') {
-          try {
-            var hex = plainArg.replace(/[^0-9a-fA-F]/g, '');
-            if (hex.length % 2 !== 0) return '<span class="t-err">xxd: odd number of hex digits</span>';
-            var hexOut = '';
-            for (var hi = 0; hi < hex.length; hi += 2) {
-              hexOut += String.fromCharCode(parseInt(hex.substr(hi, 2), 16));
+          if (/^tr\s+'?a-zA-Z'?\s+'?n-za-mN-ZA-M'?/.test(stage)) {
+            // ROT13
+            val = val.replace(/[a-zA-Z]/g, function(c) {
+              var b = c >= 'a' ? 97 : 65;
+              return String.fromCharCode(((c.charCodeAt(0)-b+13)%26)+b);
+            });
+            continue;
+          }
+
+          // tr 'A-Za-z' 'T-ZA-St-za-s'  →  arbitrary caesar (handles quoted args)
+          var trMatch = stage.match(/^tr\s+'([^']+)'\s+'([^']+)'/) ||
+                        stage.match(/^tr\s+"([^"]+)"\s+"([^"]+)"/) ||
+                        stage.match(/^tr\s+([A-Za-z0-9_.,+-]+)\s+([A-Za-z0-9_.,+-]+)/);
+          if (trMatch) {
+            function expandTrRange(s) {
+              var out = '';
+              for (var ti = 0; ti < s.length; ti++) {
+                if (s[ti+1] === '-' && s[ti+2]) {
+                  var from = s.charCodeAt(ti), to = s.charCodeAt(ti+2);
+                  for (var tc = from; tc <= to; tc++) out += String.fromCharCode(tc);
+                  ti += 2;
+                } else { out += s[ti]; }
+              }
+              return out;
             }
-            return '<span class="t-val">' + hexOut + '</span>';
-          } catch(e2) {
-            return '<span class="t-err">xxd: decode error</span>';
+            var trSrc = expandTrRange(trMatch[1]);
+            var trDst = expandTrRange(trMatch[2]);
+            val = val.split('').map(function(c) {
+              var idx = trSrc.indexOf(c);
+              return (idx > -1 && idx < trDst.length) ? trDst[idx] : c;
+            }).join('');
+            continue;
           }
+
+          if (/^xxd\s+(-r|-r\s+-p|-p\s+-r)/.test(stage) || stage === 'xxd -r -p') {
+            try {
+              var hex = val.replace(/[^0-9a-fA-F]/g,'');
+              if (hex.length % 2 !== 0) return '<span class="t-err">xxd: odd number of hex digits</span>';
+              var xo = '';
+              for (var xi = 0; xi < hex.length; xi += 2) xo += String.fromCharCode(parseInt(hex.substr(xi,2),16));
+              val = xo;
+            } catch(e2) { return '<span class="t-err">xxd: decode error</span>'; }
+            continue;
+          }
+
+          return '<span class="t-err">pipe: \'' + stage + '\' not supported — supported: base64 -d, rev, xxd -r -p, tr ROT13/caesar</span>';
         }
 
-        return '<span class="t-err">pipe: \'' + pipeCmd + '\' not supported here — try base64 -d, tr a-zA-Z n-za-mN-ZA-M, or xxd -r -p</span>';
+        return '<span class="t-val">' + val + '</span>';
       }
 
       // Plain echo
@@ -1258,19 +1384,35 @@ loadRepos();
     },
 
     python3: function(a, rawInput) {
-      if ((rawInput||'').indexOf('0b') > -1) {
-        return '<span class="t-dim">// hint: convert each 8-bit group to decimal, then look up ASCII</span>';
+      // XOR helper: python3 -c "bytes(b^0x5A for b in bytes.fromhex('...')).decode()"
+      var ri2 = rawInput || '';
+      if (ri2.indexOf('fromhex') > -1 && ri2.indexOf('^') > -1) {
+        var hexMatch = ri2.match(/fromhex\(['"]([0-9a-fA-F]+)['"]\)/);
+        var keyMatch = ri2.match(/\^\s*0[xX]([0-9a-fA-F]+)/);
+        if (hexMatch && keyMatch) {
+          try {
+            var hx = hexMatch[1], key = parseInt(keyMatch[1], 16), xorOut = '';
+            for (var xi2=0; xi2<hx.length; xi2+=2) xorOut += String.fromCharCode(parseInt(hx.substr(xi2,2),16)^key);
+            return '<span class="t-val">' + xorOut + '</span>';
+          } catch(e) { return '<span class="t-err">python3: decode error</span>'; }
+        }
       }
-      return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// this is a browser. there is no REPL here.</span>';
+      if (ri2.indexOf('0b') > -1) return '<span class="t-dim">// hint: convert each 8-bit group to decimal, then look up ASCII</span>';
+      return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// this is a browser, but XOR decoding works: python3 -c "bytes(b^0xKEY for b in bytes.fromhex(\'...\'))"</span>';
     },
 
     // ── CTF COMMANDS ─────────────────────────────────────────────────────
     ctf:       function()    { return cmdCtfOverview(); },
-    'ctf-1':   function()    { ctf.active=true; ctf.challenge=1; return CTF_CHALLENGES[1].intro.join('\n'); },
-    'ctf-2':   function()    { ctf.active=true; ctf.challenge=2; return CTF_CHALLENGES[2].intro.join('\n'); },
-    'ctf-3':   function()    { ctf.active=true; ctf.challenge=3; return CTF_CHALLENGES[3].intro.join('\n'); },
-    'ctf-4':   function()    { ctf.active=true; ctf.challenge=4; return CTF_CHALLENGES[4].intro.join('\n'); },
-    'ctf-5':   function()    { ctf.active=true; ctf.challenge=5; return CTF_CHALLENGES[5].intro.join('\n'); },
+    'ctf-1':   function()    { ctf.active=true; ctf.challenge=1;  return CTF_CHALLENGES[1].intro.join('\n'); },
+    'ctf-2':   function()    { ctf.active=true; ctf.challenge=2;  return CTF_CHALLENGES[2].intro.join('\n'); },
+    'ctf-3':   function()    { ctf.active=true; ctf.challenge=3;  return CTF_CHALLENGES[3].intro.join('\n'); },
+    'ctf-4':   function()    { ctf.active=true; ctf.challenge=4;  return CTF_CHALLENGES[4].intro.join('\n'); },
+    'ctf-5':   function()    { ctf.active=true; ctf.challenge=5;  return CTF_CHALLENGES[5].intro.join('\n'); },
+    'ctf-6':   function()    { ctf.active=true; ctf.challenge=6;  return CTF_CHALLENGES[6].intro.join('\n'); },
+    'ctf-7':   function()    { ctf.active=true; ctf.challenge=7;  return CTF_CHALLENGES[7].intro.join('\n'); },
+    'ctf-8':   function()    { ctf.active=true; ctf.challenge=8;  return CTF_CHALLENGES[8].intro.join('\n'); },
+    'ctf-9':   function()    { ctf.active=true; ctf.challenge=9;  return CTF_CHALLENGES[9].intro.join('\n'); },
+    'ctf-10':  function()    { ctf.active=true; ctf.challenge=10; return CTF_CHALLENGES[10].intro.join('\n'); },
     scoreboard: function()   { return cmdScoreboard(); }
   };
 
