@@ -97,7 +97,7 @@
   .term-body::-webkit-scrollbar { width: 4px; }
   .term-body::-webkit-scrollbar-track { background: var(--bg2); }
   .term-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-  .term-output-line { font-family: var(--mono); font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .term-output-line { font-family: var(--mono); font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; user-select: text; -webkit-user-select: text; }
   .term-input-row { display: flex; align-items: center; gap: 0; margin-top: 4px; }
   .term-prompt-label { font-family: var(--mono); font-size: 13px; color: var(--green); white-space: nowrap; flex-shrink: 0; }
   .term-input { flex: 1; background: transparent; border: none; outline: none; font-family: var(--mono); font-size: 13px; color: var(--text); caret-color: var(--green); padding: 0 4px; }
@@ -283,7 +283,7 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-terminal" id="heroTerminal" onclick="focusTermInput()">
+    <div class="hero-terminal" id="heroTerminal">
       <div class="term-bar">
         <div class="term-dot td-r"></div>
         <div class="term-dot td-y"></div>
@@ -1148,7 +1148,6 @@ loadRepos();
       return '<span class="t-warn">"' + a[0] + '" [New File]</span>\n<span class="t-dim">:wq to save, :q! to quit</span>';
     },
     nano:       function() { return '<span class="t-dim">// vim is waiting. it judges you.</span>'; },
-    python3:    function() { return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// this is a browser. there is no REPL here.</span>'; },
     python:     function() { return '<span class="t-err">python: command not found. use python3.</span>'; },
     systemctl:  function(a) {
       var s=a[1]||'drraypc'; var c=a[0]||'status';
@@ -1199,6 +1198,72 @@ loadRepos();
     cry:      function() { return '<span class="t-dim">there there. it\'s just a terminal.</span>'; },
     yes:      function(a) { return '<span class="t-val">' + Array(20).fill(a[0]||'y').join('\n') + '</span>\n<span class="t-dim">// ^C to stop</span>'; },
 
+    // ── ECHO WITH PIPE SUPPORT ────────────────────────────────────────────
+    // Works during CTF challenges so you can decode without leaving the terminal:
+    //   echo "ZkxBR3..." | base64 -d
+    //   echo "SYNT{..." | tr a-zA-Z n-za-mN-ZA-M
+    //   echo "464c4..." | xxd -r -p
+    echo: function(a, rawInput) {
+      var ri = rawInput || '';
+      // Extract the string between echo and the pipe (or end of line)
+      var plainArg = ri
+        .replace(/^echo\s+/i, '')
+        .replace(/\s*\|.*$/, '')
+        .trim()
+        .replace(/^["']|["']$/g, '');
+
+      var pipeIdx = ri.indexOf(' | ');
+      if (pipeIdx > -1) {
+        var pipeCmd = ri.slice(pipeIdx + 3).trim();
+
+        // base64 -d / base64 --decode
+        if (/^base64\s+(-d|--decode)/.test(pipeCmd) || pipeCmd === 'base64 -d' || pipeCmd === 'base64 -D') {
+          try {
+            var decoded = atob(plainArg.replace(/\s/g, ''));
+            return '<span class="t-val">' + decoded + '</span>';
+          } catch(e) {
+            return '<span class="t-err">base64: invalid input — check you copied the full string</span>';
+          }
+        }
+
+        // tr a-zA-Z n-za-mN-ZA-M  →  ROT13
+        if (/^tr\s+a-zA-Z\s+n-za-mN-ZA-M/.test(pipeCmd)) {
+          var rot = plainArg.replace(/[a-zA-Z]/g, function(c) {
+            var base = c >= 'a' ? 97 : 65;
+            return String.fromCharCode(((c.charCodeAt(0) - base + 13) % 26) + base);
+          });
+          return '<span class="t-val">' + rot + '</span>';
+        }
+
+        // xxd -r -p  →  hex to ASCII
+        if (/^xxd\s+(-r|-r\s+-p|-p\s+-r)/.test(pipeCmd) || pipeCmd === 'xxd -r -p') {
+          try {
+            var hex = plainArg.replace(/[^0-9a-fA-F]/g, '');
+            if (hex.length % 2 !== 0) return '<span class="t-err">xxd: odd number of hex digits</span>';
+            var hexOut = '';
+            for (var hi = 0; hi < hex.length; hi += 2) {
+              hexOut += String.fromCharCode(parseInt(hex.substr(hi, 2), 16));
+            }
+            return '<span class="t-val">' + hexOut + '</span>';
+          } catch(e2) {
+            return '<span class="t-err">xxd: decode error</span>';
+          }
+        }
+
+        return '<span class="t-err">pipe: \'' + pipeCmd + '\' not supported here — try base64 -d, tr a-zA-Z n-za-mN-ZA-M, or xxd -r -p</span>';
+      }
+
+      // Plain echo
+      return '<span class="t-val">' + plainArg + '</span>';
+    },
+
+    python3: function(a, rawInput) {
+      if ((rawInput||'').indexOf('0b') > -1) {
+        return '<span class="t-dim">// hint: convert each 8-bit group to decimal, then look up ASCII</span>';
+      }
+      return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// this is a browser. there is no REPL here.</span>';
+    },
+
     // ── CTF COMMANDS ─────────────────────────────────────────────────────
     ctf:       function()    { return cmdCtfOverview(); },
     'ctf-1':   function()    { ctf.active=true; ctf.challenge=1; return CTF_CHALLENGES[1].intro.join('\n'); },
@@ -1239,17 +1304,31 @@ loadRepos();
     var old   = termBody.querySelector('.term-input-row');
     if (old) old.remove();
 
-    // If a CTF challenge is waiting for an answer, route ALL input there
+    // When a CTF challenge is active:
+    //   - 'hint' always routes to the CTF handler
+    //   - Known commands (echo, clear, nmap, etc.) still execute normally
+    //   - Anything unrecognised is treated as a flag answer submission
     if (ctf.active) {
-      ctfHandleAnswer(raw.trim());
-      addPrompt();
-      return;
+      if (cmd === 'hint') {
+        ctfHandleAnswer('hint');
+        addPrompt();
+        return;
+      }
+      var knownCmd = CMDS[cmd] || CMDS[raw.toLowerCase()];
+      if (!knownCmd) {
+        // Not a recognised command — treat as flag submission
+        ctfHandleAnswer(raw.trim());
+        addPrompt();
+        return;
+      }
+      // It IS a known command — fall through and execute it normally
+      // (ctf.active stays true; user can keep using the terminal to decode)
     }
 
     var fn = CMDS[cmd];
     if (!fn) fn = CMDS[raw.toLowerCase()]; // multi-word lookup
     if (fn) {
-      var r = fn(args);
+      var r = fn(args, raw); // pass raw for pipe parsing in echo
       if (r === '__CLEAR__') { boot(); return; }
       if (r === '__MATRIX__') { runMatrix(); return; }
       if (r !== undefined && r !== '') addLine(r);
@@ -1354,6 +1433,12 @@ loadRepos();
   }
 
   window.focusTermInput = function() { if (inputEl) inputEl.focus(); };
+
+  // Only focus the input on click if the user isn't trying to select/copy text
+  document.getElementById('heroTerminal').addEventListener('mouseup', function(e) {
+    var sel = window.getSelection ? window.getSelection().toString() : '';
+    if (!sel && inputEl) inputEl.focus();
+  });
 
   function revealHero() {
     var name = document.querySelector('.hero-name');
