@@ -29,9 +29,7 @@
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--text);
@@ -42,23 +40,15 @@
     overflow-x: hidden;
   }
 
-  /* ── SCANLINE OVERLAY ─────────────────────────────────────── */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background: repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(0,0,0,0.03) 2px,
-      rgba(0,0,0,0.03) 4px
-    );
+    background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
     pointer-events: none;
     z-index: 9999;
   }
 
-  /* ── NAV ──────────────────────────────────────────────────── */
   nav {
     position: fixed;
     top: 0; left: 0; right: 0;
@@ -72,82 +62,18 @@
     justify-content: space-between;
     height: 56px;
   }
+  .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--green); display: flex; align-items: center; gap: 8px; }
+  .nav-logo::before { content: '>'; color: var(--muted); }
+  .nav-links { display: flex; gap: 0; list-style: none; }
+  .nav-links a { display: block; padding: 6px 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid transparent; border-radius: 4px; transition: all 0.2s; letter-spacing: 0.03em; }
+  .nav-links a:hover { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+  .nav-status { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-  .nav-logo {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--green);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+  .hero { min-height: 100vh; display: flex; align-items: center; padding: 80px 2rem 60px; max-width: 1100px; margin: 0 auto; }
+  .hero-inner { width: 100%; }
 
-  .nav-logo::before {
-    content: '>';
-    color: var(--muted);
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 0;
-    list-style: none;
-  }
-
-  .nav-links a {
-    display: block;
-    padding: 6px 14px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    transition: all 0.2s;
-    letter-spacing: 0.03em;
-  }
-
-  .nav-links a:hover {
-    color: var(--green);
-    border-color: var(--green);
-    background: var(--green-dim);
-  }
-
-  .nav-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .status-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* ── HERO ─────────────────────────────────────────────────── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 80px 2rem 60px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .hero-inner {
-    width: 100%;
-  }
-
-  /* ── INTERACTIVE TERMINAL ───────────────────────────────── */
   .hero-terminal {
     background: var(--bg2);
     border: 1px solid var(--border);
@@ -157,76 +83,24 @@
     margin-bottom: 48px;
     box-shadow: 0 0 60px rgba(0,255,136,0.07);
   }
-
-  .term-bar {
-    background: var(--bg3);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border-bottom: 1px solid var(--border);
-    user-select: none;
-  }
-
+  .term-bar { background: var(--bg3); padding: 10px 16px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); user-select: none; }
   .term-dot { width: 12px; height: 12px; border-radius: 50%; cursor: default; }
   .td-r { background: #ff5f57; }
   .td-y { background: #febc2e; }
   .td-g { background: #28c840; }
+  .term-title { flex: 1; text-align: center; font-family: var(--mono); font-size: 11px; color: var(--dim); }
+  /* CTF score badge in terminal bar */
+  .ctf-score-badge { font-family: var(--mono); font-size: 10px; color: var(--green); background: var(--green-dim); border: 1px solid rgba(0,255,136,0.3); border-radius: 4px; padding: 2px 8px; display: none; white-space: nowrap; }
+  .ctf-score-badge.visible { display: block; }
 
-  .term-title {
-    flex: 1;
-    text-align: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim);
-  }
-
-  .term-body {
-    padding: 16px 20px;
-    height: 320px;
-    overflow-y: auto;
-    scroll-behavior: smooth;
-    cursor: text;
-  }
-
+  .term-body { padding: 16px 20px; height: 320px; overflow-y: auto; scroll-behavior: smooth; cursor: text; }
   .term-body::-webkit-scrollbar { width: 4px; }
   .term-body::-webkit-scrollbar-track { background: var(--bg2); }
   .term-body::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
-
-  .term-output-line {
-    font-family: var(--mono);
-    font-size: 13px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-    word-break: break-all;
-  }
-
-  .term-input-row {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    margin-top: 4px;
-  }
-
-  .term-prompt-label {
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--green);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .term-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text);
-    caret-color: var(--green);
-    padding: 0 4px;
-  }
+  .term-output-line { font-family: var(--mono); font-size: 13px; line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .term-input-row { display: flex; align-items: center; gap: 0; margin-top: 4px; }
+  .term-prompt-label { font-family: var(--mono); font-size: 13px; color: var(--green); white-space: nowrap; flex-shrink: 0; }
+  .term-input { flex: 1; background: transparent; border: none; outline: none; font-family: var(--mono); font-size: 13px; color: var(--text); caret-color: var(--green); padding: 0 4px; }
 
   .t-prompt { color: var(--green); }
   .t-key    { color: var(--blue); }
@@ -237,581 +111,105 @@
   .t-dim    { color: var(--dim); }
   .t-purple { color: #bc8cff; }
   .t-white  { color: var(--text); }
+  .t-flag   { color: #ffd700; font-weight: bold; }
 
   @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0; } }
   @keyframes fadeIn { to { opacity: 1; } }
 
-  .hero-name {
-    font-family: var(--sans);
-    font-size: clamp(36px, 6vw, 64px);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 12px;
-    opacity: 0;
-    animation: none;
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-
+  .hero-name { font-family: var(--sans); font-size: clamp(36px, 6vw, 64px); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--text); margin-bottom: 12px; opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease, transform 0.5s ease; }
   .hero-name span { color: var(--green); }
-
-  .hero-sub {
-    font-family: var(--mono);
-    font-size: 14px;
-    color: var(--muted);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: none;
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s;
-  }
-
+  .hero-sub { font-family: var(--mono); font-size: 14px; color: var(--muted); margin-bottom: 32px; opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease 0.1s, transform 0.5s ease 0.1s; }
   .hero-sub::before { content: '// '; color: var(--dim); }
+  .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s; }
 
-  @keyframes slideUp {
-    from { opacity:0; transform: translateY(16px); }
-    to   { opacity:1; transform: translateY(0); }
-  }
+  .btn-primary { padding: 10px 24px; background: var(--green); color: #000; font-family: var(--mono); font-size: 13px; font-weight: 700; border: none; border-radius: 6px; cursor: pointer; text-decoration: none; transition: all 0.2s; letter-spacing: 0.02em; }
+  .btn-primary:hover { background: var(--green2); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,255,136,0.3); }
+  .btn-outline { padding: 10px 24px; background: transparent; color: var(--text); font-family: var(--mono); font-size: 13px; border: 1px solid var(--border2); border-radius: 6px; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-outline:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-dim); }
 
-  .hero-cta {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    opacity: 0;
-    animation: none;
-    opacity: 0;
-    transform: translateY(16px);
-    transition: opacity 0.5s ease 0.2s, transform 0.5s ease 0.2s;
-  }
-
-  .btn-primary {
-    padding: 10px 24px;
-    background: var(--green);
-    color: #000;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 700;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-    letter-spacing: 0.02em;
-  }
-
-  .btn-primary:hover {
-    background: var(--green2);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 20px rgba(0,255,136,0.3);
-  }
-
-  .btn-outline {
-    padding: 10px 24px;
-    background: transparent;
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 13px;
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .btn-outline:hover {
-    border-color: var(--blue);
-    color: var(--blue);
-    background: var(--blue-dim);
-  }
-
-  /* ── SECTIONS ─────────────────────────────────────────────── */
-  section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 80px 2rem;
-  }
-
-  .section-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
+  section { max-width: 1100px; margin: 0 auto; padding: 80px 2rem; }
+  .section-label { font-family: var(--mono); font-size: 11px; color: var(--green); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
   .section-label::before { content: '//'; color: var(--dim); }
-  .section-label::after  {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-    max-width: 120px;
-  }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); max-width: 120px; }
+  .section-title { font-size: clamp(22px, 3vw, 32px); font-weight: 600; letter-spacing: -0.01em; color: var(--text); margin-bottom: 40px; }
 
-  .section-title {
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    color: var(--text);
-    margin-bottom: 40px;
-  }
-
-  /* ── ABOUT ────────────────────────────────────────────────── */
-  .about-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
   @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
-
-  .about-text p {
-    color: var(--muted);
-    margin-bottom: 16px;
-    font-size: 15px;
-    line-height: 1.8;
-  }
-
-  .about-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .about-card-header {
-    background: var(--bg3);
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
+  .about-text p { color: var(--muted); margin-bottom: 16px; font-size: 15px; line-height: 1.8; }
+  .about-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .about-card-header { background: var(--bg3); padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--dim); display: flex; align-items: center; gap: 8px; }
   .about-card-header::before { content: '$'; color: var(--green); }
-
   .about-card-body { padding: 16px; }
-
-  .stat-row {
-    display: flex;
-    justify-content: space-between;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 12px;
-  }
-
+  .stat-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 12px; }
   .stat-row:last-child { border-bottom: none; }
   .stat-key { color: var(--muted); }
   .stat-val { color: var(--green); }
 
-  /* ── SKILLS ───────────────────────────────────────────────── */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .skill-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .skill-card:hover {
-    border-color: var(--green);
-    box-shadow: 0 0 24px var(--green-glow);
-  }
-
-  .skill-card-title {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--green);
-    margin-bottom: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .skill-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .skill-card:hover { border-color: var(--green); box-shadow: 0 0 24px var(--green-glow); }
+  .skill-card-title { font-family: var(--mono); font-size: 12px; color: var(--green); margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
   .skill-card-title::before { content: '>'; color: var(--dim); }
-
-  .skill-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  .tag {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 4px;
-    background: var(--bg3);
-    border: 1px solid var(--border2);
-    color: var(--muted);
-    transition: all 0.2s;
-  }
-
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag { font-family: var(--mono); font-size: 11px; padding: 3px 10px; border-radius: 4px; background: var(--bg3); border: 1px solid var(--border2); color: var(--muted); transition: all 0.2s; }
   .tag:hover { border-color: var(--blue); color: var(--blue); }
 
-  /* ── REPOS ────────────────────────────────────────────────── */
-  .repos-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-    gap: 16px;
-  }
-
-  .filter-bar {
-    display: flex;
-    gap: 6px;
-    flex-wrap: wrap;
-  }
-
-  .filter-btn {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 5px 12px;
-    border: 1px solid var(--border2);
-    border-radius: 4px;
-    background: transparent;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .filter-btn.active, .filter-btn:hover {
-    border-color: var(--green);
-    color: var(--green);
-    background: var(--green-dim);
-  }
-
-  .repos-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 16px;
-  }
-
-  .repo-card {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-    transition: all 0.25s;
-    text-decoration: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .repo-card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--green), var(--blue));
-    opacity: 0;
-    transition: opacity 0.25s;
-  }
-
-  .repo-card:hover {
-    border-color: var(--border2);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-
+  .repos-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; flex-wrap: wrap; gap: 16px; }
+  .filter-bar { display: flex; gap: 6px; flex-wrap: wrap; }
+  .filter-btn { font-family: var(--mono); font-size: 11px; padding: 5px 12px; border: 1px solid var(--border2); border-radius: 4px; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; }
+  .filter-btn.active, .filter-btn:hover { border-color: var(--green); color: var(--green); background: var(--green-dim); }
+  .repos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  .repo-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 20px; transition: all 0.25s; text-decoration: none; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
+  .repo-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--green), var(--blue)); opacity: 0; transition: opacity 0.25s; }
+  .repo-card:hover { border-color: var(--border2); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
   .repo-card:hover::before { opacity: 1; }
-
-  .repo-name {
-    font-family: var(--mono);
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--blue);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
+  .repo-name { font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--blue); display: flex; align-items: center; gap: 8px; }
   .repo-name-icon { font-size: 14px; }
-
-  .repo-desc {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    flex: 1;
-  }
-
-  .repo-meta {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  .repo-lang {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .lang-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-  }
-
-  .repo-stars {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--muted);
-  }
-
-  .repo-updated {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--dim);
-    margin-left: auto;
-  }
-
-  .repos-loading {
-    text-align: center;
-    padding: 60px;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--muted);
-  }
-
+  .repo-desc { font-size: 13px; color: var(--muted); line-height: 1.6; flex: 1; }
+  .repo-meta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .repo-lang { display: flex; align-items: center; gap: 5px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .repo-stars { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .repo-updated { font-family: var(--mono); font-size: 10px; color: var(--dim); margin-left: auto; }
+  .repos-loading { text-align: center; padding: 60px; font-family: var(--mono); font-size: 13px; color: var(--muted); }
   .repos-loading::before { content: '$ '; color: var(--green); }
 
-  /* ── CONTACT ──────────────────────────────────────────────── */
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1.4fr;
-    gap: 48px;
-    align-items: start;
-  }
-
+  .contact-wrap { display: grid; grid-template-columns: 1fr 1.4fr; gap: 48px; align-items: start; }
   @media (max-width: 700px) { .contact-wrap { grid-template-columns: 1fr; } }
-
-  .contact-info p {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.8;
-    margin-bottom: 24px;
-  }
-
+  .contact-info p { color: var(--muted); font-size: 15px; line-height: 1.8; margin-bottom: 24px; }
   .contact-links { display: flex; flex-direction: column; gap: 10px; }
-
-  .contact-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
+  .contact-link { display: flex; align-items: center; gap: 12px; font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .contact-link:hover { color: var(--green); }
-
-  .cl-icon {
-    width: 32px; height: 32px;
-    background: var(--bg3);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-  }
-
-  /* ── FORM ─────────────────────────────────────────────────── */
-  .contact-form {
-    background: var(--bg2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-  }
-
-  .form-header {
-    background: var(--bg3);
-    padding: 12px 20px;
-    border-bottom: 1px solid var(--border);
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
+  .cl-icon { width: 32px; height: 32px; background: var(--bg3); border: 1px solid var(--border); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .contact-form { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .form-header { background: var(--bg3); padding: 12px 20px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--dim); display: flex; align-items: center; gap: 8px; }
   .form-header::before { content: '$'; color: var(--green); }
-
   .form-body { padding: 24px; }
-
   .form-group { margin-bottom: 18px; }
-
-  .form-label {
-    display: block;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--green);
-    margin-bottom: 6px;
-    letter-spacing: 0.05em;
-  }
-
-  .form-input, .form-textarea {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border2);
-    border-radius: 6px;
-    padding: 10px 14px;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--text);
-    outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
-    resize: vertical;
-  }
-
-  .form-input:focus, .form-textarea:focus {
-    border-color: var(--green);
-    box-shadow: 0 0 0 3px var(--green-dim);
-  }
-
+  .form-label { display: block; font-family: var(--mono); font-size: 11px; color: var(--green); margin-bottom: 6px; letter-spacing: 0.05em; }
+  .form-input, .form-textarea { width: 100%; background: var(--bg); border: 1px solid var(--border2); border-radius: 6px; padding: 10px 14px; font-family: var(--mono); font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s, box-shadow 0.2s; resize: vertical; }
+  .form-input:focus, .form-textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px var(--green-dim); }
   .form-textarea { min-height: 120px; }
+  .form-submit { width: 100%; padding: 12px; background: var(--green); color: #000; font-family: var(--mono); font-size: 13px; font-weight: 700; border: none; border-radius: 6px; cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em; }
+  .form-submit:hover { background: var(--green2); box-shadow: 0 4px 20px rgba(0,255,136,0.3); }
 
-  .form-submit {
-    width: 100%;
-    padding: 12px;
-    background: var(--green);
-    color: #000;
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 700;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.05em;
-  }
-
-  .form-submit:hover {
-    background: var(--green2);
-    box-shadow: 0 4px 20px rgba(0,255,136,0.3);
-  }
-
-  /* ── FOOTER ───────────────────────────────────────────────── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 24px 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-
-  .footer-copy {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim);
-  }
-
+  footer { border-top: 1px solid var(--border); padding: 24px 2rem; max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .footer-copy { font-family: var(--mono); font-size: 11px; color: var(--dim); }
   .footer-copy span { color: var(--green); }
-
-  .footer-links {
-    display: flex;
-    gap: 16px;
-  }
-
-  .footer-links a {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--dim);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
+  .footer-links { display: flex; gap: 16px; }
+  .footer-links a { font-family: var(--mono); font-size: 11px; color: var(--dim); text-decoration: none; transition: color 0.2s; }
   .footer-links a:hover { color: var(--green); }
 
-  /* ── DIVIDER ──────────────────────────────────────────────── */
-  .section-divider {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    border-top: 1px solid var(--border);
-  }
+  .section-divider { max-width: 1100px; margin: 0 auto; padding: 0 2rem; border-top: 1px solid var(--border); }
 
-
-  /* ── BUY ME A PIZZA ──────────────────────────────────────── */
-  .bmc-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
-    font-family: var(--mono);
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--green);
-    background: transparent;
-    border: 1px solid var(--green);
-    border-radius: 6px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-  }
-  .bmc-btn:hover {
-    background: var(--green);
-    color: #000;
-    box-shadow: 0 0 20px var(--green-glow);
-    transform: translateY(-1px);
-  }
+  .bmc-btn { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--green); background: transparent; border: 1px solid var(--green); border-radius: 6px; text-decoration: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.03em; white-space: nowrap; }
+  .bmc-btn:hover { background: var(--green); color: #000; box-shadow: 0 0 20px var(--green-glow); transform: translateY(-1px); }
   .bmc-btn .bmc-icon { font-size: 15px; }
-  .bmc-btn-lg {
-    padding: 11px 24px;
-    font-size: 13px;
-  }
-  .bmc-section {
-    text-align: center;
-    padding: 56px 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .bmc-section p {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 20px;
-  }
+  .bmc-btn-lg { padding: 11px 24px; font-size: 13px; }
+  .bmc-section { text-align: center; padding: 56px 2rem; max-width: 1100px; margin: 0 auto; }
+  .bmc-section p { font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 20px; }
   .bmc-section p::before { content: '// '; color: var(--dim); }
 
-  /* ── LANG COLORS ──────────────────────────────────────────── */
   .lang-powershell { background: #012456; }
   .lang-python     { background: #3572A5; }
   .lang-bash       { background: #89e051; }
@@ -832,7 +230,6 @@
 <!-- Geo-restriction: US only (music page exempt) -->
 <script>
 (function(){
-  // Only block on non-music pages
   if(window.location.pathname.indexOf('music') > -1) return;
   fetch('https://ipapi.co/json/')
     .then(function(r){ return r.json(); })
@@ -863,7 +260,7 @@
         ].join('');
       }
     })
-    .catch(function(){}); // fail silently — never block on API error
+    .catch(function(){});
 })();
 </script>
 
@@ -892,10 +289,10 @@
         <div class="term-dot td-y"></div>
         <div class="term-dot td-g"></div>
         <div class="term-title">bash — drraypc.com &nbsp;|&nbsp; type 'help' to begin</div>
+        <!-- CTF score badge — shown once CTF is started -->
+        <div class="ctf-score-badge" id="ctfBadge">&#127988; 0 pts</div>
       </div>
-      <div class="term-body" id="termBody">
-        <!-- output injected by JS -->
-      </div>
+      <div class="term-body" id="termBody"></div>
     </div>
 
     <h1 class="hero-name">Raymond <span>Mayer</span></h1>
@@ -945,73 +342,53 @@
     <div class="skill-card">
       <div class="skill-card-title">Cybersecurity</div>
       <div class="skill-tags">
-        <span class="tag">Incident Response</span>
-        <span class="tag">Ransomware Recovery</span>
-        <span class="tag">Threat Detection</span>
-        <span class="tag">AD Hardening</span>
-        <span class="tag">CrowdStrike</span>
-        <span class="tag">SentinelOne</span>
-        <span class="tag">SIEM</span>
-        <span class="tag">Forensics</span>
+        <span class="tag">Incident Response</span><span class="tag">Ransomware Recovery</span>
+        <span class="tag">Threat Detection</span><span class="tag">AD Hardening</span>
+        <span class="tag">CrowdStrike</span><span class="tag">SentinelOne</span>
+        <span class="tag">SIEM</span><span class="tag">Forensics</span>
       </div>
     </div>
     <div class="skill-card">
       <div class="skill-card-title">Systems Engineering</div>
       <div class="skill-tags">
-        <span class="tag">Windows Server</span>
-        <span class="tag">RHEL / Linux</span>
-        <span class="tag">Active Directory</span>
-        <span class="tag">Azure AD</span>
-        <span class="tag">Exchange</span>
-        <span class="tag">DNS</span>
-        <span class="tag">Group Policy</span>
-        <span class="tag">PKI</span>
+        <span class="tag">Windows Server</span><span class="tag">RHEL / Linux</span>
+        <span class="tag">Active Directory</span><span class="tag">Azure AD</span>
+        <span class="tag">Exchange</span><span class="tag">DNS</span>
+        <span class="tag">Group Policy</span><span class="tag">PKI</span>
       </div>
     </div>
     <div class="skill-card">
       <div class="skill-card-title">Automation & Scripting</div>
       <div class="skill-tags">
-        <span class="tag">PowerShell</span>
-        <span class="tag">Python</span>
-        <span class="tag">Bash</span>
-        <span class="tag">Ansible</span>
-        <span class="tag">Terraform</span>
-        <span class="tag">GitHub Actions</span>
+        <span class="tag">PowerShell</span><span class="tag">Python</span>
+        <span class="tag">Bash</span><span class="tag">Ansible</span>
+        <span class="tag">Terraform</span><span class="tag">GitHub Actions</span>
         <span class="tag">Azure DevOps</span>
       </div>
     </div>
     <div class="skill-card">
       <div class="skill-card-title">Cloud & Infrastructure</div>
       <div class="skill-tags">
-        <span class="tag">Microsoft Azure</span>
-        <span class="tag">AWS</span>
-        <span class="tag">Google Cloud</span>
-        <span class="tag">VMware</span>
-        <span class="tag">Hyper-V</span>
-        <span class="tag">Docker</span>
+        <span class="tag">Microsoft Azure</span><span class="tag">AWS</span>
+        <span class="tag">Google Cloud</span><span class="tag">VMware</span>
+        <span class="tag">Hyper-V</span><span class="tag">Docker</span>
         <span class="tag">Office 365</span>
       </div>
     </div>
     <div class="skill-card">
       <div class="skill-card-title">Network Security</div>
       <div class="skill-tags">
-        <span class="tag">Firewalls</span>
-        <span class="tag">VLANs</span>
-        <span class="tag">IPSec / VPN</span>
-        <span class="tag">IDS / IPS</span>
-        <span class="tag">TLS Hardening</span>
-        <span class="tag">Network Segmentation</span>
+        <span class="tag">Firewalls</span><span class="tag">VLANs</span>
+        <span class="tag">IPSec / VPN</span><span class="tag">IDS / IPS</span>
+        <span class="tag">TLS Hardening</span><span class="tag">Network Segmentation</span>
       </div>
     </div>
     <div class="skill-card">
       <div class="skill-card-title">DevOps & SDLC</div>
       <div class="skill-tags">
-        <span class="tag">Jenkins</span>
-        <span class="tag">CI/CD Pipelines</span>
-        <span class="tag">Code Reviews</span>
-        <span class="tag">Git</span>
-        <span class="tag">Docker</span>
-        <span class="tag">Patch Management</span>
+        <span class="tag">Jenkins</span><span class="tag">CI/CD Pipelines</span>
+        <span class="tag">Code Reviews</span><span class="tag">Git</span>
+        <span class="tag">Docker</span><span class="tag">Patch Management</span>
       </div>
     </div>
   </div>
@@ -1033,7 +410,6 @@
       <button class="filter-btn" data-lang="JavaScript">JavaScript</button>
     </div>
   </div>
-
   <div id="reposGrid" class="repos-grid">
     <div class="repos-loading">fetching repositories...</div>
   </div>
@@ -1049,18 +425,9 @@
     <div class="contact-info">
       <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect — my inbox is open.</p>
       <div class="contact-links">
-        <a href="mailto:ray@drraypc.com" class="contact-link">
-          <div class="cl-icon">✉</div>
-          ray@drraypc.com
-        </a>
-        <a href="https://linkedin.com/in/ray-mayer" target="_blank" class="contact-link">
-          <div class="cl-icon">in</div>
-          linkedin.com/in/ray-mayer
-        </a>
-        <a href="https://github.com/dr-raypc" target="_blank" class="contact-link">
-          <div class="cl-icon">gh</div>
-          github.com/dr-raypc
-        </a>
+        <a href="mailto:ray@drraypc.com" class="contact-link"><div class="cl-icon">✉</div>ray@drraypc.com</a>
+        <a href="https://linkedin.com/in/ray-mayer" target="_blank" class="contact-link"><div class="cl-icon">in</div>linkedin.com/in/ray-mayer</a>
+        <a href="https://github.com/dr-raypc" target="_blank" class="contact-link"><div class="cl-icon">gh</div>github.com/dr-raypc</a>
       </div>
     </div>
     <div class="contact-form">
@@ -1098,36 +465,24 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-copy">
-    &copy; 2025 <span>Raymond Mayer</span> // drraypc.com
-  </div>
+  <div class="footer-copy">&copy; 2025 <span>Raymond Mayer</span> // drraypc.com</div>
   <div class="footer-links">
     <a href="https://github.com/dr-raypc" target="_blank">GitHub</a>
     <a href="https://linkedin.com/in/ray-mayer" target="_blank">LinkedIn</a>
     <a href="mailto:ray@drraypc.com">Email</a>
-    
   </div>
 </footer>
 
+<!-- ═══════════════════════════ REPOS SCRIPT ══════════════════════════════ -->
 <script>
 const GITHUB_USER = 'dr-raypc';
-
-const langColors = {
-  PowerShell: '#012456',
-  Python:     '#3572A5',
-  Shell:      '#89e051',
-  Bash:       '#89e051',
-  Go:         '#00ADD8',
-  JavaScript: '#f1e05a',
-  default:    '#555'
-};
-
+const langColors = { PowerShell:'#012456', Python:'#3572A5', Shell:'#89e051', Bash:'#89e051', Go:'#00ADD8', JavaScript:'#f1e05a', default:'#555' };
 let allRepos = [];
 
 function timeAgo(dateStr) {
   const diff = Date.now() - new Date(dateStr);
   const days = Math.floor(diff / 86400000);
-  if (days < 1)  return 'today';
+  if (days < 1) return 'today';
   if (days < 30) return `${days}d ago`;
   if (days < 365) return `${Math.floor(days/30)}mo ago`;
   return `${Math.floor(days/365)}y ago`;
@@ -1135,40 +490,26 @@ function timeAgo(dateStr) {
 
 function renderRepos(repos) {
   const grid = document.getElementById('reposGrid');
-  if (!repos.length) {
-    grid.innerHTML = '<div class="repos-loading">no repositories found.</div>';
-    return;
-  }
+  if (!repos.length) { grid.innerHTML = '<div class="repos-loading">no repositories found.</div>'; return; }
   grid.innerHTML = repos.map(r => `
     <a href="${r.html_url}" target="_blank" class="repo-card">
-      <div class="repo-name">
-        <span class="repo-name-icon">&#9632;</span>
-        ${r.name}
+      <div class="repo-name"><span class="repo-name-icon">&#9632;</span>${r.name}
         ${r.fork ? '<span style="font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--border2);border-radius:3px;padding:1px 6px;margin-left:6px;">fork</span>' : ''}
       </div>
       <div class="repo-desc">${r.description || 'No description provided.'}</div>
       <div class="repo-meta">
-        ${r.language ? `
-          <div class="repo-lang">
-            <div class="lang-dot" style="background:${langColors[r.language]||langColors.default}"></div>
-            ${r.language}
-          </div>` : ''}
+        ${r.language ? `<div class="repo-lang"><div class="lang-dot" style="background:${langColors[r.language]||langColors.default}"></div>${r.language}</div>` : ''}
         <span class="repo-stars">&#9733; ${r.stargazers_count}</span>
         <span class="repo-updated">${timeAgo(r.updated_at)}</span>
       </div>
-    </a>
-  `).join('');
+    </a>`).join('');
 }
 
 async function loadRepos() {
   try {
-    // Fetch up to 100 repos across multiple pages if needed
-    let page = 1;
-    let fetched = [];
-    while (true) {
-      const res = await fetch(
-        `https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100&page=${page}`
-      );
+    let page=1, fetched=[];
+    while(true) {
+      const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=100&page=${page}`);
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const batch = await res.json();
       if (!Array.isArray(batch) || batch.length === 0) break;
@@ -1176,41 +517,33 @@ async function loadRepos() {
       if (batch.length < 100) break;
       page++;
     }
-    // Show all repos including forks
     allRepos = fetched;
-    if (allRepos.length === 0) throw new Error('No repos found');
+    if (!allRepos.length) throw new Error('No repos found');
     renderRepos(allRepos);
   } catch(e) {
     console.warn('GitHub API:', e.message);
-    // Fallback placeholders — only shown if API completely fails
     allRepos = [
-      { name: 'ad-hardening-toolkit', description: 'Active Directory hardening scripts, audit tools and GPO templates for enterprise environments.', html_url: `https://github.com/${GITHUB_USER}`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'ransomware-ir-playbook', description: 'Incident response runbooks and automation scripts for ransomware recovery engagements.', html_url: `https://github.com/${GITHUB_USER}`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'windows-forensics-toolkit', description: 'PowerShell scripts for rapid Windows forensic triage — event log parsing, artifact collection, IOC hunting.', html_url: `https://github.com/${GITHUB_USER}`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
-      { name: 'cleanup-module', description: 'PowerShell module for automated Windows system maintenance — the one from our session.', html_url: `https://github.com/${GITHUB_USER}/cleanup`, language: 'PowerShell', stargazers_count: 0, updated_at: new Date().toISOString() },
+      { name:'ad-hardening-toolkit',    description:'Active Directory hardening scripts, audit tools and GPO templates.', html_url:`https://github.com/${GITHUB_USER}`, language:'PowerShell', stargazers_count:0, updated_at:new Date().toISOString() },
+      { name:'ransomware-ir-playbook',   description:'IR runbooks and automation scripts for ransomware recovery engagements.', html_url:`https://github.com/${GITHUB_USER}`, language:'PowerShell', stargazers_count:0, updated_at:new Date().toISOString() },
+      { name:'windows-forensics-toolkit',description:'PowerShell scripts for rapid Windows forensic triage.', html_url:`https://github.com/${GITHUB_USER}`, language:'PowerShell', stargazers_count:0, updated_at:new Date().toISOString() },
     ];
     renderRepos(allRepos);
   }
 }
 
-// Filter buttons
 document.getElementById('filterBar').addEventListener('click', e => {
   const btn = e.target.closest('.filter-btn');
   if (!btn) return;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   const lang = btn.dataset.lang;
-  const filtered = lang === 'all' ? allRepos : allRepos.filter(r => r.language === lang);
-  renderRepos(filtered);
+  renderRepos(lang === 'all' ? allRepos : allRepos.filter(r => r.language === lang));
 });
 
 loadRepos();
-
 </script>
 
-<!-- ═══════════════════════════════════════════════════════ -->
-<!-- INTERACTIVE TERMINAL                                    -->
-<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════ TERMINAL SCRIPT ══════════════════════════ -->
 <script>
 (function() {
   var termBody = document.getElementById('termBody');
@@ -1222,19 +555,179 @@ loadRepos();
   var tempCmd  = '';
   var cwd      = '~';
 
+  // ── CTF STATE ─────────────────────────────────────────────────────────────
+  var ctf = {
+    active:    false,   // true when waiting for challenge answer
+    challenge: null,    // current challenge number (1-5)
+    flags:     {},      // { id: true } captured flags
+    score:     0,
+    count:     0,
+    total:     7        // 5 challenges + 2 bonus flags
+  };
+
+  var CTF_RANKS = [
+    [0,    'Script Kiddie'],
+    [100,  'Skid'],
+    [250,  'Packet Monkey'],
+    [500,  'Net Surfer'],
+    [750,  'Grey Hat'],
+    [1000, 'Elite H4x0r'],
+    [1337, 'l33t'],
+    [9999, 'DrRayPC']
+  ];
+
+  function ctfRank(s) {
+    var r = 'Script Kiddie';
+    for (var i=0; i<CTF_RANKS.length; i++) { if(s >= CTF_RANKS[i][0]) r = CTF_RANKS[i][1]; }
+    return r;
+  }
+
+  function ctfCapture(id, pts) {
+    if (ctf.flags[id]) return false;
+    ctf.flags[id] = true;
+    ctf.score += pts;
+    ctf.count++;
+    var badge = document.getElementById('ctfBadge');
+    if (badge) { badge.textContent = '\uD83D\uDEA9 ' + ctf.score + ' pts'; badge.classList.add('visible'); }
+    return true;
+  }
+
+  // ── CTF CHALLENGES ─────────────────────────────────────────────────────────
+  var CTF_CHALLENGES = {
+    1: {
+      name: 'Base64 Infiltration',
+      pts:  100,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-1: Base64 Infiltration  [100 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  You intercept an encoded string from a C2 server.</span>',
+        '<span class="t-white">  Decode it to reveal the flag.</span>',
+        '',
+        '<span class="t-key">  Encoded: </span><span class="t-accent">ZkxBR3tiNjRfaXNfZm9yX2tpZHN9</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint" for a nudge):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{b64_is_for_kids}'; },
+      hint:  'Try: echo "ZkxBR3tiNjRfaXNfZm9yX2tpZHN9" | base64 -d  (or paste into CyberChef)',
+      flag:  'FLAG{b64_is_for_kids}'
+    },
+    2: {
+      name: "Caesar's Last Stand",
+      pts:  150,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-2: Caesar\'s Last Stand  [150 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  An ancient cipher guards this flag. Even Caesar had bad opsec.</span>',
+        '',
+        '<span class="t-key">  Ciphertext: </span><span class="t-accent">SYNT{ebg13_vf_abg_rapelcgvba}</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{rot13_is_not_encryption}'; },
+      hint:  'ROT13 shifts each letter by 13. Try: echo "SYNT..." | tr a-zA-Z n-za-mN-ZA-M',
+      flag:  'FLAG{rot13_is_not_encryption}'
+    },
+    3: {
+      name: 'Dead Beef',
+      pts:  200,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-3: Dead Beef  [200 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Malware dropped a hex-encoded payload in your PCAP. Decode it.</span>',
+        '',
+        '<span class="t-key">  Hex: </span><span class="t-accent">464c41477b6865785f6c6966657d</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded string (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{hex_life}'; },
+      hint:  'xxd -r -p <<< "464c41477b6865785f6c6966657d"  or paste into CyberChef > From Hex',
+      flag:  'FLAG{hex_life}'
+    },
+    4: {
+      name: 'Bit Flip',
+      pts:  250,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-4: Bit Flip  [250 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Your packet capture shows a raw binary payload. What does it say?</span>',
+        '',
+        '<span class="t-accent">  01000110 01001100 01000001 01000111 00111010 01110010 01100001 01111001</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded text (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag:ray'; },
+      hint:  'Convert each 8-bit group from binary to decimal, then look up the ASCII character.',
+      flag:  'FLAG:ray'
+    },
+    5: {
+      name: 'Rainbow Table',
+      pts:  300,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-5: Rainbow Table  [300 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  You captured an MD5 hash from a login form. Crack it.</span>',
+        '<span class="t-white">  (It\'s one of the most common passwords ever. Check haveibeenpwned.)</span>',
+        '',
+        '<span class="t-key">  MD5: </span><span class="t-accent">482c811da5d5b4bc6d497ffa98491e38</span>',
+        '',
+        '<span class="t-dim">  > Type the cracked plaintext (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim() === 'password123'; },
+      hint:  '"password123" — the most cracked password of all time. Stop using it.',
+      flag:  'FLAG{never_use_password123}'
+    }
+  };
+
+  function ctfHandleAnswer(raw) {
+    var num = ctf.challenge;
+    var ch  = CTF_CHALLENGES[num];
+    if (!ch) { ctf.active = false; return; }
+
+    if (raw.trim().toLowerCase() === 'hint') {
+      addLine('<span class="t-warn">  &#128161; ' + ch.hint + '</span>');
+      return; // stay active
+    }
+
+    if (ch.check(raw)) {
+      var isNew = ctfCapture('ctf' + num, ch.pts);
+      addLine('');
+      addLine('<span class="t-accent">  &#10003; CORRECT! Flag captured!</span>');
+      addLine('<span class="t-flag">  &#127988; ' + ch.flag + '</span>');
+      if (isNew) {
+        addLine('<span class="t-key">  +' + ch.pts + ' pts &mdash; total: ' + ctf.score + ' &mdash; rank: ' + ctfRank(ctf.score) + '</span>');
+      } else {
+        addLine('<span class="t-dim">  (already captured &mdash; no bonus points)</span>');
+      }
+      addLine('');
+      ctf.active    = false;
+      ctf.challenge = null;
+    } else {
+      addLine('');
+      addLine('<span class="t-err">  &#10007; Wrong. Try again, or type "hint".</span>');
+      addLine('');
+      // stay active — don't reset ctf.active
+    }
+  }
+
+  // ── PROMPT BUILDER ────────────────────────────────────────────────────────
   var P = function(d) {
     return '<span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">' + (d||cwd) + '</span>$ ';
   };
 
-  // ── FILESYSTEM ──────────────────────────────────────────
+  // ── FILESYSTEM ────────────────────────────────────────────────────────────
   var FS = {
-    '~':                    ['about.txt','skills.txt','experience/','projects/','contact.txt','.secret/'],
-    '~/experience':         ['centene.txt','entara.txt','mastronardi.txt','logicalis.txt'],
-    '~/projects':           ['powershell/','python/','security/'],
-    '~/projects/powershell':['cleanup-module.ps1','ad-hardening-toolkit.ps1','windows-forensics.ps1'],
-    '~/projects/python':    ['ir-scripts.py','automation.py'],
-    '~/projects/security':  ['ransomware-ir-playbook.md','vmware-recovery.md'],
-    '~/.secret':            ['...']
+    '~':                     ['about.txt','skills.txt','experience/','projects/','contact.txt','.secret/'],
+    '~/experience':          ['centene.txt','entara.txt','mastronardi.txt','logicalis.txt'],
+    '~/projects':            ['powershell/','python/','security/'],
+    '~/projects/powershell': ['cleanup-module.ps1','ad-hardening-toolkit.ps1','windows-forensics.ps1'],
+    '~/projects/python':     ['ir-scripts.py','automation.py'],
+    '~/projects/security':   ['ransomware-ir-playbook.md','vmware-recovery.md'],
+    '~/.secret':             ['...']
   };
 
   var FILES = {
@@ -1245,7 +738,6 @@ loadRepos();
       '<span class="t-key">experience </span>  <span class="t-val">15+ years</span>\n' +
       '<span class="t-key">focus      </span>  <span class="t-val">Incident Response &middot; AD Security &middot; Infrastructure</span>\n' +
       '<span class="t-key">status     </span>  <span class="t-accent">&bull; available for work</span>',
-
     'skills.txt':
       '<span class="t-key">cybersecurity  </span>  <span class="t-val">Incident Response, Ransomware Recovery, Threat Detection</span>\n' +
       '<span class="t-key">identity       </span>  <span class="t-val">Active Directory, Azure AD, Group Policy, PKI</span>\n' +
@@ -1254,39 +746,32 @@ loadRepos();
       '<span class="t-key">virtualization </span>  <span class="t-val">VMware, Hyper-V, Docker</span>\n' +
       '<span class="t-key">edr            </span>  <span class="t-val">CrowdStrike, SentinelOne</span>\n' +
       '<span class="t-key">devops         </span>  <span class="t-val">Terraform, Ansible, Jenkins, GitHub Actions</span>',
-
     'contact.txt':
       '<span class="t-key">email    </span>  <span class="t-val">ray@drraypc.com</span>\n' +
       '<span class="t-key">linkedin </span>  <span class="t-val">linkedin.com/in/ray-mayer</span>\n' +
       '<span class="t-key">github   </span>  <span class="t-val">github.com/dr-raypc</span>',
-
     'centene.txt':
       '<span class="t-key">company  </span>  <span class="t-val">Centene Corporation</span>\n' +
       '<span class="t-key">title    </span>  <span class="t-val">Lead Systems Engineer, DevSecOps</span>\n' +
       '<span class="t-key">period   </span>  <span class="t-val">April 2025 &ndash; Present</span>',
-
     'entara.txt':
       '<span class="t-key">company  </span>  <span class="t-val">Entara Corp</span>\n' +
       '<span class="t-key">title    </span>  <span class="t-val">Escalation Engineer II &middot; Onboarding Lead</span>\n' +
       '<span class="t-key">period   </span>  <span class="t-val">May 2022 &ndash; Jan 2025</span>\n' +
       '<span class="t-key">focus    </span>  <span class="t-val">Ransomware recovery &middot; IR &middot; security hardening</span>',
-
     'mastronardi.txt':
       '<span class="t-key">company  </span>  <span class="t-val">Mastronardi Produce</span>\n' +
       '<span class="t-key">title    </span>  <span class="t-val">End User Infrastructure Specialist</span>\n' +
       '<span class="t-key">period   </span>  <span class="t-val">Jun 2019 &ndash; Jul 2021</span>\n' +
       '<span class="t-key">scale    </span>  <span class="t-val">1,000+ computers &middot; 700+ servers</span>',
-
     'logicalis.txt':
       '<span class="t-key">company  </span>  <span class="t-val">Logicalis US</span>\n' +
       '<span class="t-key">title    </span>  <span class="t-val">Linux System Administrator</span>\n' +
       '<span class="t-key">period   </span>  <span class="t-val">Apr 2013 &ndash; Jun 2019</span>',
-
     'ransomware-ir-playbook.md':
       '<span class="t-key">Ransomware IR Playbook</span>\n' +
       '<span class="t-dim">DC recovery &middot; FSMO seizure &middot; NTDS.dit extraction</span>\n' +
       '<span class="t-accent">github.com/dr-raypc</span>',
-
     'cleanup-module.ps1':
       '<span class="t-dim"># Invoke-SystemCleanup</span>\n' +
       '<span class="t-val">Removes WU cache, temp files, dump files</span>\n' +
@@ -1297,15 +782,14 @@ loadRepos();
     '<span class="t-accent">  &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;  drraypc.com  &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;</span>\n' +
     '<span class="t-dim">  Senior Security &amp; Systems Engineer &middot; Royal Oak, MI</span>';
 
-  // ── CORE ────────────────────────────────────────────────
+  // ── CORE HELPERS ──────────────────────────────────────────────────────────
   function scrollBottom() {
     setTimeout(function() { termBody.scrollTop = termBody.scrollHeight; }, 10);
   }
 
   function addLine(html) {
-    // Split multi-line output into separate divs so each line renders correctly
     var lines = html.split('\n');
-    for (var li = 0; li < lines.length; li++) {
+    for (var li=0; li<lines.length; li++) {
       var el = document.createElement('div');
       el.className = 'term-output-line';
       el.innerHTML = lines[li];
@@ -1319,33 +803,28 @@ loadRepos();
   function addPrompt() {
     var old = termBody.querySelector('.term-input-row');
     if (old) old.remove();
-
-    var row = document.createElement('div');
+    var row   = document.createElement('div');
     row.className = 'term-input-row';
-
     var label = document.createElement('span');
     label.className = 'term-prompt-label';
     label.innerHTML = P(cwd);
     row.appendChild(label);
-
     var inp = document.createElement('input');
     inp.type = 'text';
     inp.className = 'term-input';
     inp.autocomplete = 'off';
     inp.spellcheck = false;
     inp.setAttribute('autocapitalize', 'off');
-    row.appendChild(inp);     // inp goes INTO row
-
-    termBody.appendChild(row); // row (containing inp) goes into termBody
+    row.appendChild(inp);
+    termBody.appendChild(row);
     inputEl = inp;
     inp.focus();
     scrollBottom();
     inp.addEventListener('keydown', onKey);
-    // Reveal hero content the first time prompt appears
     revealHero();
   }
 
-  // ── COMMANDS ────────────────────────────────────────────
+  // ── COMMAND FUNCTIONS ─────────────────────────────────────────────────────
   function cmdHelp() {
     return '<span class="t-key">COMMANDS</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
@@ -1365,16 +844,44 @@ loadRepos();
       '<span class="t-accent">projects</span>      <span class="t-val">jump to projects</span>\n' +
       '<span class="t-accent">contact</span>       <span class="t-val">jump to contact</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
-      '<span class="t-purple">// there are hidden commands... explore</span>';
+      '<span class="t-warn">&#127988; CTF CHALLENGES</span>\n' +
+      '<span class="t-accent">ctf</span>           <span class="t-val">view all challenges &amp; score</span>\n' +
+      '<span class="t-accent">ctf-1</span> <span class="t-dim">thru</span> <span class="t-accent">ctf-5</span>  <span class="t-val">start a specific challenge</span>\n' +
+      '<span class="t-accent">scoreboard</span>    <span class="t-val">view leaderboard</span>\n' +
+      '<span class="t-dim">────────────────────────────────────────</span>\n' +
+      '<span class="t-purple">// there are hidden commands &amp; bonus flags... explore</span>';
   }
 
-  function cmdLs() {
-    var entries = FS[cwd] || FS['~'];
-    return entries.map(function(e) {
+  function cmdLs(args) {
+    // ls -la reveals hidden .secret directory
+    if (args && (args.indexOf('-la') > -1 || args.indexOf('-a') > -1 || args.indexOf('-al') > -1)) {
+      var entries = FS[cwd] || FS['~'];
+      var lines = ['<span class="t-dim">total ' + (entries.length * 4 + 8) + '</span>'];
+      lines.push('<span class="t-dim">drwxr-xr-x  ray  ray  4096  .</span>');
+      lines.push('<span class="t-dim">drwxr-xr-x  ray  ray  4096  ..</span>');
+      for (var i=0; i<entries.length; i++) {
+        var e = entries[i];
+        if (e.endsWith('/')) {
+          lines.push('<span class="t-accent">drwxr-xr-x  ray  ray  4096  ' + e.slice(0,-1) + '/</span>');
+        } else if (e.startsWith('.')) {
+          lines.push('<span class="t-warn">-rw-------  ray  ray    64  ' + e + '</span>');
+        } else {
+          lines.push('<span class="t-val">-rw-r--r--  ray  ray  1337  ' + e + '</span>');
+        }
+      }
+      // Bonus flag hint for .secret/
+      if (cwd === '~') {
+        lines.push('');
+        lines.push('<span class="t-dim">// &#128064; hidden directory found. try: cd .secret</span>');
+      }
+      return lines.join('\n');
+    }
+    var entries2 = FS[cwd] || FS['~'];
+    return entries2.map(function(e) {
       if (e.endsWith('/')) return '<span class="t-accent">' + e + '</span>';
       if (e.startsWith('.')) return '<span class="t-dim">' + e + '</span>';
       return '<span class="t-val">' + e + '</span>';
-    }).join('  ');
+    }).join('  ') + '\n<span class="t-dim">// tip: try ls -la</span>';
   }
 
   function cmdCd(args) {
@@ -1382,10 +889,8 @@ loadRepos();
     if (!t || t === '~') { cwd = '~'; return ''; }
     if (t === '..') {
       if (cwd === '~') return '';
-      var parts = cwd.split('/');
-      parts.pop();
-      cwd = parts.join('/') || '~';
-      return '';
+      var parts = cwd.split('/'); parts.pop();
+      cwd = parts.join('/') || '~'; return '';
     }
     var full = cwd === '~' ? '~/' + t : cwd + '/' + t;
     if (FS[full]) { cwd = full; return ''; }
@@ -1399,6 +904,12 @@ loadRepos();
     var entries = FS[cwd] || [];
     if (entries.indexOf(f + '/') > -1) return '<span class="t-err">cat: ' + f + ': Is a directory</span>';
     if (FILES[f]) return FILES[f];
+    // Bonus flag: cat .secret/flag.txt
+    if (f === '.secret/flag.txt' || (cwd === '~/.secret' && f === 'flag.txt')) {
+      var isNew = ctfCapture('secret-flag', 75);
+      return '<span class="t-warn">&#127988; FLAG{you_found_the_secret_dir}  (+75 pts)</span>\n' +
+        (isNew ? '<span class="t-key">+75 pts &mdash; total: ' + ctf.score + ' &mdash; rank: ' + ctfRank(ctf.score) + '</span>' : '<span class="t-dim">(already captured)</span>');
+    }
     return '<span class="t-err">cat: ' + f + ': No such file or directory</span>';
   }
 
@@ -1418,21 +929,50 @@ loadRepos();
 
   function cmdNmap(args) {
     var target = args[0] || 'target';
-    var ports = [
-      {p:22,  s:'open',     n:'ssh'},
-      {p:80,  s:'open',     n:'http'},
-      {p:443, s:'open',     n:'https'},
-      {p:3389,s:'filtered', n:'ms-wbt-server'},
-      {p:8080,s:'closed',   n:'http-proxy'}
-    ];
-    var rows = ports.map(function(x) {
-      var col = x.s === 'open' ? 't-accent' : x.s === 'filtered' ? 't-warn' : 't-err';
-      return x.p + '/tcp'.padEnd(10) + '<span class="' + col + '">' + x.s.padEnd(10) + '</span>' + x.n;
-    });
     return '<span class="t-key">Nmap scan report for ' + target + '</span>\n' +
-      '<span class="t-dim">PORT          STATE     SERVICE</span>\n' +
-      rows.join('\n') + '\n' +
-      '<span class="t-dim">Done in ' + (Math.random()*2+0.5).toFixed(2) + 's</span>';
+      '<span class="t-dim">PORT      STATE     SERVICE   VERSION</span>\n' +
+      '22/tcp    <span class="t-accent">open</span>      ssh       OpenSSH 9.2p1\n' +
+      '80/tcp    <span class="t-accent">open</span>      http      nginx 1.25.3\n' +
+      '443/tcp   <span class="t-accent">open</span>      https     nginx 1.25.3 (TLS 1.3)\n' +
+      '3389/tcp  <span class="t-warn">filtered</span>  ms-wbt-server\n' +
+      '31337/tcp <span class="t-accent">open</span>      ???       <span class="t-warn">unknown service &#128064;</span>\n' +
+      '<span class="t-dim">Done in ' + (Math.random()*2+0.5).toFixed(2) + 's</span>\n' +
+      '<span class="t-dim">// port 31337... curious. try: ssh ray@drraypc.com -p 31337</span>';
+  }
+
+  function cmdCtfOverview() {
+    var lines = [
+      '',
+      '<span class="t-warn">  &#127988; CTF CHALLENGES &mdash; CAPTURE THE FLAG</span>',
+      '<span class="t-dim">  ─────────────────────────────────────────────────────</span>',
+      '<span class="t-white">  Test your security skills. Find all 5 flags (+2 bonus).</span>',
+      '<span class="t-dim">  Current score: <span class="t-accent">' + ctf.score + ' pts</span>  Rank: <span class="t-key">' + ctfRank(ctf.score) + '</span></span>',
+      ''
+    ];
+    var nums = [1,2,3,4,5];
+    for (var i=0; i<nums.length; i++) {
+      var n  = nums[i];
+      var ch = CTF_CHALLENGES[n];
+      var done = ctf.flags['ctf'+n] ? '<span class="t-accent">&#10003;</span>' : '<span class="t-dim">&#128274;</span>';
+      lines.push('  <span class="t-accent">ctf-' + n + '</span>  <span class="t-val">' + (ch.name + '                        ').slice(0,24) + '</span>  [' + ch.pts + ' pts]  ' + done);
+    }
+    lines.push('');
+    lines.push('<span class="t-dim">  Bonus flags hidden around the terminal — explore!</span>');
+    lines.push('<span class="t-dim">  Type ctf-1 through ctf-5 to begin a challenge.</span>');
+    lines.push('');
+    return lines.join('\n');
+  }
+
+  function cmdScoreboard() {
+    return '\n' +
+      '<span class="t-warn">  &#127942; LEADERBOARD</span>\n' +
+      '<span class="t-dim">  ─────────────────────────────────</span>\n' +
+      '  <span class="t-dim">#1</span>  <span class="t-val">0xDEADBEEF   </span>  <span class="t-accent">1337 pts</span>  <span class="t-key">l33t</span>\n' +
+      '  <span class="t-dim">#2</span>  <span class="t-val">nullbyte     </span>  <span class="t-accent"> 950 pts</span>  <span class="t-key">Grey Hat</span>\n' +
+      '  <span class="t-dim">#3</span>  <span class="t-val">root@me      </span>  <span class="t-accent"> 750 pts</span>  <span class="t-key">Grey Hat</span>\n' +
+      '  <span class="t-dim">...</span>\n' +
+      '  <span class="t-accent">&#8594; YOU: ' + ctf.score + ' pts  ' + ctfRank(ctf.score) + '</span>\n\n' +
+      '<span class="t-dim">  Keep hacking to climb the ranks.</span>\n';
   }
 
   function cmdHistory() {
@@ -1442,14 +982,16 @@ loadRepos();
     }).join('\n');
   }
 
+  // ── COMMANDS MAP ──────────────────────────────────────────────────────────
   var CMDS = {
     help:      cmdHelp,
     '?':       cmdHelp,
     whoami:    function() { return FILES['about.txt']; },
     pwd:       function() { return '<span class="t-val">' + cwd.replace('~','/home/visitor') + '</span>'; },
-    ls:        cmdLs,
+    ls:        function(a) { return cmdLs(a ? a.join(' ') : ''); },
     cd:        cmdCd,
     cat:       cmdCat,
+    type:      cmdCat,
     ping:      cmdPing,
     nmap:      cmdNmap,
     history:   cmdHistory,
@@ -1466,6 +1008,7 @@ loadRepos();
     reboot:    function() { setTimeout(function(){location.reload();},1000); return '<span class="t-warn">rebooting...</span>'; },
     banner:    function() { return LOGO; },
     logo:      function() { return LOGO; },
+    ascii:     function() { return LOGO; },
     neofetch:  function() {
       return LOGO + '\n' +
         '<span class="t-dim">  ─────────────────────────</span>\n' +
@@ -1475,11 +1018,8 @@ loadRepos();
         '<span class="t-key">  Status  </span><span class="t-accent">&bull; available for work</span>';
     },
     ps:        function() {
-      return '<span class="t-dim">  PID CMD</span>\n' +
-        '<span class="t-val">    1 bash</span>\n' +
-        '<span class="t-val">   42 curiosity</span>\n' +
-        '<span class="t-accent">  666 hackerman</span>\n' +
-        '<span class="t-val">   99 drraypc.com</span>';
+      return '<span class="t-dim">  PID CMD</span>\n    1 bash\n' +
+        '   42 curiosity\n<span class="t-accent">  666 hackerman</span>\n   99 drraypc.com';
     },
     hack:      function() {
       return '<span class="t-err">INITIALIZING HACK SEQUENCE...</span>\n' +
@@ -1489,6 +1029,20 @@ loadRepos();
     },
     matrix:    function() { return '__MATRIX__'; },
     sudo:      function(a) {
+      // Easter egg: sudo hire-ray
+      if (a.join(' ').toLowerCase() === 'hire-ray') {
+        var isNew = ctfCapture('sudo-hire', 50);
+        return '\n' +
+          '<span class="t-warn">  &#127881; SUDO HIRE-RAY INITIATED</span>\n' +
+          '<span class="t-dim">  ─────────────────────────────────────────────</span>\n' +
+          '<span class="t-accent">  Checking availability... &#10003; available for work</span>\n' +
+          '<span class="t-accent">  Verifying 15+ years experience... &#10003;</span>\n' +
+          '<span class="t-accent">  Checking IR / AD / ransomware skills... &#10003;</span>\n' +
+          '<span class="t-key">  Sending hire request to ray@drraypc.com...</span>\n' +
+          '<span class="t-accent">  &#10003; Done! See the #contact section below.</span>\n' +
+          '<span class="t-flag">  &#127988; FLAG{u_found_sudo_hire_ray}  (+50 pts)</span>\n' +
+          (isNew ? '<span class="t-key">  +50 pts &mdash; total: ' + ctf.score + ' &mdash; rank: ' + ctfRank(ctf.score) + '</span>' : '<span class="t-dim">  (already captured)</span>') + '\n';
+      }
       if (a[0]==='su') return '<span class="t-err">visitor is not in sudoers. This incident will be reported.</span>';
       return '<span class="t-err">permission denied</span>';
     },
@@ -1499,7 +1053,8 @@ loadRepos();
       return '<span class="t-err">curl: (6) Could not resolve host: ' + a[0] + '</span>';
     },
     rm:        function(a) {
-      if (a.indexOf('-rf')>-1) return '<span class="t-err">rm: dangerous operation blocked</span>\n<span class="t-dim">// nice try, hackerman</span>';
+      if (a.indexOf('-rf')>-1 || a.join('').indexOf('-rf')>-1)
+        return '<span class="t-err">rm: it is dangerous to operate recursively on \'/\'</span>\n<span class="t-dim">// nice try, hackerman</span>';
       return '<span class="t-err">rm: permission denied</span>';
     },
     cowsay:    function(a) {
@@ -1513,50 +1068,47 @@ loadRepos();
         '                ||----w |\n' +
         '                ||     ||</span>';
     },
-    sl:        function() { return '<span class="t-dim">// you typed sl instead of ls. classic.</span>'; },
-    '42':      function() { return '<span class="t-accent">The answer to life, the universe, and everything.</span>'; },
-    hello:     function() { return '<span class="t-accent">Hello, visitor. Type help to see what you can do.</span>'; },
-    hi:        function() { return '<span class="t-accent">Hello, visitor. Type help to see what you can do.</span>'; },
-    hire:      function() { return '<span class="t-accent">great idea.</span>\n<span class="t-val">ray@drraypc.com</span>\n<span class="t-val">linkedin.com/in/ray-mayer</span>'; },
-    whoishiring: function() { return '<span class="t-accent">good question. hope it\'s you.</span>'; },
-    themayr:   function() { return '<span class="t-purple">theMAYR in the building</span>\n<span class="t-accent">&rarr; drraypc.com/music.html</span>'; },
-    konami:    function() { return '<span class="t-purple">&#9733; KONAMI CODE UNLOCKED &#9733;</span>\n<span class="t-accent">you found the easter egg. respect.</span>\n<span class="t-dim">// ' + Math.floor(Math.random()*4+3) + ' more secrets remain...</span>'; },
-    ifconfig:  function() {
+    sl:           function() { return '<span class="t-dim">// you typed sl instead of ls. classic.</span>'; },
+    '42':         function() { return '<span class="t-accent">The answer to life, the universe, and everything.</span>'; },
+    hello:        function() { return '<span class="t-accent">Hello, visitor. Type help to see what you can do.</span>'; },
+    hi:           function() { return '<span class="t-accent">Hello, visitor. Type help to see what you can do.</span>'; },
+    hire:         function() { return '<span class="t-accent">great idea.</span>\n<span class="t-val">ray@drraypc.com</span>\n<span class="t-val">linkedin.com/in/ray-mayer</span>'; },
+    whoishiring:  function() { return '<span class="t-accent">good question. hope it\'s you.</span>'; },
+    themayr:      function() { return '<span class="t-purple">theMAYR in the building</span>\n<span class="t-accent">&rarr; drraypc.com/music.html</span>'; },
+    konami:       function() { return '<span class="t-purple">&#9733; KONAMI CODE UNLOCKED &#9733;</span>\n<span class="t-accent">you found the easter egg. respect.</span>\n<span class="t-dim">// more secrets remain... explore</span>'; },
+    ifconfig:     function() {
       return '<span class="t-key">eth0</span>: inet <span class="t-accent">192.168.1.' + (Math.floor(Math.random()*200)+10) + '</span>  netmask 255.255.255.0\n' +
         '<span class="t-key">lo</span>:   inet <span class="t-val">127.0.0.1</span>  netmask 255.0.0.0';
     },
-    lol:       function() { return '<span class="t-accent">haha</span>'; },
-    yolo:      function() { return '<span class="t-dim">// please don\'t</span>'; },
-    fuck:      function() { return '<span class="t-err">language.</span>'; },
-    // ── NEW COMMANDS & EASTER EGGS ─────────────────────────────────────────
-    whatismyip: function() {
+    lol:          function() { return '<span class="t-accent">haha</span>'; },
+    yolo:         function() { return '<span class="t-dim">// please don\'t</span>'; },
+    fuck:         function() { return '<span class="t-err">language.</span>'; },
+    whatismyip:   function() {
       var el = document.createElement('div');
       el.className = 'term-output-line';
       el.innerHTML = '<span class="t-dim">// querying external IP...</span>';
-      var row = termBody.querySelector('.term-input-row');
-      if(row) termBody.insertBefore(el,row); else termBody.appendChild(el);
+      var row2 = termBody.querySelector('.term-input-row');
+      if(row2) termBody.insertBefore(el,row2); else termBody.appendChild(el);
       fetch('https://api.ipify.org?format=json')
         .then(function(r){return r.json();})
         .then(function(d){
           el.innerHTML = '<span class="t-key">ip address  </span><span class="t-accent">' + d.ip + '</span>\n<span class="t-dim">// that\'s you. be careful out there.</span>';
           scrollBottom();
         })
-        .catch(function(){
-          el.innerHTML = '<span class="t-err">could not resolve external IP</span>';
-        });
+        .catch(function(){ el.innerHTML = '<span class="t-err">could not resolve external IP</span>'; });
       return '';
     },
-    traceroute: function(a) {
+    traceroute:   function(a) {
       var host = a[0] || 'drraypc.com';
       var hops = [];
       for(var i=1;i<=8;i++){
-        var ms = Math.floor(Math.random()*25)+i*3;
-        hops.push('  <span class="t-dim">' + i + '</span>  <span class="t-val">10.' + i + '.0.' + (Math.floor(Math.random()*253)+1) + '</span>  <span class="t-accent">' + ms + ' ms</span>');
+        var ms2 = Math.floor(Math.random()*25)+i*3;
+        hops.push('  <span class="t-dim">' + i + '</span>  <span class="t-val">10.' + i + '.0.' + (Math.floor(Math.random()*253)+1) + '</span>  <span class="t-accent">' + ms2 + ' ms</span>');
       }
       hops.push('  <span class="t-dim">9</span>  <span class="t-accent">' + host + '</span>  <span class="t-accent">' + (Math.floor(Math.random()*4)+1) + ' ms</span>');
       return '<span class="t-key">traceroute to ' + host + ', 9 hops max</span>\n' + hops.join('\n');
     },
-    whois: function(a) {
+    whois:    function(a) {
       var d = a[0] || 'drraypc.com';
       if(d.indexOf('drraypc') > -1) {
         return '<span class="t-key">Domain:    </span><span class="t-val">drraypc.com</span>\n' +
@@ -1567,7 +1119,7 @@ loadRepos();
       }
       return '<span class="t-err">whois: ' + d + ': query timeout</span>';
     },
-    dig: function(a) {
+    dig:      function(a) {
       var d = a[0] || 'drraypc.com';
       return '<span class="t-key">;; ANSWER SECTION:</span>\n' +
         '<span class="t-val">' + d + '.  300  IN  A  185.199.108.153</span>\n' +
@@ -1575,87 +1127,89 @@ loadRepos();
         '<span class="t-dim">;; Query time: ' + (Math.floor(Math.random()*18)+1) + ' msec</span>\n' +
         '<span class="t-dim">;; SERVER: 8.8.8.8#53</span>';
     },
-    git: function(a) {
+    git:      function(a) {
       var sub = a[0]||'';
-      if(sub==='log') return '<span class="t-accent">commit a1b2c3d</span> <span class="t-dim">(HEAD -&gt; main)</span>\n<span class="t-val">Author: Raymond Mayer &lt;ray@drraypc.com&gt;</span>\n<span class="t-dim">Date:   ' + new Date().toDateString() + '</span>\n\n    <span class="t-val">fix: made it do the thing correctly this time</span>\n\n<span class="t-accent">commit 9f8e7d6</span>\n    <span class="t-val">feat: added easter eggs</span>\n\n<span class="t-accent">commit deadbee</span>\n    <span class="t-val">init: welcome to drraypc.com</span>';
-      if(sub==='status') return '<span class="t-accent">On branch main</span>\n<span class="t-val">Your branch is up to date with \'origin/main\'.</span>\n<span class="t-dim">nothing to commit, working tree clean</span>';
+      if(sub==='log') return '<span class="t-accent">commit a1b2c3d</span> <span class="t-dim">(HEAD -&gt; main)</span>\n<span class="t-val">Author: Raymond Mayer &lt;ray@drraypc.com&gt;</span>\n<span class="t-dim">Date:   ' + new Date().toDateString() + '</span>\n\n    <span class="t-val">fix: made it do the thing correctly this time</span>\n\n<span class="t-accent">commit 9f8e7d6</span>\n    <span class="t-val">feat: added CTF easter eggs</span>\n\n<span class="t-accent">commit deadbee</span>\n    <span class="t-val">init: welcome to drraypc.com</span>';
+      if(sub==='status') return '<span class="t-accent">On branch main</span>\n<span class="t-val">Your branch is up to date.</span>\n<span class="t-dim">nothing to commit, working tree clean</span>';
       if(sub==='blame') return '<span class="t-dim">// it was definitely not me</span>';
-      if(sub==='push') return '<span class="t-err">ERROR: permission to dr-raypc/repo.git denied to visitor</span>';
+      if(sub==='push')  return '<span class="t-err">ERROR: permission to dr-raypc/repo.git denied to visitor</span>';
       return '<span class="t-val">usage: git &lt;command&gt; [args]</span>\n<span class="t-dim">// real repos at github.com/dr-raypc</span>';
     },
-    env: function() {
+    env:      function() {
       return '<span class="t-key">SHELL   </span><span class="t-val">bash (browser edition)</span>\n' +
         '<span class="t-key">USER    </span><span class="t-val">visitor</span>\n' +
         '<span class="t-key">HOME    </span><span class="t-val">/home/visitor</span>\n' +
         '<span class="t-key">TERM    </span><span class="t-val">xterm-256color</span>\n' +
-        '<span class="t-key">LANG    </span><span class="t-val">en_US.UTF-8</span>\n' +
         '<span class="t-key">EDITOR  </span><span class="t-val">vim</span>\n' +
         '<span class="t-key">MOTO    </span><span class="t-accent">if it compiles, ship it</span>';
     },
-    vim: function(a) {
-      if(!a[0]) return '<span class="t-warn">  GNU nano... just kidding.</span>\n<span class="t-dim">                  VIM - Vi IMproved</span>\n<span class="t-dim">         type  :q!  to escape (good luck)</span>';
-      return '<span class="t-warn">"' + a[0] + '" [New File]</span>\n<span class="t-dim">type :wq to save, :q! to quit without saving</span>';
+    vim:      function(a) {
+      if(!a[0]) return '<span class="t-warn">  GNU nano... just kidding.</span>\n<span class="t-dim">         VIM - Vi IMproved</span>\n<span class="t-dim">type  :q!  to escape (good luck)</span>';
+      return '<span class="t-warn">"' + a[0] + '" [New File]</span>\n<span class="t-dim">:wq to save, :q! to quit</span>';
     },
-    nano:    function() { return '<span class="t-dim">// vim is waiting. it judges you.</span>'; },
-    python3: function() { return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-val">&gt;&gt;&gt;</span> <span class="t-dim">// this is a browser. there is no REPL here.</span>'; },
-    python:  function() { return '<span class="t-err">python: command not found. use python3.</span>'; },
-    systemctl: function(a) {
+    nano:       function() { return '<span class="t-dim">// vim is waiting. it judges you.</span>'; },
+    python3:    function() { return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// this is a browser. there is no REPL here.</span>'; },
+    python:     function() { return '<span class="t-err">python: command not found. use python3.</span>'; },
+    systemctl:  function(a) {
       var s=a[1]||'drraypc'; var c=a[0]||'status';
-      if(c==='status') return '<span class="t-accent">&#9679;</span> ' + s + '.service\n<span class="t-dim">   Active: active (running)</span>\n<span class="t-dim">   // this is a browser. but nice try.</span>';
+      if(c==='status') return '<span class="t-accent">&#9679;</span> ' + s + '.service\n<span class="t-dim">   Active: active (running)</span>';
       return '<span class="t-err">System has not been booted with systemd (PID 1).</span>';
     },
-    wget: function(a) {
+    wget:     function(a) {
       if(!a[0]) return '<span class="t-err">wget: missing URL</span>';
-      return '<span class="t-val">--' + new Date().toLocaleTimeString() + '--  ' + a[0] + '</span>\n<span class="t-err">403 Forbidden</span>\n<span class="t-dim">// not your server, not your files</span>';
+      return '<span class="t-val">--' + new Date().toLocaleTimeString() + '--  ' + a[0] + '</span>\n<span class="t-err">403 Forbidden</span>';
     },
-    chmod: function(a) { return '<span class="t-err">chmod: \'' + (a[1]||'file') + '\': Operation not permitted</span>'; },
-    passwd: function() { return '<span class="t-val">Changing password for visitor.</span>\n<span class="t-err">passwd: Authentication token manipulation error</span>\n<span class="t-dim">// you don\'t have an account here</span>'; },
-    crontab: function() { return '<span class="t-val">no crontab for visitor</span>\n<span class="t-dim">// but ray\'s cron cleans temp files every night</span>'; },
+    chmod:    function(a) { return '<span class="t-err">chmod: \'' + (a[1]||'file') + '\': Operation not permitted</span>'; },
+    passwd:   function() { return '<span class="t-val">Changing password for visitor.</span>\n<span class="t-err">passwd: Authentication token manipulation error</span>'; },
+    crontab:  function() { return '<span class="t-val">no crontab for visitor</span>\n<span class="t-dim">// but ray\'s cron cleans temp files every night</span>'; },
     nslookup: function(a) {
       var d=a[0]||'drraypc.com';
       return '<span class="t-val">Server:  8.8.8.8</span>\n<span class="t-val">Address: 8.8.8.8#53</span>\n\n<span class="t-key">Name:    </span><span class="t-val">' + d + '</span>\n<span class="t-key">Address: </span><span class="t-accent">185.199.108.153</span>';
     },
-    lsof: function() { return '<span class="t-dim">COMMAND   PID USER FD TYPE  SIZE/OFF NODE NAME</span>\n<span class="t-val">bash        1  visitor  0u  chr  136,0 0t0    3 /dev/pts/0</span>\n<span class="t-val">chrome    999  visitor mem  REG  your  RAM  ??? /curiosity</span>'; },
-    man: function(a) {
+    lsof:     function() { return '<span class="t-dim">COMMAND  PID USER FD TYPE NODE NAME</span>\nbash       1  visitor  0u  chr  3 /dev/pts/0\nchrome   999  visitor mem  REG  ??? /curiosity'; },
+    man:      function(a) {
       if(!a[0]) return '<span class="t-err">What manual page do you want?</span>';
-      return '<span class="t-key">MAN(' + a[0].toUpperCase() + ')</span>\n<span class="t-dim">This is a browser terminal. There are no man pages.</span>\n<span class="t-val">Try: help</span>\n<span class="t-dim">(press q to quit... just kidding, type another command)</span>';
+      return '<span class="t-key">MAN(' + a[0].toUpperCase() + ')</span>\n<span class="t-dim">This is a browser terminal. There are no man pages.</span>\n<span class="t-val">Try: help</span>';
     },
-    fortune: function() {
+    fortune:  function() {
       var f = [
         'The best time to plant a tree was 20 years ago. The second best time is now.',
         'There are 10 types of people: those who understand binary and those who don\'t.',
         'It works on my machine. Ship the machine.',
         'sudo make me a sandwich.',
-        'In theory, theory and practice are the same. In practice, they\'re not.',
         'rm -rf /problems  — works every time',
         'A bug is just an undocumented feature.',
-        '99 little bugs in the code. 99 little bugs. Take one down, patch it around. 127 little bugs in the code.',
-        'Have you tried turning it off and on again?',
+        '99 little bugs in the code. Take one down, patch it around. 127 bugs.',
         'There\'s no place like 127.0.0.1'
       ];
       return '<span class="t-accent">' + f[Math.floor(Math.random()*f.length)] + '</span>';
     },
-    dmesg: function() {
+    dmesg:    function() {
       return '<span class="t-dim">[    0.000000] Initializing drraypc.com kernel...</span>\n' +
         '<span class="t-dim">[    0.001337] Loading easter eggs... done.</span>\n' +
         '<span class="t-dim">[    0.042000] Mounting /home/visitor... done.</span>\n' +
         '<span class="t-accent">[    1.337000] drraypc.com online. welcome.</span>';
     },
-    'sudo rm -rf /': function() { return '<span class="t-err">rm: it is dangerous to operate recursively on \'/\'</span>\n<span class="t-dim">// absolutely not</span>'; },
-    xkcd: function() { window.open('https://xkcd.com/705/','_blank'); return '<span class="t-accent">&rarr; opening xkcd #705 (Devotion to Duty)</span>'; },
-    coffee: function() { return '<span class="t-err">Error: Out of coffee. Productivity halted.</span>\n<span class="t-dim">// order: buymeacoffee.com/drraypc</span>'; },
-    beer:   function() { return '<span class="t-accent">&#127869; one cold one coming up</span>\n<span class="t-dim">// drraypc.com/music.html has the vibes to go with it</span>'; },
-    vibes:  function() { setTimeout(function(){window.location.href='/music.html';},600); return '<span class="t-purple">checking vibes...</span>\n<span class="t-accent">&rarr; redirecting to music page</span>'; },
-    flip:   function() { return '<span class="t-accent">(&#9583;&#176;&#9633;&#176;&#9583;&#65077; &#9531;&#9473;&#9531;</span>'; },
-    shrug:  function() { return '<span class="t-val">&para;\\_(&#12484;)_/&para;</span>'; },
-    ascii:  function() { return LOGO; },
-    cry:    function() { return '<span class="t-dim">there there. it\'s just a terminal.</span>'; },
-    yes:    function(a) { return '<span class="t-val">' + Array(20).fill(a[0]||'y').join('\n') + '</span>\n<span class="t-dim">// ^C to stop (just type something else)</span>'; },
-    cat:    cmdCat,
-    type:   function(a) { return CMDS['cat'](a); }
+    xkcd:     function() { window.open('https://xkcd.com/705/','_blank'); return '<span class="t-accent">&rarr; opening xkcd #705 (Devotion to Duty)</span>'; },
+    coffee:   function() { return '<span class="t-err">Error: Out of coffee. Productivity halted.</span>\n<span class="t-dim">// order: buymeacoffee.com/drraypc</span>'; },
+    beer:     function() { return '<span class="t-accent">&#127869; one cold one coming up</span>\n<span class="t-dim">// drraypc.com/music.html has the vibes</span>'; },
+    vibes:    function() { setTimeout(function(){window.location.href='/music.html';},600); return '<span class="t-purple">checking vibes...</span>\n<span class="t-accent">&rarr; redirecting to music page</span>'; },
+    flip:     function() { return '<span class="t-accent">(&#9583;&#176;&#9633;&#176;&#9583;&#65077; &#9531;&#9473;&#9531;</span>'; },
+    shrug:    function() { return '<span class="t-val">&para;\\_(&#12484;)_/&para;</span>'; },
+    cry:      function() { return '<span class="t-dim">there there. it\'s just a terminal.</span>'; },
+    yes:      function(a) { return '<span class="t-val">' + Array(20).fill(a[0]||'y').join('\n') + '</span>\n<span class="t-dim">// ^C to stop</span>'; },
+
+    // ── CTF COMMANDS ─────────────────────────────────────────────────────
+    ctf:       function()    { return cmdCtfOverview(); },
+    'ctf-1':   function()    { ctf.active=true; ctf.challenge=1; return CTF_CHALLENGES[1].intro.join('\n'); },
+    'ctf-2':   function()    { ctf.active=true; ctf.challenge=2; return CTF_CHALLENGES[2].intro.join('\n'); },
+    'ctf-3':   function()    { ctf.active=true; ctf.challenge=3; return CTF_CHALLENGES[3].intro.join('\n'); },
+    'ctf-4':   function()    { ctf.active=true; ctf.challenge=4; return CTF_CHALLENGES[4].intro.join('\n'); },
+    'ctf-5':   function()    { ctf.active=true; ctf.challenge=5; return CTF_CHALLENGES[5].intro.join('\n'); },
+    scoreboard: function()   { return cmdScoreboard(); }
   };
 
-  // ── MATRIX ──────────────────────────────────────────────
+  // ── MATRIX ────────────────────────────────────────────────────────────────
   function runMatrix() {
     var chars = '01アイウエオカキクケコサシスセソタチツテト';
     var el = document.createElement('div');
@@ -1677,16 +1231,23 @@ loadRepos();
     }, 80);
   }
 
-  // ── EXECUTE ─────────────────────────────────────────────
+  // ── EXECUTE ───────────────────────────────────────────────────────────────
   function execCmd(raw) {
     var parts = raw.trim().split(/\s+/);
     var cmd   = parts[0].toLowerCase();
     var args  = parts.slice(1);
-    var old = termBody.querySelector('.term-input-row');
+    var old   = termBody.querySelector('.term-input-row');
     if (old) old.remove();
 
+    // If a CTF challenge is waiting for an answer, route ALL input there
+    if (ctf.active) {
+      ctfHandleAnswer(raw.trim());
+      addPrompt();
+      return;
+    }
+
     var fn = CMDS[cmd];
-    if (!fn) fn = CMDS[raw.toLowerCase()]; // multi-word check
+    if (!fn) fn = CMDS[raw.toLowerCase()]; // multi-word lookup
     if (fn) {
       var r = fn(args);
       if (r === '__CLEAR__') { boot(); return; }
@@ -1698,7 +1259,7 @@ loadRepos();
     addPrompt();
   }
 
-  // ── KEY HANDLER ─────────────────────────────────────────
+  // ── KEY HANDLER ───────────────────────────────────────────────────────────
   function onKey(e) {
     if (e.key === 'Enter') {
       var cmd = inputEl.value.trim();
@@ -1719,8 +1280,8 @@ loadRepos();
 
     } else if (e.key === 'Tab') {
       e.preventDefault();
-      var val = inputEl.value;
-      var pts = val.split(' ');
+      var val  = inputEl.value;
+      var pts  = val.split(' ');
       var partial = pts[pts.length-1];
       if (pts.length === 1) {
         var m = Object.keys(CMDS).filter(function(c){ return c.indexOf(' ')<0 && c.indexOf(partial)===0; });
@@ -1728,7 +1289,7 @@ loadRepos();
         else if (m.length > 1) addLine('<span class="t-dim">' + m.join('  ') + '</span>');
       } else {
         var ents = FS[cwd] || [];
-        var fm = ents.filter(function(e){ return e.indexOf(partial)===0; });
+        var fm = ents.filter(function(e2){ return e2.indexOf(partial)===0; });
         if (fm.length === 1) { pts[pts.length-1] = fm[0].replace('/',''); inputEl.value = pts.join(' '); }
       }
 
@@ -1736,28 +1297,35 @@ loadRepos();
       e.preventDefault(); boot();
     } else if (e.ctrlKey && (e.key==='c'||e.key==='C')) {
       e.preventDefault();
-      addLine(P(cwd) + '<span class="t-white">' + inputEl.value + '</span>^C');
+      // Ctrl+C cancels an active CTF challenge
+      if (ctf.active) {
+        addLine(P(cwd) + '<span class="t-white">' + inputEl.value + '</span>^C');
+        addLine('<span class="t-dim">// challenge cancelled</span>');
+        ctf.active = false; ctf.challenge = null;
+      } else {
+        addLine(P(cwd) + '<span class="t-white">' + inputEl.value + '</span>^C');
+      }
       inputEl.value = '';
       addPrompt();
     }
   }
 
-  // ── BOOT WITH TYPED INTRO ───────────────────────────────
+  // ── BOOT SEQUENCE ─────────────────────────────────────────────────────────
   function boot() {
     termBody.innerHTML = '';
     cwd = '~';
     var PROMPT_HTML = '<span class="t-prompt">visitor@drraypc</span>:<span class="t-accent">~</span>$ ';
 
     var introLines = [
-      { typed: true,   prefix: PROMPT_HTML, text: 'whoami', speed: 80, pause: 350 },
-      { instant: true, html: '<span class="t-key">name       </span>  <span class="t-val">Raymond Mayer</span>',                                            pause: 65 },
-      { instant: true, html: '<span class="t-key">role       </span>  <span class="t-val">Senior Security &amp; Systems Engineer</span>',                   pause: 65 },
-      { instant: true, html: '<span class="t-key">location   </span>  <span class="t-val">Royal Oak, MI</span>',                                            pause: 65 },
-      { instant: true, html: '<span class="t-key">experience </span>  <span class="t-val">15+ years</span>',                                                pause: 65 },
-      { instant: true, html: '<span class="t-key">focus      </span>  <span class="t-val">Incident Response &middot; AD Security &middot; Infrastructure</span>', pause: 65 },
-      { instant: true, html: '<span class="t-key">status     </span>  <span class="t-accent">&bull; available</span>',                                       pause: 300 },
-      { instant: true, html: '',                                                                                                                              pause: 40  },
-      { instant: true, html: '<span class="t-dim">// terminal ready &mdash; type <span class="t-accent">help</span> to explore</span>',                     pause: 0   }
+      { typed:true,   prefix:PROMPT_HTML, text:'whoami', speed:80, pause:350 },
+      { instant:true, html:'<span class="t-key">name       </span>  <span class="t-val">Raymond Mayer</span>',                                                       pause:65 },
+      { instant:true, html:'<span class="t-key">role       </span>  <span class="t-val">Senior Security &amp; Systems Engineer</span>',                              pause:65 },
+      { instant:true, html:'<span class="t-key">location   </span>  <span class="t-val">Royal Oak, MI</span>',                                                       pause:65 },
+      { instant:true, html:'<span class="t-key">experience </span>  <span class="t-val">15+ years</span>',                                                           pause:65 },
+      { instant:true, html:'<span class="t-key">focus      </span>  <span class="t-val">Incident Response &middot; AD Security &middot; Infrastructure</span>',     pause:65 },
+      { instant:true, html:'<span class="t-key">status     </span>  <span class="t-accent">&bull; available</span>',                                                 pause:300 },
+      { instant:true, html:'',                                                                                                                                        pause:40  },
+      { instant:true, html:'<span class="t-dim">// terminal ready &mdash; type <span class="t-accent">help</span> to explore &middot; type <span class="t-warn">ctf</span> to play</span>', pause:0 }
     ];
 
     var idx = 0;
@@ -1796,7 +1364,6 @@ loadRepos();
     if (cta)  { cta.style.opacity='1';  cta.style.transform='translateY(0)'; }
   }
 
-  // Start
   boot();
 })();
 </script>
