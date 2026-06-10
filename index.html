@@ -996,9 +996,9 @@ loadRepos();
       addLine('<span class="t-accent">  &#10003; CORRECT! Flag captured!</span>');
       addLine('<span class="t-flag">  &#127988; ' + ch.flag + '</span>');
       if (isNew) {
-        addLine('<span class="t-key">  +' + ch.pts + ' pts &mdash; total: ' + ctf.score + ' &mdash; rank: ' + ctfRank(ctf.score) + '</span>');
+        addLine('<span class="t-key">  +' + ch.pts + ' pts - total: ' + ctf.score + ' - rank: ' + ctfRank(ctf.score) + '</span>');
       } else {
-        addLine('<span class="t-dim">  (already captured &mdash; no bonus points)</span>');
+        addLine('<span class="t-dim">  (already captured - no bonus points)</span>');
       }
       addLine('');
       ctf.active    = false;
@@ -1205,7 +1205,7 @@ loadRepos();
     if (f === '.secret/flag.txt' || (cwd === '~/.secret' && f === 'flag.txt')) {
       var isNew = ctfCapture('secret-flag', 75);
       return '<span class="t-warn">&#127988; FLAG{you_found_the_secret_dir}  (+75 pts)</span>\n' +
-        (isNew ? '<span class="t-key">+75 pts &mdash; total: ' + ctf.score + ' &mdash; rank: ' + ctfRank(ctf.score) + '</span>' : '<span class="t-dim">(already captured)</span>');
+        (isNew ? '<span class="t-key">+75 pts - total: ' + ctf.score + ' - rank: ' + ctfRank(ctf.score) + '</span>' : '<span class="t-dim">(already captured)</span>');
     }
     return '<span class="t-err">cat: ' + f + ': No such file or directory</span>';
   }
@@ -1240,7 +1240,7 @@ loadRepos();
   function cmdCtfOverview() {
     var lines = [
       '',
-      '<span class="t-warn">  &#127988; CTF CHALLENGES &mdash; CAPTURE THE FLAG</span>',
+      '<span class="t-warn">  &#127988; CTF CHALLENGES - CAPTURE THE FLAG</span>',
       '<span class="t-dim">  ─────────────────────────────────────────────────────────────</span>',
       '<span class="t-white">  20 challenges across two tiers. Can you conquer them all?</span>',
       '<span class="t-dim">  Score: <span class="t-accent">' + ctf.score + ' pts</span>  Rank: <span class="t-key">' + ctfRank(ctf.score) + '</span>  Flags: <span class="t-accent">' + ctf.count + '/20</span></span>',
@@ -1256,7 +1256,7 @@ loadRepos();
       lines.push('  <span class="t-accent">ctf-' + num + '</span>  <span class="t-val">' + namepad + '</span>  [' + ch.pts + ' pts]  ' + done);
     }
     lines.push('');
-    lines.push('<span class="t-dim">  + bonus flags hidden around the terminal &mdash; explore!</span>');
+    lines.push('<span class="t-dim">  + bonus flags hidden around the terminal - explore!</span>');
     lines.push('<span class="t-dim">  Type ctf-1 through ctf-20 to begin a challenge.</span>');
     lines.push('');
     return lines.join('\n');
@@ -1296,11 +1296,11 @@ loadRepos();
     history:   cmdHistory,
     clear:     function() { return '__CLEAR__'; },
     date:      function() { return '<span class="t-val">' + new Date().toString() + '</span>'; },
-    uptime:    function() { var s=Math.floor(performance.now()/1000); return '<span class="t-val">up ' + Math.floor(s/3600) + 'h ' + Math.floor((s%3600)/60) + 'm &mdash; 1 user</span>'; },
+    uptime:    function() { var s=Math.floor(performance.now()/1000); return '<span class="t-val">up ' + Math.floor(s/3600) + 'h ' + Math.floor((s%3600)/60) + 'm - 1 user</span>'; },
     uname:     function(a) { return a[0]==='-a' ? '<span class="t-val">DrRayPC 5.15.0 #1 SMP x86_64 GNU/Linux</span>' : '<span class="t-val">DrRayPC</span>'; },
     github:    function() { window.open('https://github.com/dr-raypc','_blank'); return '<span class="t-accent">&rarr; github.com/dr-raypc</span>'; },
     music:     function() { setTimeout(function(){window.location.href='/music.html';},500); return '<span class="t-accent">&rarr; redirecting to music page...</span>'; },
-    resume:    function() { return '<span class="t-err">access denied &mdash; this resource is restricted.</span>\n<span class="t-dim">// nice try though</span>'; },
+    resume:    function() { return '<span class="t-err">access denied - this resource is restricted.</span>\n<span class="t-dim">// nice try though</span>'; },
     projects:  function() { document.getElementById('repos').scrollIntoView({behavior:'smooth'}); return '<span class="t-accent">&rarr; jumping to projects</span>'; },
     contact:   function() { document.getElementById('contact').scrollIntoView({behavior:'smooth'}); return '<span class="t-accent">&rarr; jumping to contact</span>'; },
     exit:      function() { setTimeout(boot, 400); return '<span class="t-dim">logout</span>'; },
@@ -1324,7 +1324,7 @@ loadRepos();
       return '<span class="t-err">INITIALIZING HACK SEQUENCE...</span>\n' +
         '<span class="t-warn">bypassing firewall...</span>\n' +
         '<span class="t-accent">root access granted</span>\n' +
-        '<span class="t-dim">just kidding &mdash; but I do this for real. type whoami.</span>';
+        '<span class="t-dim">just kidding - but I do this for real. type whoami.</span>';
     },
     matrix:    function() { return '__MATRIX__'; },
     sudo:      function(a) {
@@ -1340,7 +1340,7 @@ loadRepos();
           '<span class="t-key">  Sending hire request to ray@drraypc.com...</span>\n' +
           '<span class="t-accent">  &#10003; Done! See the #contact section below.</span>\n' +
           '<span class="t-flag">  &#127988; FLAG{u_found_sudo_hire_ray}  (+50 pts)</span>\n' +
-          (isNew ? '<span class="t-key">  +50 pts &mdash; total: ' + ctf.score + ' &mdash; rank: ' + ctfRank(ctf.score) + '</span>' : '<span class="t-dim">  (already captured)</span>') + '\n';
+          (isNew ? '<span class="t-key">  +50 pts - total: ' + ctf.score + ' - rank: ' + ctfRank(ctf.score) + '</span>' : '<span class="t-dim">  (already captured)</span>') + '\n';
       }
       if (a[0]==='su') return '<span class="t-err">visitor is not in sudoers. This incident will be reported.</span>';
       return '<span class="t-err">permission denied</span>';
@@ -1884,7 +1884,7 @@ loadRepos();
       { instant:true, html:'<span class="t-key">focus      </span>  <span class="t-val">Incident Response &middot; AD Security &middot; Infrastructure</span>',     pause:65 },
       { instant:true, html:'<span class="t-key">status     </span>  <span class="t-accent">&bull; available</span>',                                                 pause:300 },
       { instant:true, html:'',                                                                                                                                        pause:40  },
-      { instant:true, html:'<span class="t-dim">// terminal ready &mdash; type <span class="t-accent">help</span> to explore &middot; type <span class="t-warn">ctf</span> to play</span>', pause:0 }
+      { instant:true, html:'<span class="t-dim">// terminal ready - type <span class="t-accent">help</span> to explore &middot; type <span class="t-warn">ctf</span> to play</span>', pause:0 }
     ];
 
     var idx = 0;
