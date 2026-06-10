@@ -423,7 +423,7 @@
   <h2 class="section-title">Get In Touch</h2>
   <div class="contact-wrap">
     <div class="contact-info">
-      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect - my inbox is open.</p>
+      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect — my inbox is open.</p>
       <div class="contact-links">
         <a href="mailto:ray@drraypc.com" class="contact-link"><div class="cl-icon">✉</div>ray@drraypc.com</a>
         <a href="https://linkedin.com/in/ray-mayer" target="_blank" class="contact-link"><div class="cl-icon">in</div>linkedin.com/in/ray-mayer</a>
@@ -678,7 +678,7 @@ loadRepos();
         '<span class="t-dim">  > Type the cracked plaintext (or "hint"):</span>'
       ],
       check: function(a) { return a.trim() === 'password123'; },
-      hint:  '"password123" — the most cracked password of all time. Stop using it.',
+      hint:  'This hash appears in every major password breach dataset. Try a wordlist attack or paste the MD5 into crackstation.net',
       flag:  'FLAG{never_use_password123}'
     },
 
@@ -697,7 +697,7 @@ loadRepos();
         '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
       ],
       check: function(a) { return a.trim().toLowerCase() === 'flag{url_encoded}'; },
-      hint:  'Try: python3 -c "from urllib.parse import unquote; print(unquote(\'%46%4C%41%47...\'))"  or paste into CyberChef > URL Decode',
+      hint:  'Try: urldecode %46%4C%41%47%7B%75%72%6C%5F%65%6E%63%6F%64%65%64%7D  or paste into CyberChef &gt; URL Decode',
       flag:  'FLAG{url_encoded}'
     },
 
@@ -717,7 +717,7 @@ loadRepos();
         '<span class="t-dim">  > Type FLAG{decoded_word} (or "hint"):</span>'
       ],
       check: function(a) { return a.trim().toLowerCase() === 'flag{drraypc}'; },
-      hint:  'D=-..  R=.-.  R=.-.  A=.-  Y=-.--  P=.--.  C=-.-.   Read each group, wrap in FLAG{...}',
+      hint:  'Morse reference: C=-.-. &nbsp; P=.--. &nbsp; D=-.. &nbsp; A=.- &nbsp; R=.-. &nbsp; Y=-.-- &nbsp; (/ separates letters)',
       flag:  'FLAG{drraypc}'
     },
 
@@ -1296,6 +1296,15 @@ loadRepos();
       if (a.length) return '<span class="t-val">' + a.join(' ').split('').reverse().join('') + '</span>';
       return '<span class="t-dim">usage: rev &lt;&lt;&lt; "string"  or  echo "string" | rev</span>';
     },
+
+    // urldecode %XX%XX...
+    urldecode: function(a) {
+      if (!a.length) return '<span class="t-dim">usage: urldecode %46%4C%41%47...</span>';
+      try {
+        return '<span class="t-val">' + decodeURIComponent(a.join('')) + '</span>';
+      } catch(e) { return '<span class="t-err">urldecode: malformed percent-encoding</span>'; }
+    },
+
     chmod:    function(a) { return '<span class="t-err">chmod: \'' + (a[1]||'file') + '\': Operation not permitted</span>'; },
     passwd:   function() { return '<span class="t-val">Changing password for visitor.</span>\n<span class="t-err">passwd: Authentication token manipulation error</span>'; },
     crontab:  function() { return '<span class="t-val">no crontab for visitor</span>\n<span class="t-dim">// but ray\'s cron cleans temp files every night</span>'; },
