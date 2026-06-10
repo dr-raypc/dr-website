@@ -288,8 +288,8 @@
         <div class="term-dot td-r"></div>
         <div class="term-dot td-y"></div>
         <div class="term-dot td-g"></div>
-        <div class="term-title">bash - drraypc.com &nbsp;|&nbsp; type 'help' to begin</div>
-        <!-- CTF score badge - shown once CTF is started -->
+        <div class="term-title">bash — drraypc.com &nbsp;|&nbsp; type 'help' to begin</div>
+        <!-- CTF score badge — shown once CTF is started -->
         <div class="ctf-score-badge" id="ctfBadge">&#127988; 0 pts</div>
       </div>
       <div class="term-body" id="termBody"></div>
@@ -314,8 +314,8 @@
   <div class="about-grid">
     <div class="about-text">
       <p>I'm a Senior Security & Systems Engineer with over 15 years of experience across Windows, Linux, and macOS environments. I specialize in incident response, ransomware recovery, Active Directory security, and resilient infrastructure design.</p>
-      <p>My background spans the full range of the security lifecycle - from hardening environments before something goes wrong, to leading client recovery engagements when environments are already compromised. I've worked with teams ranging from small businesses to Fortune 500 companies.</p>
-      <p>I build tools, automate security workflows, and document everything - because good security is reproducible security.</p>
+      <p>My background spans the full range of the security lifecycle — from hardening environments before something goes wrong, to leading client recovery engagements when environments are already compromised. I've worked with teams ranging from small businesses to Fortune 500 companies.</p>
+      <p>I build tools, automate security workflows, and document everything — because good security is reproducible security.</p>
     </div>
     <div class="about-card">
       <div class="about-card-header">cat profile.json</div>
@@ -423,7 +423,7 @@
   <h2 class="section-title">Get In Touch</h2>
   <div class="contact-wrap">
     <div class="contact-info">
-      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect - my inbox is open.</p>
+      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect — my inbox is open.</p>
       <div class="contact-links">
         <a href="mailto:ray@drraypc.com" class="contact-link"><div class="cl-icon">✉</div>ray@drraypc.com</a>
         <a href="https://linkedin.com/in/ray-mayer" target="_blank" class="contact-link"><div class="cl-icon">in</div>linkedin.com/in/ray-mayer</a>
@@ -459,7 +459,7 @@
 
 <div class="section-divider"></div>
 <div class="bmc-section">
-  <p>if my work has been useful to you</p>
+  <p>if this work has been useful to you</p>
   <a href="https://www.buymeacoffee.com/drraypc" target="_blank" class="bmc-btn bmc-btn-lg">&#127829; Buy me a pizza</a>
 </div>
 
@@ -562,7 +562,7 @@ loadRepos();
     flags:     {},      // { id: true } captured flags
     score:     0,
     count:     0,
-    total:     12       // 10 challenges + 2 bonus flags
+    total:     22       // 20 challenges + 2 bonus flags
   };
 
   var CTF_RANKS = [
@@ -713,7 +713,7 @@ loadRepos();
         '',
         '<span class="t-accent">  -.. / .-. / .-. / .- / -.-- / .--. / -.-.</span>',
         '',
-        '<span class="t-dim">  Hint: R=.-.</span>  <span class="t-dim">D=-..</span>  <span class="t-dim">P=.--.</span>  <span class="t-dim">Y=-.--</span>  <span class="t-dim">A=.-  C=-.-.</span>',
+        '<span class="t-dim">  Hint: D=-..</span>  <span class="t-dim">R=.-.</span>  <span class="t-dim">A=.-</span>  <span class="t-dim">Y=-.--</span>  <span class="t-dim">P=.--.  C=-.-.</span>',
         '<span class="t-dim">  > Type FLAG{decoded_word} (or "hint"):</span>'
       ],
       check: function(a) { return a.trim().toLowerCase() === 'flag{drraypc}'; },
@@ -777,6 +777,206 @@ loadRepos();
       check: function(a) { return a.trim().toLowerCase() === 'flag{xor_is_your_friend}'; },
       hint:  'XOR every hex byte with 0x5A. In Python: bytes(b^0x5A for b in bytes.fromhex("1c161b1d...")).decode()',
       flag:  'FLAG{xor_is_your_friend}'
+    },
+
+    // ── TIER 2: HARDER (650–1000 pts) ────────────────────────────────────
+
+    11: {
+      name: 'Base32 Decoded',
+      pts:  650,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-11: Base32 Decoded  [650 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Not base64. Not base16. The other one.</span>',
+        '<span class="t-white">  Decode this to recover the flag.</span>',
+        '',
+        '<span class="t-key">  Encoded: </span><span class="t-accent">IZGECR33MJQXGZJTGJPW433UL5RGC43FGY2H2===</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{base32_not_base64}'; },
+      hint:  'CyberChef > From Base32, or: python3 -c "import base64; print(base64.b32decode(\'IZGECR33...\').decode())"',
+      flag:  'FLAG{base32_not_base64}'
+    },
+
+    12: {
+      name: 'Atbash Cipher',
+      pts:  700,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-12: Atbash Cipher  [700 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  An ancient Hebrew cipher. Mirror the alphabet.</span>',
+        '<span class="t-white">  A=Z, B=Y, C=X ... Z=A</span>',
+        '',
+        '<span class="t-key">  Ciphertext: </span><span class="t-accent">UOZT{zgyzhs_xrksvi}</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{atbash_cipher}'; },
+      hint:  'Map every letter to its mirror: A↔Z, B↔Y, C↔X... The cipher is its own inverse.',
+      flag:  'FLAG{atbash_cipher}'
+    },
+
+    13: {
+      name: 'Vigenere Cracked',
+      pts:  750,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-13: Vigenere Cracked  [750 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  A polyalphabetic cipher — each letter uses a different shift.</span>',
+        '<span class="t-white">  The key repeats. You found it in a config file: <span class="t-accent">RAY</span></span>',
+        '',
+        '<span class="t-key">  Ciphertext: </span><span class="t-accent">WLYX{vgxelvrc_trytkcu}</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{vigenere_cracked}'; },
+      hint:  'Key=RAY. R=17,A=0,Y=24. Subtract each key letter\'s value from the ciphertext letter (mod 26). CyberChef > Vigenere Decode.',
+      flag:  'FLAG{vigenere_cracked}'
+    },
+
+    14: {
+      name: 'Double Encoded',
+      pts:  800,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-14: Double Encoded  [800 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Someone ran base64 twice. Rookies.</span>',
+        '<span class="t-white">  Decode it. Twice.</span>',
+        '',
+        '<span class="t-key">  Payload: </span>',
+        '<span class="t-accent">  Umt4QlIzdGtiM1ZpYkdWZlpXNWpiMlJsWkgwPQ==</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{double_encoded}'; },
+      hint:  'Run base64 -d twice: echo "Umt4QlIzdG..." | base64 -d | base64 -d',
+      flag:  'FLAG{double_encoded}'
+    },
+
+    15: {
+      name: 'Hex Reversed',
+      pts:  850,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-15: Hex Reversed  [850 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  The flag was hex-encoded, then the hex string was reversed.</span>',
+        '<span class="t-white">  Undo both steps.</span>',
+        '',
+        '<span class="t-key">  Payload: </span><span class="t-accent">d74656372756675627f546e616f5875686b77414c464</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{hex_and_reversed}'; },
+      hint:  'Step 1: reverse the hex string character by character. Step 2: xxd -r -p or CyberChef > From Hex.',
+      flag:  'FLAG{hex_and_reversed}'
+    },
+
+    16: {
+      name: 'ASCII Art',
+      pts:  900,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-16: ASCII Art  [900 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Each number is a decimal ASCII code.</span>',
+        '<span class="t-white">  Convert them to characters to reveal the flag.</span>',
+        '',
+        '<span class="t-accent">  70 76 65 71 123 97 115 99 105 105 95 99 111 100 101 115 125</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{ascii_codes}'; },
+      hint:  'Each number is a decimal ASCII value. python3 -c "print(bytes([70,76,65,71,...]).decode())"  or use an ASCII table.',
+      flag:  'FLAG{ascii_codes}'
+    },
+
+    17: {
+      name: 'Layered Encoding',
+      pts:  950,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-17: Layered Encoding  [950 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  This payload was base64 encoded, then every byte XOR\'d with 0x2A.</span>',
+        '<span class="t-white">  Undo the XOR first, then decode the base64.</span>',
+        '',
+        '<span class="t-key">  Hex: </span>',
+        '<span class="t-accent">  7841526878195e597372464649477c41</span>',
+        '<span class="t-accent">  72187c5f731813414b7d1f444c7b1717</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{layered_encoding}'; },
+      hint:  'python3 -c "import base64; h=\'7841526878...\'; print(base64.b64decode(bytes(int(h[i:i+2],16)^0x2A for i in range(0,len(h),2))).decode())"',
+      flag:  'FLAG{layered_encoding}'
+    },
+
+    18: {
+      name: 'JWT Recon',
+      pts:  1000,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-18: JWT Recon  [1000 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  You intercept an auth token from an API request.</span>',
+        '<span class="t-white">  The flag is hiding in the payload. Decode it.</span>',
+        '',
+        '<span class="t-dim">  header.payload.signature</span>',
+        '<span class="t-accent">  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>',
+        '<span class="t-accent">  .eyJzdWIiOiJkcnJheXBjIiwiZmxhZyI6IkZMQUd7and0X2RlY29kZWR9IiwiaWF0IjoxNzAwMDAwMDAwfQ</span>',
+        '<span class="t-accent">  .s3cr3t_s1gn4tur3</span>',
+        '',
+        '<span class="t-dim">  > Type the flag value from the payload (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{jwt_decoded}'; },
+      hint:  'A JWT has 3 base64url-encoded parts separated by dots. Decode the middle section (payload). Try: echo "eyJzdWIi..." | base64 -d',
+      flag:  'FLAG{jwt_decoded}'
+    },
+
+    19: {
+      name: 'Triple Threat',
+      pts:  1100,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-19: Triple Threat  [1100 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────</span>',
+        '<span class="t-white">  Three layers. Work backwards.</span>',
+        '<span class="t-white">  Encoding order: reverse &rarr; ROT13 &rarr; base64</span>',
+        '',
+        '<span class="t-key">  Payload: </span><span class="t-accent">fWducmV1Z19yeWN2ZWd7VE5ZUw==</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{triple_threat}'; },
+      hint:  'Decode in reverse order: (1) base64 -d  (2) ROT13  (3) reverse the string. Try chaining: echo "fWducmV1Z1..." | base64 -d | tr a-zA-Z n-za-mN-ZA-M | rev',
+      flag:  'FLAG{triple_threat}'
+    },
+
+    20: {
+      name: 'Final Boss',
+      pts:  1337,
+      intro: [
+        '',
+        '<span class="t-warn">  &#127988; CTF-20: FINAL BOSS  [1337 pts]</span>',
+        '<span class="t-dim">  ─────────────────────────────────────────────────────</span>',
+        '<span class="t-white">  Four layers. You\'ve been training for this.</span>',
+        '<span class="t-white">  Encoding order: hex &rarr; XOR 0x41 &rarr; base64 &rarr; reverse &rarr; ROT13</span>',
+        '',
+        '<span class="t-key">  Payload: </span>',
+        '<span class="t-accent">  =HvqmMKplyaq1WKr3qPq0qKq2u3qvpUq3qPq0q3p2O</span>',
+        '<span class="t-accent">  3qaDUq2qlq4M3V2MKqjIaV1qKq</span>',
+        '',
+        '<span class="t-dim">  > Type the decoded flag (or "hint"):</span>'
+      ],
+      check: function(a) { return a.trim().toLowerCase() === 'flag{you_are_elite_h4x0r}'; },
+      hint:  'Reverse the steps: (1) ROT13  (2) reverse  (3) base64 -d  (4) XOR each byte with 0x41  (5) hex decode. You\'ve done each of these before.',
+      flag:  'FLAG{you_are_elite_h4x0r}'
     }
   };
 
@@ -807,7 +1007,7 @@ loadRepos();
       addLine('');
       addLine('<span class="t-err">  &#10007; Wrong. Try again, or type "hint".</span>');
       addLine('');
-      // stay active - don't reset ctf.active
+      // stay active — don't reset ctf.active
     }
   }
 
@@ -942,8 +1142,8 @@ loadRepos();
       '<span class="t-accent">contact</span>       <span class="t-val">jump to contact</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
       '<span class="t-warn">&#127988; CTF CHALLENGES</span>\n' +
-      '<span class="t-accent">ctf</span>              <span class="t-val">view all 10 challenges &amp; score</span>\n' +
-      '<span class="t-accent">ctf-1</span> <span class="t-dim">thru</span> <span class="t-accent">ctf-10</span>  <span class="t-val">start a specific challenge</span>\n' +
+      '<span class="t-accent">ctf</span>              <span class="t-val">view all 20 challenges &amp; score</span>\n' +
+      '<span class="t-accent">ctf-1</span> <span class="t-dim">thru</span> <span class="t-accent">ctf-20</span>  <span class="t-val">start a specific challenge</span>\n' +
       '<span class="t-accent">scoreboard</span>       <span class="t-val">view leaderboard</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
       '<span class="t-purple">// there are hidden commands &amp; bonus flags... explore</span>';
@@ -1042,19 +1242,22 @@ loadRepos();
       '',
       '<span class="t-warn">  &#127988; CTF CHALLENGES &mdash; CAPTURE THE FLAG</span>',
       '<span class="t-dim">  ─────────────────────────────────────────────────────────────</span>',
-      '<span class="t-white">  Test your security skills. 10 challenges. Can you find them all?</span>',
-      '<span class="t-dim">  Score: <span class="t-accent">' + ctf.score + ' pts</span>  Rank: <span class="t-key">' + ctfRank(ctf.score) + '</span>  Flags: <span class="t-accent">' + ctf.count + '/10</span></span>',
-      ''
+      '<span class="t-white">  20 challenges across two tiers. Can you conquer them all?</span>',
+      '<span class="t-dim">  Score: <span class="t-accent">' + ctf.score + ' pts</span>  Rank: <span class="t-key">' + ctfRank(ctf.score) + '</span>  Flags: <span class="t-accent">' + ctf.count + '/20</span></span>',
+      '',
+      '<span class="t-key">  ── TIER 1: BEGINNER / INTERMEDIATE (ctf-1 through ctf-10) ──</span>'
     ];
-    for (var n = 1; n <= 10; n++) {
+    for (var n = 1; n <= 20; n++) {
+      if (n === 11) lines.push('\n<span class="t-key">  ── TIER 2: ADVANCED (ctf-11 through ctf-20) ──────────────</span>');
       var ch = CTF_CHALLENGES[n];
-      var done = ctf.flags['ctf'+n] ? '<span class="t-accent">&#10003; solved</span>' : '<span class="t-dim">&#128274; locked</span>';
+      var done = ctf.flags['ctf'+n] ? '<span class="t-accent">&#10003;</span>' : '<span class="t-dim">&#128274;</span>';
       var namepad = (ch.name + '                        ').slice(0, 24);
-      lines.push('  <span class="t-accent">ctf-' + (n < 10 ? ' ' : '') + n + '</span>  <span class="t-val">' + namepad + '</span>  [' + ch.pts + ' pts]  ' + done);
+      var num = n < 10 ? ' ' + n : '' + n;
+      lines.push('  <span class="t-accent">ctf-' + num + '</span>  <span class="t-val">' + namepad + '</span>  [' + ch.pts + ' pts]  ' + done);
     }
     lines.push('');
     lines.push('<span class="t-dim">  + bonus flags hidden around the terminal &mdash; explore!</span>');
-    lines.push('<span class="t-dim">  Type ctf-1 through ctf-10 to begin a challenge.</span>');
+    lines.push('<span class="t-dim">  Type ctf-1 through ctf-20 to begin a challenge.</span>');
     lines.push('');
     return lines.join('\n');
   }
@@ -1276,6 +1479,26 @@ loadRepos();
       return '<span class="t-dim">usage: xxd -r -p &lt;&lt;&lt; "hexstring"</span>';
     },
 
+    // base32 -d <<< "B32STRING"
+    base32: function(a, rawInput) {
+      var ri = rawInput || '';
+      var hereMatch = ri.match(/<<<\s*['"]?([A-Z2-7=\s]+?)['"]?\s*$/i);
+      var b32str = hereMatch ? hereMatch[1].trim().toUpperCase() : (a[0] === '-d' && a[1] ? a[1].toUpperCase() : null);
+      if (!b32str) return '<span class="t-dim">usage: base32 -d &lt;&lt;&lt; "B32STRING"</span>';
+      try {
+        var alpha32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+        var bits = '';
+        for (var i=0; i<b32str.length; i++) {
+          var idx = alpha32.indexOf(b32str[i]);
+          if (idx === -1) continue;
+          bits += idx.toString(2).padStart(5,'0');
+        }
+        var out = '';
+        for (var j=0; j+8<=bits.length; j+=8) out += String.fromCharCode(parseInt(bits.slice(j,j+8),2));
+        return '<span class="t-val">' + out + '</span>';
+      } catch(e) { return '<span class="t-err">base32: decode error</span>'; }
+    },
+
     // base64 -d <<< "b64string"
     base64: function(a, rawInput) {
       var ri = rawInput || '';
@@ -1323,7 +1546,7 @@ loadRepos();
         'There are 10 types of people: those who understand binary and those who don\'t.',
         'It works on my machine. Ship the machine.',
         'sudo make me a sandwich.',
-        'rm -rf /problems  - works every time',
+        'rm -rf /problems  — works every time',
         'A bug is just an undocumented feature.',
         '99 little bugs in the code. Take one down, patch it around. 127 bugs.',
         'There\'s no place like 127.0.0.1'
@@ -1373,9 +1596,19 @@ loadRepos();
             continue;
           }
 
+          if (stage === 'base32 -d' || /^base32\s+(-d|--decode)/.test(stage)) {
+            try {
+              var b32s = val.trim().toUpperCase(), al32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567', bts = '';
+              for (var b32i=0; b32i<b32s.length; b32i++) { var ix=al32.indexOf(b32s[b32i]); if(ix>-1) bts+=ix.toString(2).padStart(5,'0'); }
+              var b32out=''; for(var b32j=0; b32j+8<=bts.length; b32j+=8) b32out+=String.fromCharCode(parseInt(bts.slice(b32j,b32j+8),2));
+              val = b32out;
+            } catch(e) { return '<span class="t-err">base32: decode error</span>'; }
+            continue;
+          }
+
           if (stage === 'base64 -d' || stage === 'base64 -D' || /^base64\s+(-d|--decode)/.test(stage)) {
             try { val = atob(val.replace(/\s/g,'')); }
-            catch(e) { return '<span class="t-err">base64: invalid input - check you copied the full string</span>'; }
+            catch(e) { return '<span class="t-err">base64: invalid input — check you copied the full string</span>'; }
             continue;
           }
 
@@ -1424,7 +1657,7 @@ loadRepos();
             continue;
           }
 
-          return '<span class="t-err">pipe: \'' + stage + '\' not supported - supported: base64 -d, rev, xxd -r -p, tr ROT13/caesar</span>';
+          return '<span class="t-err">pipe: \'' + stage + '\' not supported — supported: base64 -d, rev, xxd -r -p, tr ROT13/caesar</span>';
         }
 
         return '<span class="t-val">' + val + '</span>';
@@ -1435,21 +1668,65 @@ loadRepos();
     },
 
     python3: function(a, rawInput) {
-      // XOR helper: python3 -c "bytes(b^0x5A for b in bytes.fromhex('...')).decode()"
-      var ri2 = rawInput || '';
-      if (ri2.indexOf('fromhex') > -1 && ri2.indexOf('^') > -1) {
-        var hexMatch = ri2.match(/fromhex\(['"]([0-9a-fA-F]+)['"]\)/);
-        var keyMatch = ri2.match(/\^\s*0[xX]([0-9a-fA-F]+)/);
+      var ri = rawInput || '';
+
+      // CTF-11: base64.b32decode('...') or base32.b32decode
+      var b32Match = ri.match(/b32decode\s*\(\s*['"]([A-Z2-7=]+)['"]\s*\)/i);
+      if (b32Match) {
+        try {
+          var b32str = b32Match[1].toUpperCase();
+          var alpha32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+          var bits32 = '';
+          for (var bi=0; bi<b32str.length; bi++) {
+            var idx = alpha32.indexOf(b32str[bi]);
+            if (idx === -1) continue;
+            bits32 += idx.toString(2).padStart(5,'0');
+          }
+          var out32 = '';
+          for (var bi2=0; bi2+8<=bits32.length; bi2+=8) out32 += String.fromCharCode(parseInt(bits32.slice(bi2,bi2+8),2));
+          return '<span class="t-val">' + out32 + '</span>';
+        } catch(e) { return '<span class="t-err">python3: b32decode error</span>'; }
+      }
+
+      // CTF-16: bytes([70,76,65,71,...]).decode()
+      var bytesMatch = ri.match(/bytes\(\s*\[([0-9,\s]+)\]\s*\)\.decode/);
+      if (bytesMatch) {
+        try {
+          var nums = bytesMatch[1].split(',').map(function(n){ return parseInt(n.trim()); });
+          return '<span class="t-val">' + nums.map(function(n){ return String.fromCharCode(n); }).join('') + '</span>';
+        } catch(e) { return '<span class="t-err">python3: bytes decode error</span>'; }
+      }
+
+      // CTF-17 / CTF-10: bytes(b^0xKEY for b in bytes.fromhex('...')).decode()
+      if (ri.indexOf('fromhex') > -1 && ri.indexOf('^') > -1) {
+        var hexMatch = ri.match(/fromhex\s*\(\s*['"]([0-9a-fA-F\s]+)['"]\s*\)/);
+        var keyMatch = ri.match(/\^\s*0[xX]([0-9a-fA-F]+)/);
         if (hexMatch && keyMatch) {
           try {
-            var hx = hexMatch[1], key = parseInt(keyMatch[1], 16), xorOut = '';
-            for (var xi2=0; xi2<hx.length; xi2+=2) xorOut += String.fromCharCode(parseInt(hx.substr(xi2,2),16)^key);
+            var hx = hexMatch[1].replace(/\s/g,''), key = parseInt(keyMatch[1], 16), xorOut = '';
+            for (var xi=0; xi<hx.length; xi+=2) xorOut += String.fromCharCode(parseInt(hx.substr(xi,2),16)^key);
+            // If result looks like base64, also offer to decode further
             return '<span class="t-val">' + xorOut + '</span>';
-          } catch(e) { return '<span class="t-err">python3: decode error</span>'; }
+          } catch(e) { return '<span class="t-err">python3: XOR decode error</span>'; }
         }
       }
-      if (ri2.indexOf('0b') > -1) return '<span class="t-dim">// hint: convert each 8-bit group to decimal, then look up ASCII</span>';
-      return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// this is a browser, but XOR decoding works: python3 -c "bytes(b^0xKEY for b in bytes.fromhex(\'...\'))"</span>';
+
+      // CTF-17 full layered: base64.b64decode after XOR
+      if (ri.indexOf('b64decode') > -1 && ri.indexOf('fromhex') > -1 && ri.indexOf('^') > -1) {
+        var hexM = ri.match(/fromhex\s*\(\s*['"]([0-9a-fA-F\s]+)['"]\s*\)/);
+        var keyM = ri.match(/\^\s*0[xX]([0-9a-fA-F]+)/);
+        if (hexM && keyM) {
+          try {
+            var hx2 = hexM[1].replace(/\s/g,''), key2 = parseInt(keyM[1],16);
+            var xored = '';
+            for (var xi3=0; xi3<hx2.length; xi3+=2) xored += String.fromCharCode(parseInt(hx2.substr(xi3,2),16)^key2);
+            return '<span class="t-val">' + atob(xored) + '</span>';
+          } catch(e) { return '<span class="t-err">python3: layered decode error</span>'; }
+        }
+      }
+
+      if (ri.indexOf('0b') > -1) return '<span class="t-dim">// hint: convert each 8-bit group to decimal, then look up ASCII</span>';
+      return '<span class="t-accent">Python 3.11.0 (drraypc edition)</span>\n<span class="t-dim">// Supported: b32decode, bytes([...]).decode(), bytes(b^0xKEY for b in bytes.fromhex(\'...\'))</span>';
     },
 
     // ── CTF COMMANDS ─────────────────────────────────────────────────────
@@ -1464,6 +1741,16 @@ loadRepos();
     'ctf-8':   function()    { ctf.active=true; ctf.challenge=8;  return CTF_CHALLENGES[8].intro.join('\n'); },
     'ctf-9':   function()    { ctf.active=true; ctf.challenge=9;  return CTF_CHALLENGES[9].intro.join('\n'); },
     'ctf-10':  function()    { ctf.active=true; ctf.challenge=10; return CTF_CHALLENGES[10].intro.join('\n'); },
+    'ctf-11':  function()    { ctf.active=true; ctf.challenge=11; return CTF_CHALLENGES[11].intro.join('\n'); },
+    'ctf-12':  function()    { ctf.active=true; ctf.challenge=12; return CTF_CHALLENGES[12].intro.join('\n'); },
+    'ctf-13':  function()    { ctf.active=true; ctf.challenge=13; return CTF_CHALLENGES[13].intro.join('\n'); },
+    'ctf-14':  function()    { ctf.active=true; ctf.challenge=14; return CTF_CHALLENGES[14].intro.join('\n'); },
+    'ctf-15':  function()    { ctf.active=true; ctf.challenge=15; return CTF_CHALLENGES[15].intro.join('\n'); },
+    'ctf-16':  function()    { ctf.active=true; ctf.challenge=16; return CTF_CHALLENGES[16].intro.join('\n'); },
+    'ctf-17':  function()    { ctf.active=true; ctf.challenge=17; return CTF_CHALLENGES[17].intro.join('\n'); },
+    'ctf-18':  function()    { ctf.active=true; ctf.challenge=18; return CTF_CHALLENGES[18].intro.join('\n'); },
+    'ctf-19':  function()    { ctf.active=true; ctf.challenge=19; return CTF_CHALLENGES[19].intro.join('\n'); },
+    'ctf-20':  function()    { ctf.active=true; ctf.challenge=20; return CTF_CHALLENGES[20].intro.join('\n'); },
     scoreboard: function()   { return cmdScoreboard(); }
   };
 
@@ -1509,12 +1796,12 @@ loadRepos();
       }
       var knownCmd = CMDS[cmd] || CMDS[raw.toLowerCase()];
       if (!knownCmd) {
-        // Not a recognised command - treat as flag submission
+        // Not a recognised command — treat as flag submission
         ctfHandleAnswer(raw.trim());
         addPrompt();
         return;
       }
-      // It IS a known command - fall through and execute it normally
+      // It IS a known command — fall through and execute it normally
       // (ctf.active stays true; user can keep using the terminal to decode)
     }
 
