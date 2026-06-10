@@ -423,7 +423,7 @@
   <h2 class="section-title">Get In Touch</h2>
   <div class="contact-wrap">
     <div class="contact-info">
-      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect — my inbox is open.</p>
+      <p>Whether you have a security incident that needs hands-on attention, want to discuss a project, or just want to connect - my inbox is open.</p>
       <div class="contact-links">
         <a href="mailto:ray@drraypc.com" class="contact-link"><div class="cl-icon">✉</div>ray@drraypc.com</a>
         <a href="https://linkedin.com/in/ray-mayer" target="_blank" class="contact-link"><div class="cl-icon">in</div>linkedin.com/in/ray-mayer</a>
@@ -1253,6 +1253,48 @@ loadRepos();
     wget:     function(a) {
       if(!a[0]) return '<span class="t-err">wget: missing URL</span>';
       return '<span class="t-val">--' + new Date().toLocaleTimeString() + '--  ' + a[0] + '</span>\n<span class="t-err">403 Forbidden</span>';
+    },
+
+    // ── DECODE UTILITIES (work during CTF challenges) ─────────────────────
+    // xxd -r -p <<< "hexstring"  or  xxd -r -p (prompts for hex)
+    xxd: function(a, rawInput) {
+      var ri = rawInput || '';
+      // Extract hex from <<< "..." or <<< '...'
+      var hereMatch = ri.match(/<<<\s*['"]?([0-9a-fA-F\s]+)['"]?/);
+      if (hereMatch) {
+        try {
+          var hex = hereMatch[1].replace(/[^0-9a-fA-F]/g, '');
+          if (hex.length % 2 !== 0) return '<span class="t-err">xxd: odd number of hex digits</span>';
+          var out = '';
+          for (var i = 0; i < hex.length; i += 2) out += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+          return '<span class="t-val">' + out + '</span>';
+        } catch(e) { return '<span class="t-err">xxd: decode error</span>'; }
+      }
+      if (a[0] === '-r' || (a[0] === '-r' && a[1] === '-p')) {
+        return '<span class="t-dim">usage: xxd -r -p &lt;&lt;&lt; "hexstring"</span>';
+      }
+      return '<span class="t-dim">usage: xxd -r -p &lt;&lt;&lt; "hexstring"</span>';
+    },
+
+    // base64 -d <<< "b64string"
+    base64: function(a, rawInput) {
+      var ri = rawInput || '';
+      var hereMatch = ri.match(/<<<\s*['"]?([A-Za-z0-9+/=\s]+)['"]?/);
+      if (hereMatch && (a[0] === '-d' || a[0] === '--decode' || a[0] === '-D')) {
+        try {
+          return '<span class="t-val">' + atob(hereMatch[1].trim().replace(/\s/g,'')) + '</span>';
+        } catch(e) { return '<span class="t-err">base64: invalid input</span>'; }
+      }
+      return '<span class="t-dim">usage: base64 -d &lt;&lt;&lt; "base64string"</span>';
+    },
+
+    // rev <<< "string"
+    rev: function(a, rawInput) {
+      var ri = rawInput || '';
+      var hereMatch = ri.match(/<<<\s*['"]?(.+?)['"]?\s*$/);
+      if (hereMatch) return '<span class="t-val">' + hereMatch[1].split('').reverse().join('') + '</span>';
+      if (a.length) return '<span class="t-val">' + a.join(' ').split('').reverse().join('') + '</span>';
+      return '<span class="t-dim">usage: rev &lt;&lt;&lt; "string"  or  echo "string" | rev</span>';
     },
     chmod:    function(a) { return '<span class="t-err">chmod: \'' + (a[1]||'file') + '\': Operation not permitted</span>'; },
     passwd:   function() { return '<span class="t-val">Changing password for visitor.</span>\n<span class="t-err">passwd: Authentication token manipulation error</span>'; },
