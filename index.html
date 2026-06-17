@@ -137,6 +137,98 @@
 
   .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; }
   @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
+
+  /* ── MOBILE ─────────────────────────────────────────────────────────────── */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; flex-shrink: 0; }
+  .hamburger span { display: block; width: 20px; height: 2px; background: var(--muted); border-radius: 2px; transition: all 0.25s; }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 5px); background: var(--green); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -5px); background: var(--green); }
+
+  /* Mobile keyboard shortcut bar - hidden on desktop */
+  .term-keys { display: none; flex-wrap: nowrap; overflow-x: auto; gap: 6px; padding: 8px 12px; background: var(--bg3); border-top: 1px solid var(--border); scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .term-keys::-webkit-scrollbar { display: none; }
+  .term-key { flex-shrink: 0; font-family: var(--mono); font-size: 14px; color: var(--green); background: var(--bg4); border: 1px solid var(--border2); border-radius: 6px; padding: 7px 12px; cursor: pointer; -webkit-tap-highlight-color: transparent; user-select: none; transition: background 0.1s, border-color 0.1s; }
+  .term-key:active { background: var(--green-dim); border-color: var(--green); }
+
+  @media (max-width: 768px) {
+    /* Nav - hamburger */
+    .hamburger { display: flex; }
+    .nav-links {
+      display: none;
+      position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
+      background: rgba(8,12,16,0.97);
+      backdrop-filter: blur(12px);
+      flex-direction: column;
+      padding: 20px 1.5rem;
+      z-index: 98;
+      gap: 4px;
+      border-top: 1px solid var(--border);
+      overflow-y: auto;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 14px 16px; font-size: 14px; border-radius: 8px; letter-spacing: 0.05em; }
+    .nav-status .status-dot { width: 8px; height: 8px; }
+    .nav-status { font-size: 10px; gap: 5px; }
+
+    /* Terminal */
+    .hero-terminal { margin-bottom: 28px; border-radius: 8px; }
+    .term-bar { padding: 8px 12px; }
+    .term-title { font-size: 10px; }
+    .term-body { height: 220px; padding: 12px 14px; }
+    .term-output-line { font-size: 12px; line-height: 1.55; }
+    .term-prompt-label { font-size: 12px; white-space: nowrap; }
+
+    /* CRITICAL iOS fix: font-size must be >= 16px to prevent auto-zoom on focus */
+    .term-input { font-size: 16px; }
+    .form-input, .form-textarea { font-size: 16px; }
+
+    /* Show the keyboard shortcut bar on mobile */
+    .term-keys { display: flex; }
+
+    /* Hero */
+    .hero { padding: 72px 1.25rem 48px; min-height: auto; align-items: flex-start; }
+    .hero-name { font-size: clamp(28px, 8vw, 42px); margin-bottom: 10px; }
+    .hero-sub { font-size: 12px; margin-bottom: 24px; }
+    .hero-cta { gap: 10px; }
+    .btn-primary, .btn-outline { padding: 10px 18px; font-size: 12px; }
+    .bmc-btn-lg { padding: 10px 18px; font-size: 12px; }
+
+    /* Sections */
+    section { padding: 56px 1.25rem; }
+    .section-divider { padding: 0 1.25rem; }
+    .section-title { font-size: clamp(18px, 5vw, 26px); margin-bottom: 28px; }
+
+    /* Skills - single column */
+    .skills-grid { grid-template-columns: 1fr; }
+
+    /* Repos - single column, fix overflow */
+    .repos-grid { grid-template-columns: 1fr; }
+    .repos-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .repos-header .section-title { margin-bottom: 0; }
+    .filter-bar { overflow-x: auto; flex-wrap: nowrap; width: 100%; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+    .filter-btn { flex-shrink: 0; }
+    .repo-card { padding: 16px; }
+
+    /* Contact */
+    .contact-info p { font-size: 14px; }
+
+    /* BM section */
+    .bmc-section { padding: 40px 1.25rem; }
+
+    /* Footer */
+    footer { flex-direction: column; text-align: center; gap: 14px; padding: 20px 1.25rem; }
+    .footer-links { justify-content: center; }
+
+    /* CTF score badge */
+    .ctf-score-badge { font-size: 9px; padding: 2px 6px; }
+  }
+
+  @media (max-width: 420px) {
+    .nav-logo { font-size: 12px; }
+    .term-body { height: 200px; }
+  }
   .about-text p { color: var(--muted); margin-bottom: 16px; font-size: 15px; line-height: 1.8; }
   .about-card { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .about-card-header { background: var(--bg3); padding: 10px 16px; border-bottom: 1px solid var(--border); font-family: var(--mono); font-size: 11px; color: var(--dim); display: flex; align-items: center; gap: 8px; }
@@ -269,16 +361,21 @@
 <!-- NAV -->
 <nav>
   <div class="nav-logo">drraypc.com</div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about">about</a></li>
     <li><a href="#skills">skills</a></li>
     <li><a href="#repos">repos</a></li>
     <li><a href="/music.html">music</a></li>
     <li><a href="#contact">contact</a></li>
   </ul>
-  <div class="nav-status">
-    <div class="status-dot" style="margin-left:8px;"></div>
-    available for work
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div class="nav-status">
+      <div class="status-dot" style="margin-left:8px;"></div>
+      available for work
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
@@ -295,6 +392,21 @@
         <div class="ctf-score-badge" id="ctfBadge">&#127988; 0 pts</div>
       </div>
       <div class="term-body" id="termBody"></div>
+      <!-- Mobile keyboard shortcut bar -->
+      <div class="term-keys" id="termKeys">
+        <button class="term-key" data-key="|">|</button>
+        <button class="term-key" data-key="{">{</button>
+        <button class="term-key" data-key="}">}</button>
+        <button class="term-key" data-key="_">_</button>
+        <button class="term-key" data-key="-">-</button>
+        <button class="term-key" data-key="/">/ </button>
+        <button class="term-key" data-key=">">&gt;</button>
+        <button class="term-key" data-key="~">~</button>
+        <button class="term-key" data-key='"'>"</button>
+        <button class="term-key" data-key="'">'</button>
+        <button class="term-key" data-key=" ">SPC</button>
+        <button class="term-key" data-key="__BACKSPACE__">&#9003;</button>
+      </div>
     </div>
 
     <h1 class="hero-name">Raymond <span>Mayer</span></h1>
@@ -1915,6 +2027,50 @@ loadRepos();
   }
 
   window.focusTermInput = function() { if (inputEl) inputEl.focus(); };
+
+  // ── HAMBURGER NAV ─────────────────────────────────────────────────────────
+  var hamburger = document.getElementById('hamburger');
+  var navLinks   = document.getElementById('navLinks');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+    // Close nav when a link is tapped
+    navLinks.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', function() {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+  }
+
+  // ── MOBILE KEYBOARD SHORTCUT BAR ─────────────────────────────────────────
+  var termKeys = document.getElementById('termKeys');
+  if (termKeys) {
+    termKeys.addEventListener('mousedown', function(e) { e.preventDefault(); }); // don't lose input focus
+    termKeys.addEventListener('click', function(e) {
+      var btn = e.target.closest('.term-key');
+      if (!btn || !inputEl) return;
+      var key = btn.dataset.key;
+      if (key === '__BACKSPACE__') {
+        inputEl.value = inputEl.value.slice(0, -1);
+      } else {
+        inputEl.value += key;
+      }
+      inputEl.focus();
+    });
+  }
+
+  // ── iOS SCROLL FIX ────────────────────────────────────────────────────────
+  // When the keyboard opens on iOS, scroll so the terminal input stays visible
+  document.addEventListener('focusin', function(e) {
+    if (e.target === inputEl) {
+      setTimeout(function() {
+        e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 350); // wait for iOS keyboard animation
+    }
+  });
 
   // Only focus the input on click if the user isn't trying to select/copy text
   document.getElementById('heroTerminal').addEventListener('mouseup', function(e) {
