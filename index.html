@@ -139,8 +139,8 @@
   @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; } }
 
   /* ── MOBILE ─────────────────────────────────────────────────────────────── */
-  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; flex-shrink: 0; }
-  .hamburger span { display: block; width: 20px; height: 2px; background: var(--muted); border-radius: 2px; transition: all 0.25s; }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; background: none; border: none; flex-shrink: 0; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+  .hamburger span { display: block; width: 22px; height: 2px; background: var(--muted); border-radius: 2px; transition: all 0.25s; pointer-events: none; }
   .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4px, 5px); background: var(--green); }
   .hamburger.open span:nth-child(2) { opacity: 0; }
   .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4px, -5px); background: var(--green); }
@@ -155,18 +155,31 @@
     /* Nav - hamburger */
     .hamburger { display: flex; }
     .nav-links {
-      display: none;
       position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
       background: rgba(8,12,16,0.97);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       flex-direction: column;
       padding: 20px 1.5rem;
       z-index: 98;
       gap: 4px;
       border-top: 1px solid var(--border);
       overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      /* Use visibility + opacity instead of display:none for iOS reliability */
+      display: flex;
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
     }
-    .nav-links.open { display: flex; }
+    .nav-links.open {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
     .nav-links li { width: 100%; }
     .nav-links a { display: block; padding: 14px 16px; font-size: 14px; border-radius: 8px; letter-spacing: 0.05em; }
     .nav-status .status-dot { width: 8px; height: 8px; }
@@ -655,6 +668,54 @@ document.getElementById('filterBar').addEventListener('click', e => {
 });
 
 loadRepos();
+</script>
+
+<!-- ══════════════════════════ HAMBURGER + KEY BAR ══════════════════════════ -->
+<script>
+(function() {
+  var hamburger = document.getElementById('hamburger');
+  var navLinks  = document.getElementById('navLinks');
+
+  if (hamburger && navLinks) {
+    function openNav()  { hamburger.classList.add('open');    navLinks.classList.add('open');    document.body.style.overflow = 'hidden'; }
+    function closeNav() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); document.body.style.overflow = ''; }
+    function toggleNav() { navLinks.classList.contains('open') ? closeNav() : openNav(); }
+
+    hamburger.addEventListener('click', toggleNav);
+
+    // Close when any nav link is tapped
+    navLinks.querySelectorAll('a').forEach(function(a) {
+      a.addEventListener('click', closeNav);
+    });
+
+    // Close on outside tap
+    document.addEventListener('click', function(e) {
+      if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
+        closeNav();
+      }
+    });
+  }
+
+  // Mobile keyboard shortcut bar
+  var termKeys = document.getElementById('termKeys');
+  if (termKeys) {
+    termKeys.addEventListener('mousedown', function(e) { e.preventDefault(); });
+    termKeys.addEventListener('touchstart', function(e) { e.preventDefault(); }, { passive: false });
+    termKeys.addEventListener('click', function(e) {
+      var btn = e.target.closest('.term-key');
+      if (!btn) return;
+      var inp = document.querySelector('.term-input');
+      if (!inp) return;
+      var key = btn.dataset.key;
+      if (key === '__BACKSPACE__') {
+        inp.value = inp.value.slice(0, -1);
+      } else {
+        inp.value += key;
+      }
+      inp.focus();
+    });
+  }
+})();
 </script>
 
 <!-- ═══════════════════════════ TERMINAL SCRIPT ══════════════════════════ -->
@@ -2027,40 +2088,6 @@ loadRepos();
   }
 
   window.focusTermInput = function() { if (inputEl) inputEl.focus(); };
-
-  // ── HAMBURGER NAV ─────────────────────────────────────────────────────────
-  var hamburger = document.getElementById('hamburger');
-  var navLinks   = document.getElementById('navLinks');
-  if (hamburger && navLinks) {
-    hamburger.addEventListener('click', function() {
-      hamburger.classList.toggle('open');
-      navLinks.classList.toggle('open');
-    });
-    // Close nav when a link is tapped
-    navLinks.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', function() {
-        hamburger.classList.remove('open');
-        navLinks.classList.remove('open');
-      });
-    });
-  }
-
-  // ── MOBILE KEYBOARD SHORTCUT BAR ─────────────────────────────────────────
-  var termKeys = document.getElementById('termKeys');
-  if (termKeys) {
-    termKeys.addEventListener('mousedown', function(e) { e.preventDefault(); }); // don't lose input focus
-    termKeys.addEventListener('click', function(e) {
-      var btn = e.target.closest('.term-key');
-      if (!btn || !inputEl) return;
-      var key = btn.dataset.key;
-      if (key === '__BACKSPACE__') {
-        inputEl.value = inputEl.value.slice(0, -1);
-      } else {
-        inputEl.value += key;
-      }
-      inputEl.focus();
-    });
-  }
 
   // ── iOS SCROLL FIX ────────────────────────────────────────────────────────
   // When the keyboard opens on iOS, scroll so the terminal input stays visible
