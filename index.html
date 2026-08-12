@@ -156,17 +156,18 @@
     .hamburger { display: flex; }
     .nav-links {
       position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
-      background: rgba(8,12,16,0.98);
+      background: #080c10;
       flex-direction: column;
       padding: 20px 1.5rem;
-      z-index: 98;
+      z-index: 9998;
       gap: 4px;
-      border-top: 1px solid var(--border);
+      border-top: 1px solid #00ff88;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       display: none;
     }
     .nav-links.open { display: flex; }
+    .nav-links a { color: #e6edf3; font-size: 16px; padding: 16px; border-radius: 8px; }
     .nav-links li { width: 100%; }
     .nav-links a { display: block; padding: 14px 16px; font-size: 14px; border-radius: 8px; letter-spacing: 0.05em; }
     .nav-status .status-dot { width: 8px; height: 8px; }
