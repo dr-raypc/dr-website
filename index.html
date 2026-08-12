@@ -156,9 +156,7 @@
     .hamburger { display: flex; }
     .nav-links {
       position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
-      background: rgba(8,12,16,0.97);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(8,12,16,0.98);
       flex-direction: column;
       padding: 20px 1.5rem;
       z-index: 98;
@@ -166,20 +164,9 @@
       border-top: 1px solid var(--border);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      /* Use visibility + opacity instead of display:none for iOS reliability */
-      display: flex;
-      visibility: hidden;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(-8px);
-      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+      display: none;
     }
-    .nav-links.open {
-      visibility: visible;
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
+    .nav-links.open { display: flex; }
     .nav-links li { width: 100%; }
     .nav-links a { display: block; padding: 14px 16px; font-size: 14px; border-radius: 8px; letter-spacing: 0.05em; }
     .nav-status .status-dot { width: 8px; height: 8px; }
@@ -372,21 +359,46 @@
 </script>
 
 <!-- NAV -->
+<!-- drNav must be defined before the button that calls it -->
+<script>
+function drNav() {
+  var nav = document.getElementById('navLinks');
+  var btn = document.getElementById('hamburger');
+  if (!nav || !btn) return;
+  var open = nav.classList.contains('open');
+  if (open) {
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+    document.body.style.overflow = '';
+  } else {
+    nav.classList.add('open');
+    btn.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+}
+function drNavClose() {
+  var nav = document.getElementById('navLinks');
+  var btn = document.getElementById('hamburger');
+  if (nav) nav.classList.remove('open');
+  if (btn) btn.classList.remove('open');
+  document.body.style.overflow = '';
+}
+</script>
 <nav>
   <div class="nav-logo">drraypc.com</div>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#about">about</a></li>
-    <li><a href="#skills">skills</a></li>
-    <li><a href="#repos">repos</a></li>
-    <li><a href="/music.html">music</a></li>
-    <li><a href="#contact">contact</a></li>
+    <li><a href="#about"      onclick="drNavClose()">about</a></li>
+    <li><a href="#skills"     onclick="drNavClose()">skills</a></li>
+    <li><a href="#repos"      onclick="drNavClose()">repos</a></li>
+    <li><a href="/music.html" onclick="drNavClose()">music</a></li>
+    <li><a href="#contact"    onclick="drNavClose()">contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px;">
     <div class="nav-status">
       <div class="status-dot" style="margin-left:8px;"></div>
       available for work
     </div>
-    <button class="hamburger" id="hamburger" aria-label="Toggle navigation">
+    <button class="hamburger" id="hamburger" aria-label="Toggle navigation" onclick="drNav()">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -668,54 +680,6 @@ document.getElementById('filterBar').addEventListener('click', e => {
 });
 
 loadRepos();
-</script>
-
-<!-- ══════════════════════════ HAMBURGER + KEY BAR ══════════════════════════ -->
-<script>
-(function() {
-  var hamburger = document.getElementById('hamburger');
-  var navLinks  = document.getElementById('navLinks');
-
-  if (hamburger && navLinks) {
-    function openNav()  { hamburger.classList.add('open');    navLinks.classList.add('open');    document.body.style.overflow = 'hidden'; }
-    function closeNav() { hamburger.classList.remove('open'); navLinks.classList.remove('open'); document.body.style.overflow = ''; }
-    function toggleNav() { navLinks.classList.contains('open') ? closeNav() : openNav(); }
-
-    hamburger.addEventListener('click', toggleNav);
-
-    // Close when any nav link is tapped
-    navLinks.querySelectorAll('a').forEach(function(a) {
-      a.addEventListener('click', closeNav);
-    });
-
-    // Close on outside tap
-    document.addEventListener('click', function(e) {
-      if (navLinks.classList.contains('open') && !navLinks.contains(e.target) && !hamburger.contains(e.target)) {
-        closeNav();
-      }
-    });
-  }
-
-  // Mobile keyboard shortcut bar
-  var termKeys = document.getElementById('termKeys');
-  if (termKeys) {
-    termKeys.addEventListener('mousedown', function(e) { e.preventDefault(); });
-    termKeys.addEventListener('touchstart', function(e) { e.preventDefault(); }, { passive: false });
-    termKeys.addEventListener('click', function(e) {
-      var btn = e.target.closest('.term-key');
-      if (!btn) return;
-      var inp = document.querySelector('.term-input');
-      if (!inp) return;
-      var key = btn.dataset.key;
-      if (key === '__BACKSPACE__') {
-        inp.value = inp.value.slice(0, -1);
-      } else {
-        inp.value += key;
-      }
-      inp.focus();
-    });
-  }
-})();
 </script>
 
 <!-- ═══════════════════════════ TERMINAL SCRIPT ══════════════════════════ -->
@@ -2090,14 +2054,30 @@ loadRepos();
   window.focusTermInput = function() { if (inputEl) inputEl.focus(); };
 
   // ── iOS SCROLL FIX ────────────────────────────────────────────────────────
-  // When the keyboard opens on iOS, scroll so the terminal input stays visible
   document.addEventListener('focusin', function(e) {
     if (e.target === inputEl) {
       setTimeout(function() {
         e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 350); // wait for iOS keyboard animation
+      }, 350);
     }
   });
+
+  // ── MOBILE KEYBOARD SHORTCUT BAR ─────────────────────────────────────────
+  var termKeys = document.getElementById('termKeys');
+  if (termKeys) {
+    termKeys.addEventListener('mousedown', function(e) { e.preventDefault(); });
+    termKeys.addEventListener('click', function(e) {
+      var btn = e.target.closest('.term-key');
+      if (!btn || !inputEl) return;
+      var key = btn.dataset.key;
+      if (key === '__BACKSPACE__') {
+        inputEl.value = inputEl.value.slice(0, -1);
+      } else {
+        inputEl.value += key;
+      }
+      inputEl.focus();
+    });
+  }
 
   // Only focus the input on click if the user isn't trying to select/copy text
   document.getElementById('heroTerminal').addEventListener('mouseup', function(e) {
