@@ -161,13 +161,12 @@
       padding: 20px 1.5rem;
       z-index: 9998;
       gap: 4px;
-      border-top: 1px solid #00ff88;
+      border-top: 2px solid #00ff88;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       display: none;
     }
-    .nav-links.open { display: flex; }
-    .nav-links a { color: #e6edf3; font-size: 16px; padding: 16px; border-radius: 8px; }
+    .nav-links a { color: #e6edf3; font-size: 16px; padding: 16px; border-radius: 8px; display: block; }
     .nav-links li { width: 100%; }
     .nav-links a { display: block; padding: 14px 16px; font-size: 14px; border-radius: 8px; letter-spacing: 0.05em; }
     .nav-status .status-dot { width: 8px; height: 8px; }
@@ -360,29 +359,24 @@
 </script>
 
 <!-- NAV -->
-<!-- drNav must be defined before the button that calls it -->
 <script>
 function drNav() {
   var nav = document.getElementById('navLinks');
   var btn = document.getElementById('hamburger');
   if (!nav || !btn) return;
-  var open = nav.classList.contains('open');
-  if (open) {
-    nav.classList.remove('open');
+  if (nav.style.display === 'flex') {
+    nav.style.display = 'none';
     btn.classList.remove('open');
-    document.body.style.overflow = '';
   } else {
-    nav.classList.add('open');
+    nav.style.display = 'flex';
     btn.classList.add('open');
-    document.body.style.overflow = 'hidden';
   }
 }
 function drNavClose() {
   var nav = document.getElementById('navLinks');
   var btn = document.getElementById('hamburger');
-  if (nav) nav.classList.remove('open');
+  if (nav) nav.style.display = 'none';
   if (btn) btn.classList.remove('open');
-  document.body.style.overflow = '';
 }
 </script>
 <nav>
