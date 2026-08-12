@@ -66,9 +66,9 @@
   }
   .nav-logo { font-family: var(--mono); font-size: 13px; color: var(--green); display: flex; align-items: center; gap: 8px; }
   .nav-logo::before { content: '>'; color: var(--muted); }
-  .nav-links { display: flex; gap: 0; list-style: none; }
-  .nav-links a { display: block; padding: 6px 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid transparent; border-radius: 4px; transition: all 0.2s; letter-spacing: 0.03em; }
-  .nav-links a:hover { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+  .nav-links-desktop { display: flex; gap: 0; list-style: none; }
+  .nav-links-desktop a { display: block; padding: 6px 14px; font-family: var(--mono); font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid transparent; border-radius: 4px; transition: all 0.2s; letter-spacing: 0.03em; }
+  .nav-links-desktop a:hover { color: var(--green); border-color: var(--green); background: var(--green-dim); }
   .nav-status { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
   .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: pulse 2s ease-in-out infinite; }
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
@@ -154,6 +154,7 @@
   @media (max-width: 768px) {
     /* Nav - hamburger */
     .hamburger { display: flex; }
+    .nav-links-desktop { display: none; }
     .nav-links {
       position: fixed; top: 56px; left: 0; right: 0; bottom: 0;
       background: #080c10;
@@ -379,14 +380,25 @@ function drNavClose() {
   if (btn) btn.classList.remove('open');
 }
 </script>
+<!-- Mobile nav overlay - MUST be outside <nav> because nav has backdrop-filter which -->
+<!-- makes it the containing block for position:fixed children, breaking the overlay   -->
+<ul class="nav-links" id="navLinks">
+  <li><a href="#about"      onclick="drNavClose()">about</a></li>
+  <li><a href="#skills"     onclick="drNavClose()">skills</a></li>
+  <li><a href="#repos"      onclick="drNavClose()">repos</a></li>
+  <li><a href="/music.html" onclick="drNavClose()">music</a></li>
+  <li><a href="#contact"    onclick="drNavClose()">contact</a></li>
+</ul>
+
+<!-- NAV -->
 <nav>
   <div class="nav-logo">drraypc.com</div>
-  <ul class="nav-links" id="navLinks">
-    <li><a href="#about"      onclick="drNavClose()">about</a></li>
-    <li><a href="#skills"     onclick="drNavClose()">skills</a></li>
-    <li><a href="#repos"      onclick="drNavClose()">repos</a></li>
-    <li><a href="/music.html" onclick="drNavClose()">music</a></li>
-    <li><a href="#contact"    onclick="drNavClose()">contact</a></li>
+  <ul class="nav-links-desktop">
+    <li><a href="#about">about</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#repos">repos</a></li>
+    <li><a href="/music.html">music</a></li>
+    <li><a href="#contact">contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px;">
     <div class="nav-status">
