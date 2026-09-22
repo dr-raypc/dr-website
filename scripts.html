@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raymond Mayer // Public Scripts</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta name="theme-color" content="#080c10">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:         #080c10;
+    --bg2:        #0d1117;
+    --bg3:        #161b22;
+    --bg4:        #1c2330;
+    --border:     #21262d;
+    --border2:    #30363d;
+    --text:       #e6edf3;
+    --muted:      #7d8590;
+    --dim:        #484f58;
+    --green:      #00ff88;
+    --green2:     #00cc6a;
+    --green-dim:  rgba(0,255,136,0.08);
+    --green-glow: rgba(0,255,136,0.15);
+    --blue:       #58a6ff;
+    --blue-dim:   rgba(88,166,255,0.1);
+    --amber:      #f0a500;
+    --amber-dim:  rgba(240,165,0,0.1);
+    --red:        #ff6b6b;
+    --red-dim:    rgba(255,107,107,0.08);
+    --mono:       'JetBrains Mono', monospace;
+    --sans:       'Inter', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.03) 2px,rgba(0,0,0,0.03) 4px);
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* ── NAV ─────────────────────────────────────────── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: rgba(8,12,16,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+  }
+
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--green);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-logo::before { content: '>'; color: var(--muted); }
+
+  .nav-links {
+    display: flex;
+    gap: 0;
+    list-style: none;
+  }
+  .nav-links a {
+    display: block;
+    padding: 6px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .nav-links a:hover { color: var(--green); border-color: var(--green); background: var(--green-dim); }
+  .nav-links a.active { color: var(--green); }
+
+  .nav-status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  /* ── PAGE BODY ───────────────────────────────────── */
+  main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 96px 2rem 80px;
+  }
+
+  /* ── HEADER ──────────────────────────────────────── */
+  .page-eyebrow {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--green);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .page-title {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .page-subtitle {
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 36px;
+    line-height: 1.8;
+  }
+  .page-subtitle code {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid rgba(0,255,136,0.2);
+    border-radius: 3px;
+    padding: 1px 6px;
+  }
+
+  /* ── WARNING BANNER ──────────────────────────────── */
+  .warn-banner {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: var(--red-dim);
+    border: 1px solid rgba(255,107,107,0.25);
+    border-radius: 6px;
+    padding: 12px 16px;
+    margin-bottom: 40px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: #ff9090;
+    line-height: 1.6;
+  }
+  .warn-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; }
+  .warn-banner a { color: var(--blue); }
+
+  /* ── SECTION DIVIDER ─────────────────────────────── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── SCRIPT CARD ─────────────────────────────────── */
+  .script-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .script-card:hover { border-color: var(--border2); }
+
+  .card-head {
+    padding: 18px 20px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .card-meta { flex: 1; }
+
+  .card-name {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* category badge */
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 12px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge-system { background: var(--blue-dim); color: var(--blue); border: 1px solid rgba(88,166,255,0.3); }
+  .badge-media  { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(240,165,0,0.3); }
+
+  .card-body { padding: 16px 20px 18px; }
+
+  .oneliner-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .oneliner-row {
+    display: flex;
+    align-items: stretch;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .oneliner-prompt {
+    padding: 10px 10px 10px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--dim);
+    user-select: none;
+    white-space: nowrap;
+  }
+
+  .oneliner-cmd {
+    flex: 1;
+    padding: 10px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .copy-btn {
+    background: none;
+    border: none;
+    border-left: 1px solid var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 0 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    letter-spacing: 0.04em;
+    transition: color 0.15s, background 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .copy-btn:hover { color: var(--green); background: var(--green-dim); }
+  .copy-btn.copied { color: var(--green); }
+
+  /* feature pills */
+  .features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .feat-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 2px 8px;
+    letter-spacing: 0.02em;
+  }
+
+  /* source link */
+  .card-footer {
+    padding: 10px 20px;
+    background: var(--bg3);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .card-footer-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--dim);
+  }
+  .source-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--blue);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: color 0.15s;
+  }
+  .source-link:hover { color: var(--text); }
+
+  /* ── USAGE NOTE ──────────────────────────────────── */
+  .usage-note {
+    margin-top: 40px;
+    padding: 20px 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .usage-note h3 {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    letter-spacing: 0.06em;
+    margin-bottom: 12px;
+  }
+  .usage-note p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 8px;
+  }
+  .usage-note p:last-child { margin-bottom: 0; }
+  .usage-note code {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: var(--green);
+    background: var(--green-dim);
+    border: 1px solid rgba(0,255,136,0.18);
+    border-radius: 3px;
+    padding: 1px 6px;
+  }
+
+  /* ── BACK LINK ───────────────────────────────────── */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 36px;
+    transition: color 0.15s;
+    letter-spacing: 0.04em;
+  }
+  .back-link:hover { color: var(--green); }
+
+  /* ── MOBILE ──────────────────────────────────────── */
+  @media (max-width: 600px) {
+    main { padding: 80px 1.2rem 60px; }
+    nav { padding: 0 1.2rem; }
+    .page-title { font-size: 22px; }
+    .oneliner-prompt { display: none; }
+    .card-footer { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .nav-status { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="/" class="nav-logo">drraypc.com</a>
+  <ul class="nav-links">
+    <li><a href="/#about">about</a></li>
+    <li><a href="/#repos">projects</a></li>
+    <li><a href="/scripts.html" class="active">scripts</a></li>
+    <li><a href="/#contact">contact</a></li>
+  </ul>
+  <div class="nav-status">
+    <div class="status-dot"></div>
+    available
+  </div>
+</nav>
+
+<main>
+  <a href="/" class="back-link">&larr; back to terminal</a>
+
+  <p class="page-eyebrow">PowerShell // Public</p>
+  <h1 class="page-title">Scripts</h1>
+  <p class="page-subtitle">
+    One-liner deploy with <code>irm | iex</code>.
+    All scripts are open-source, hosted at <code>*.drraypc.com</code>,
+    and safe to inspect before running.
+  </p>
+
+  <!-- WARNING -->
+  <div class="warn-banner">
+    <span class="warn-icon">!</span>
+    <span>
+      Always review a script before running it.
+      Open the URL in your browser to read the source -
+      <a href="https://cleanup.drraypc.com" target="_blank" rel="noopener">cleanup.drraypc.com</a>,
+      <a href="https://dr-downloader.drraypc.com" target="_blank" rel="noopener">dr-downloader.drraypc.com</a>.
+      Run only in PowerShell 5.1+ on Windows 10/11.
+    </span>
+  </div>
+
+  <p class="section-label">Available Scripts</p>
+
+  <!-- CARD: cleanup -->
+  <div class="script-card">
+    <div class="card-head">
+      <div class="card-meta">
+        <div class="card-name">
+          Cleanup Script
+          <span class="badge badge-system">System</span>
+        </div>
+        <p class="card-desc">
+          Clears Windows temp files, browser caches, Windows Update cache,
+          and prefetch data. Outputs a per-category byte summary so you
+          know exactly what was reclaimed. No reboot required.
+        </p>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="oneliner-label">Run in PowerShell (as Administrator)</p>
+      <div class="oneliner-row">
+        <span class="oneliner-prompt">PS&gt;</span>
+        <span class="oneliner-cmd" id="cmd-cleanup">irm https://cleanup.drraypc.com | iex</span>
+        <button class="copy-btn" onclick="copyCmd('cmd-cleanup', this)" title="Copy to clipboard">
+          <span>[ copy ]</span>
+        </button>
+      </div>
+      <div class="features">
+        <span class="feat-pill">Temp files</span>
+        <span class="feat-pill">Browser cache</span>
+        <span class="feat-pill">Windows Update cache</span>
+        <span class="feat-pill">Prefetch data</span>
+        <span class="feat-pill">No reboot needed</span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-footer-note">// PowerShell 5.1+ - Windows 10/11</span>
+      <a href="https://cleanup.drraypc.com" target="_blank" rel="noopener" class="source-link">
+        view source &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- CARD: dr-downloader -->
+  <div class="script-card">
+    <div class="card-head">
+      <div class="card-meta">
+        <div class="card-name">
+          DR Downloader
+          <span class="badge badge-media">Utility</span>
+        </div>
+        <p class="card-desc">
+          A lightweight PowerShell file downloader utility.
+          Handles authenticated downloads, progress reporting,
+          and automatic retry on failure.
+        </p>
+      </div>
+    </div>
+    <div class="card-body">
+      <p class="oneliner-label">Run in PowerShell</p>
+      <div class="oneliner-row">
+        <span class="oneliner-prompt">PS&gt;</span>
+        <span class="oneliner-cmd" id="cmd-drdownloader">irm https://dr-downloader.drraypc.com | iex</span>
+        <button class="copy-btn" onclick="copyCmd('cmd-drdownloader', this)" title="Copy to clipboard">
+          <span>[ copy ]</span>
+        </button>
+      </div>
+      <div class="features">
+        <span class="feat-pill">Progress reporting</span>
+        <span class="feat-pill">Auto retry</span>
+        <span class="feat-pill">Resume support</span>
+      </div>
+    </div>
+    <div class="card-footer">
+      <span class="card-footer-note">// PowerShell 5.1+ - Windows 10/11</span>
+      <a href="https://dr-downloader.drraypc.com" target="_blank" rel="noopener" class="source-link">
+        view source &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- USAGE NOTE -->
+  <div class="usage-note">
+    <h3>// HOW irm | iex WORKS</h3>
+    <p>
+      <code>irm</code> (Invoke-RestMethod) fetches the script as plain text from the subdomain.
+      <code>iex</code> (Invoke-Expression) executes it in your current PowerShell session.
+    </p>
+    <p>
+      You can inspect any script first by running <code>irm https://cleanup.drraypc.com</code>
+      without piping - this prints the source without executing it.
+    </p>
+  </div>
+</main>
+
+<script>
+function copyCmd(id, btn) {
+  var text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var span = btn.querySelector('span');
+    var orig = span.textContent;
+    span.textContent = '[ copied! ]';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      span.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(function() {
+    // Fallback for older browsers
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    var span = btn.querySelector('span');
+    var orig = span.textContent;
+    span.textContent = '[ copied! ]';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      span.textContent = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>

@@ -386,8 +386,9 @@ function drNavClose() {
   <li><a href="#about"      onclick="drNavClose()">about</a></li>
   <li><a href="#skills"     onclick="drNavClose()">skills</a></li>
   <li><a href="#repos"      onclick="drNavClose()">repos</a></li>
-  <li><a href="/music.html" onclick="drNavClose()">music</a></li>
-  <li><a href="#contact"    onclick="drNavClose()">contact</a></li>
+  <li><a href="/music.html"   onclick="drNavClose()">music</a></li>
+  <li><a href="/scripts.html" onclick="drNavClose()">scripts</a></li>
+  <li><a href="#contact"      onclick="drNavClose()">contact</a></li>
 </ul>
 
 <!-- NAV -->
@@ -398,6 +399,7 @@ function drNavClose() {
     <li><a href="#skills">skills</a></li>
     <li><a href="#repos">repos</a></li>
     <li><a href="/music.html">music</a></li>
+    <li><a href="/scripts.html">scripts</a></li>
     <li><a href="#contact">contact</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:12px;">
@@ -1286,6 +1288,7 @@ loadRepos();
       '<span class="t-accent">resume</span>        <span class="t-val">open resume</span>\n' +
       '<span class="t-accent">projects</span>      <span class="t-val">jump to projects</span>\n' +
       '<span class="t-accent">contact</span>       <span class="t-val">jump to contact</span>\n' +
+      '<span class="t-accent">scripts</span>       <span class="t-val">list public PowerShell scripts</span>\n' +
       '<span class="t-dim">────────────────────────────────────────</span>\n' +
       '<span class="t-warn">&#127988; CTF CHALLENGES</span>\n' +
       '<span class="t-accent">ctf</span>              <span class="t-val">view all 20 challenges &amp; score</span>\n' +
@@ -1449,6 +1452,17 @@ loadRepos();
     resume:    function() { return '<span class="t-err">access denied - this resource is restricted.</span>\n<span class="t-dim">// nice try though</span>'; },
     projects:  function() { document.getElementById('repos').scrollIntoView({behavior:'smooth'}); return '<span class="t-accent">&rarr; jumping to projects</span>'; },
     contact:   function() { document.getElementById('contact').scrollIntoView({behavior:'smooth'}); return '<span class="t-accent">&rarr; jumping to contact</span>'; },
+    scripts:   function() {
+      return '<span class="t-key">PUBLIC POWERSHELL SCRIPTS</span>\n' +
+        '<span class="t-dim">─────────────────────────────────────────────────────────</span>\n' +
+        '<span class="t-key">NAME        DESCRIPTION                      URL</span>\n' +
+        '<span class="t-dim">─────────────────────────────────────────────────────────</span>\n' +
+        '<span class="t-accent">cleanup</span>        system cleanup &amp; temp removal   <span class="t-val">cleanup.drraypc.com</span>\n' +
+        '<span class="t-accent">dr-downloader</span>  file downloader utility         <span class="t-val">dr-downloader.drraypc.com</span>\n' +
+        '<span class="t-dim">─────────────────────────────────────────────────────────</span>\n' +
+        '<span class="t-dim">run any script:</span>  <span class="t-val">irm https://&lt;name&gt;.drraypc.com | iex</span>\n' +
+        '<span class="t-dim">full docs:</span>      <span class="t-accent">drraypc.com/scripts</span>';
+    },
     exit:      function() { setTimeout(boot, 400); return '<span class="t-dim">logout</span>'; },
     reboot:    function() { setTimeout(function(){location.reload();},1000); return '<span class="t-warn">rebooting...</span>'; },
     banner:    function() { return LOGO; },
